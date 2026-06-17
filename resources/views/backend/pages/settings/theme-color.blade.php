@@ -1,7 +1,7 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link href="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+    <link href="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -24,16 +24,16 @@
         </div>
     </div>
 
-  @if(!$themes) 
+  @if(!$themes)
     <form method="post" action="{{route('admin.theme.store')}}" enctype="multipart/form-data">
         @csrf
-        
+
         @else
             <form method="post" action="{{route('admin.theme.update',$themes->id)}}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @endif
-        
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -71,13 +71,13 @@
                                 <button class="btn btn-primary">Update</button>
                             </div>
 
-                           
+
                         </div>
                     </div>
                 </div>
             </div> <!-- end col -->
         </div>
-      
+
     </form>
 @endsection
 

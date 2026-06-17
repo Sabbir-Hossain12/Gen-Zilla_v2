@@ -1,5 +1,12 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import tailwindcss from '@tailwindcss/vite'
+
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     plugins: [
@@ -10,5 +17,13 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        vue(),
+        tailwindcss(),
+
     ],
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'resources/js'),  // ✅ absolute path
+        },
+    },
 });

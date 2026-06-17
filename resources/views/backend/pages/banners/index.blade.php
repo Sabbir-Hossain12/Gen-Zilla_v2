@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -88,15 +88,15 @@
                         <div class="mb-3">
                             <label for="banner_type" class="col-form-label">Banner Type</label>
                             <select class="form-control" name="banner_type" required>
-                                
-                                
+
+
                                 <option value="small">Small</option>
                                 <option value="medium">Medium</option>
                                 <option value="large">Large</option>
-                                
+
                             </select>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="Name" class="col-form-label">Banner Image</label>
                             <input type="file" class="form-control"  name="banner_img">
@@ -157,7 +157,7 @@
                         <div class="mb-3">
                             <label for="banner_type" class="col-form-label">Banner Type</label>
                             <select class="form-control" name="banner_type" id="bannerType" required>
-                                
+
                                 <option value="small">Small</option>
                                 <option value="medium">Medium</option>
                                 <option value="large">Large</option>
@@ -215,17 +215,17 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
         $(document).ready(function () {
-            
+
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let bannerTable = $('#bannerTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -252,7 +252,7 @@
                     {
                         data: 'banner_type',
                         render: function (data) {
-                            
+
                             return      '<span class="badge badge-lg bg-primary rounded"> ' + data.toUpperCase() + ' </span>';
                         }
 

@@ -10,9 +10,9 @@
 
 @push('backendCss')
 
-    <link href="{{ asset('public/backend') }}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend') }}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('public/backend') }}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend') }}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
 @endpush
 
@@ -91,7 +91,7 @@
                                 <select class="form-select" name="category_id">
                                     <option value="" disabled selected>Select</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>      
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                         @endforeach
                                 </select>
                             </div>
@@ -153,7 +153,7 @@
                                 <select class="form-select" name="category_id" id="up_category_id">
                                     <option value="" disabled selected>Select</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>      
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                                         @endforeach
                                 </select>
                             </div>
@@ -201,8 +201,8 @@
 
 @push('backendJs')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -344,7 +344,7 @@
                     success: function (res) {
                         let data = res.success;
                         // console.log(res)
-                        
+
                         $('#id').val(data.id);
                         $('#up_category_id').val(data.category_id);
                         $('#up_subcat_name').val(data.subcategory_name);

@@ -1,10 +1,10 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link href="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+    <link href="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
           rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="{{asset('public/backend/assets/js/select2/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/assets/js/select2/select2.min.css')}}">
 
 @endpush
 
@@ -197,7 +197,7 @@
                                 <input oninput="newImg1.src=window.URL.createObjectURL(this.files[0])" type="file"
                                        class="form-control" name="productThumbnail_img" id="productThumbnail_img">
                                 <img class="mt-2" id="newImg1"
-                                     src="{{ asset($product->productDetail->productThumbnail_img) ?? asset('public/backend/assets/images/placeholder.jpg')}}"
+                                     src="{{ asset($product->productDetail->productThumbnail_img) ?? asset('backend/assets/images/placeholder.jpg')}}"
                                      height="160px">
                             </div>
 
@@ -210,7 +210,7 @@
                                 <div id="sliderImgs">
                                     @foreach($images as $image)
                                         <img class="mt-2" id="sliderImg"
-                                             src="{{ asset('public/backend/assets/images/uploads/products/'.$image) }}"
+                                             src="{{ asset('backend/assets/images/uploads/products/'.$image) }}"
                                              height="160px">
                                     @endforeach
                                 </div>
@@ -503,7 +503,7 @@
 @push('backendJs')
     <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script>
     <script src="{{asset('https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js')}}"></script>
-    <script src="{{asset('public/backend/assets/js/select2/select2.min.js')}}"></script>
+    <script src="{{asset('backend/assets/js/select2/select2.min.js')}}"></script>
 
 
 
@@ -511,9 +511,9 @@
 
         $(document).ready(function () {
 
-            // $('#sizeVariantList').select2(); 
-            // $('#weightVariantList').select2(); 
-            // $('#colorVariantList').select2(); 
+            // $('#sizeVariantList').select2();
+            // $('#weightVariantList').select2();
+            // $('#colorVariantList').select2();
 
             //Update Products
             $('#editProduct').submit(function (e) {
@@ -646,7 +646,7 @@
                     console.error(error);
                 });
 
-            // Show  Slider Images 
+            // Show  Slider Images
             $('#product_img').on('change', function (event) {
                 $('#sliderImgs').hide();
 

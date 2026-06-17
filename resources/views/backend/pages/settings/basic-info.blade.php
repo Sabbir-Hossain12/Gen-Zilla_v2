@@ -1,7 +1,7 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link href="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+    <link href="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -95,8 +95,8 @@
                                         <textarea id="short_desc" name="short_desc"
                                                   class="form-control">{{$data->short_desc}}</textarea>
                                     </div>
-                                    
-                                
+
+
 
 
                                 </div>

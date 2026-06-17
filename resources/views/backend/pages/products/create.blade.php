@@ -1,10 +1,10 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link href="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+    <link href="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
           rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="{{asset('public/backend/assets/js/select2/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backend/assets/js/select2/select2.min.css')}}">
 
 @endpush
 
@@ -81,23 +81,23 @@
 
 
                                     </div>
-                                   
-                                  
+
+
 
                                     <div class="mb-3">
                                         <label for="subcategory_id" class="form-label">Subcategory </label>
                                         <select class="form-control" name="subcategory_id" id="subcategory_id">
-                                            
-                                          
+
+
                                         </select>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="purchase_price" class="form-label">Purchase Price *</label>
                                         <input class="form-control" type="number" name="purchase_price" min="1" placeholder="purchase_price"
                                                id="purchase_price" value="">
 
-                                        
+
                                 </div>
                             </div>
                         </div>
@@ -122,21 +122,21 @@
                                 <label for="short_description" class="form-label">Short Description</label>
                                 <textarea class="form-control" name="short_desc" id="short_desc"  rows="3"></textarea>
                             </div>
-                            
+
                             <div class="col-lg-12 mb-3">
                                 <label for="long_desc" class="form-label">Long Description</label>
                                 <textarea class="form-control" id="longDesc" rows="5"></textarea>
                             </div>
 
-                           
+
                         </div>
-                        
+
                     </div>
 
                 </div>
             </div> <!-- end col -->
         </div>
-        
+
 {{--     Product Images   --}}
         <div class="row">
             <div class="col-12">
@@ -156,7 +156,7 @@
                             <div class="col-lg-8 mb-3">
                                 <label for="short_description" class="form-label">Product Thumbnail Image</label>
                               <input oninput="newImg1.src=window.URL.createObjectURL(this.files[0])" type="file" class="form-control" name="productThumbnail_img" id="productThumbnail_img">
-                                <img class="mt-2" id="newImg1" src="{{asset('public/backend/assets/images/placeholder.jpg')}}"  height="160px">
+                                <img class="mt-2" id="newImg1" src="{{asset('backend/assets/images/placeholder.jpg')}}"  height="160px">
                             </div>
 
                             <div class="col-lg-8 mb-3">
@@ -165,13 +165,13 @@
                                 <div id="imagePreviewContainer" class="mt-2"></div>
                             </div>
                             </div>
-                            
+
 
                             <div class="col-lg-12 mb-3">
                                 <label for="youtube_embed_link" class="form-label">Embed Video Link</label>
                                 <textarea class="form-control" name="youtube_embed_link" id="youtube_embed_link" cols="30" rows="2"></textarea>
                             </div>
-                            
+
 
 
                         </div>
@@ -212,7 +212,7 @@
                                     <tr>
                                         <td colspan="5">
                                             <select id="weightVariantList" class="form-control" style="width: 100%;">
-                                                
+
                                             </select>
                                         </td>
                                     </tr>
@@ -244,7 +244,7 @@
                                         <tr>
                                             <td colspan="5">
                                                 <select id="colorVariantList" class="form-control" style="width: 100%;">
-                                                    
+
                                                 </select>
                                             </td>
                                         </tr>
@@ -257,7 +257,7 @@
 
 
                         </div>
-                        
+
                         {{-- Size --}}
                         <div class="row border border-light mt-4">
                             <div class="card-body">
@@ -279,7 +279,7 @@
                                         <tr>
                                             <td colspan="5">
                                                 <select id="sizeVariantList" class="form-control" style="width: 100%;">
-                                                   
+
                                                 </select>
                                             </td>
                                         </tr>
@@ -307,7 +307,7 @@
 
 
                         </div>
-                       
+
                     </div>
 
                 </div>
@@ -344,7 +344,7 @@
 
 
                         </div>
-                        
+
                         <div class="text-center mt-4 d-grid">
                             <button id="productSubmit" type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -359,18 +359,18 @@
 @push('backendJs')
     <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@11')}}"></script>
     <script src="{{asset('https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js')}}"></script>
-    <script src="{{asset('public/backend/assets/js/select2/select2.min.js')}}"></script>
+    <script src="{{asset('backend/assets/js/select2/select2.min.js')}}"></script>
 
 
 
     <script>
-           
+
             $(document).ready(function() {
 
-                // $('#sizeVariantList').select2(); 
-                // $('#weightVariantList').select2(); 
-                // $('#colorVariantList').select2(); 
-                
+                // $('#sizeVariantList').select2();
+                // $('#weightVariantList').select2();
+                // $('#colorVariantList').select2();
+
                 //Store Products
                 $('#createProduct').submit(function(e)
                 {
@@ -389,7 +389,7 @@
                         wProduct.push(obj);
                         wProductCount++;
                     });
-                    
+
                     //Size variants store
                     var sProduct = [];
                     var sProductCount = 0 ;
@@ -403,7 +403,7 @@
                         sProduct.push(obj);
                         sProductCount++;
                     });
-                    
+
                     //Color Variant Store
                     var cProduct = [];
                     var cProductCount = 0 ;
@@ -421,19 +421,19 @@
                     // console.log(wProduct);
                     // console.log(cProduct);
                     // console.log(sProduct);
-                    
-                   
+
+
                     var formData = new FormData(this);
                     formData.append('long_desc', long_desc);
                     // Appending Weight variant data
-                    formData.append('weightProduct', JSON.stringify(wProduct)); 
+                    formData.append('weightProduct', JSON.stringify(wProduct));
                     // Appending Color variant data
-                    formData.append('colorProduct', JSON.stringify(cProduct)); 
+                    formData.append('colorProduct', JSON.stringify(cProduct));
                     // Appending Size variant data
                     formData.append('sizeProduct', JSON.stringify(sProduct));
-                    
+
                     if ( $('#weightVariantList').val() == null && $('#sizeVariantList').val() == null && $('#colorVariantList').val() == null) {
-                        
+
                         swal.fire({
                             title: "Failed",
                             text: "At least One Variant is Needed" ,
@@ -480,19 +480,19 @@
                     }
 
                 })
-                
-                
+
+
             //  CKEditor on Products Desctription
                 let jReq;
                 ClassicEditor
                     .create(document.querySelector('#longDesc'),{
-                        
+
                         ckfinder:
                             {
                                 uploadUrl: "{{route('admin.ckeditor.upload', ['_token' => csrf_token() ])}}",
                             }
-                        
-                        
+
+
                     })
                     .then(newEditor => {
                         jReq = newEditor;
@@ -500,8 +500,8 @@
                     .catch(error => {
                         console.error(error);
                     });
-                
-            // Show  Slider Images 
+
+            // Show  Slider Images
             $('#product_img').on('change', function(event) {
                 var imagePreviewContainer = $('#imagePreviewContainer');
                 imagePreviewContainer.empty(); // Clear existing images
@@ -515,11 +515,11 @@
                     imagePreviewContainer.append(imgElement);
                 });
             });
-            
-        
+
+
         });
-            
-         
+
+
 
 
                 //   Show/Set Subcategory
@@ -543,8 +543,8 @@
                         }
                     });
                 }
-                
-                
+
+
             //  Weight Select 2 trigger
             $("#weightVariantList").select2({
                 placeholder: "Select Weight",
@@ -570,7 +570,7 @@
                     }
                 }
             }).trigger("change").on("select2:select", function (e) {
-             
+
                 $("#weightVariantTable tbody").append(
                     "<tr>" +
                     '<td><span class="attrValueId">' + e.params.data.id + '</span></td>' +
@@ -582,14 +582,14 @@
                     '<td><button class="btn btn-sm btn-danger delete-btn"><i class="fa fa-trash"></i></button></td>\n' +
                     "</tr>"
                 );
-                
-                
-                
+
+
+
 
             });
-                
+
             //  Color Select2 Trigger
-            
+
             $("#colorVariantList").select2({
                 placeholder: "Select Color",
                 templateResult: function (state) {
@@ -678,11 +678,11 @@
                 });
 
 
-            
-           
-            
-    </script> 
-        
-   
-    
+
+
+
+    </script>
+
+
+
 @endpush

@@ -1,7 +1,7 @@
 @extends('backend.layout.master')
 
 @push('backendCss')
-    <link href="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
+    <link href="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css"
           rel="stylesheet" type="text/css">
 
     <style>
@@ -333,7 +333,7 @@
         </div>
 
     </div>
-    
+
 {{--    Last 7 Days--}}
     <div class="row mt-4">
         <div class="col-12">
@@ -813,16 +813,16 @@
             @endsection
 
             @push('backendJs')
-                <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-                <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+                <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+                <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
-                {{--    <script src=" {{asset('public/backend')}}/assets/libs/apexcharts/apexcharts.min.js"></script>--}}
-                <script src=" {{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-                <script src="{{asset('public/backend')}}/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
-    {{--    <script src=" {{asset('public/backend')}}/assets/js/pages/dashboard.init.js"></script>--}}
+                {{--    <script src=" {{asset('backend')}}/assets/libs/apexcharts/apexcharts.min.js"></script>--}}
+                <script src=" {{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+                <script src="{{asset('backend')}}/assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+    {{--    <script src=" {{asset('backend')}}/assets/js/pages/dashboard.init.js"></script>--}}
 
                 <script>
-                    
+
                     // $(document).ready(function () {
                     //
                     //     $("#overallSaleReportTable").DataTable({

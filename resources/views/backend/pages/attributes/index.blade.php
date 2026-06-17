@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -55,7 +55,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            
+
                             </tbody>
                         </table>
                     </div>
@@ -143,8 +143,8 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -153,7 +153,7 @@
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let brandTable = $('#brandTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -172,9 +172,9 @@
                     },
                     {
                         data: 'attribute_name',
-                        
+
                     },
-                    
+
                     {
                         data: 'status',
                         name: 'Status',
@@ -355,7 +355,7 @@
 
             })
 
-            
+
         });
     </script>
 

@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -171,11 +171,11 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
-        
+
 
         let orderTable;
         $(document).ready(function () {
@@ -183,10 +183,10 @@
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
-           
-           
-            
+            //Show Data through Datatable
+
+
+
              orderTable = $('#orderTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -221,7 +221,7 @@
                     {
                         data: 'productInfo',
                         width: '20%'
-                     
+
 
                     },
                     {
@@ -252,7 +252,7 @@
                     {
                         data: 'payment_status',
                         width: '15%',
-                        render: function (data, type, row) 
+                        render: function (data, type, row)
                         {
                             let statuses = ['Paid','Pending']; // Example statuses
                             let options = '';
@@ -454,8 +454,8 @@
 
             })
 
-           
-         
+
+
         });
         // Change Order Status
         function orderStatusChange(id,status)
@@ -472,7 +472,7 @@
                     order_status:status
                 },
                 success: function (res) {
-                   
+
                     toastr.success(res.message);
                     orderTable.ajax.reload();
                 },

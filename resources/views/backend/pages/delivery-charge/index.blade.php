@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -93,17 +93,17 @@
                             <label for="delivery_title" class="col-form-label">Delivery title</label>
                             <input type="text" class="form-control" id="delivery_title" name="delivery_title">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="delivery_charge" class="col-form-label">Delivery Charge</label>
                             <input type="number" class="form-control" id="delivery_charge" name="delivery_charge">
                         </div>
-                        
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -123,24 +123,24 @@
                     <form name="form2" id="editAdmin">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="mb-3">
                             <label for="eDelivery_title" class="col-form-label">Delivery title</label>
                             <input type="text" class="form-control" id="eDelivery_title" name="delivery_title">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="eDelivery_charge" class="col-form-label">Delivery Charge</label>
                             <input type="number" class="form-control" id="eDelivery_charge" name="delivery_charge">
                         </div>
-                        
+
                         <input id="id" type="number" hidden>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        
+
                         <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                     </form>
                 </div>
@@ -152,8 +152,8 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -162,7 +162,7 @@
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let adminTable = $('#adminTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -187,7 +187,7 @@
                         data: 'delivery_charge',
 
                     },
-                   
+
                     {
                         data: 'status',
                         name: 'Status',
@@ -266,10 +266,10 @@
                         processData: false,  // Prevent jQuery from processing the data
                         contentType: false,  // Prevent jQuery from setting contentType
                         success: function (res) {
-                            
+
                             $('#eDelivery_title').val(res.data.delivery_title);
                             $('#eDelivery_charge').val(res.data.delivery_charge);
-                            
+
                         },
                         error: function (err) {
                             console.log('failed')

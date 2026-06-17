@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -90,9 +90,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="brand_image" class="col-form-label">Brand Image</label>
-                            <input type="file" class="form-control" id="brand_image" name="brand_image"> 
+                            <input type="file" class="form-control" id="brand_image" name="brand_image">
                         </div>
-                       
+
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -143,8 +143,8 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -152,7 +152,7 @@
 
             var token = $("input[name='_token']").val();
 
-            // Show Data through Datatable 
+            // Show Data through Datatable
             let brandTable = $('#brandTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -176,7 +176,7 @@
                         data: 'brand_name',
 
                     },
-                  
+
                     {
                         data: 'status',
                         name: 'Status',
@@ -255,7 +255,7 @@
                             console.log('success')
                             $('#brandname').val(res.data.brand_name);
                             $('#brandImageprev').attr('src','{{ asset('') }}' + res.data.brand_image);
-                         
+
                         },
                         error: function (err) {
                             console.log('failed')
@@ -278,7 +278,7 @@
                     // },
                     url: "{{ url('admin/brands') }}/" + id,
                     data: formData,
-                    
+
                     processData: false,  // Prevent jQuery from processing the data
                     contentType: false,  // Prevent jQuery from setting contentType
                     success: function (res) {
@@ -352,12 +352,12 @@
 
                 })
             })
-            
+
             // Change Admin Status
             $(document).on('click', '#adminStatus', function () {
                 let id = $(this).data('id');
                 let status = $(this).data('status')
-                
+
                 $.ajax(
                     {
                         type: 'post',

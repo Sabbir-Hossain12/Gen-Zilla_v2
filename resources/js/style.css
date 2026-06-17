@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+@theme{
+    --color-primary: #df0000;
+    --color-secondary: #e5e7eb;
+    --color-yellow: #ffd814;
+    --color-amber: #fff6dd;
+    --color-danger: #fb6565;
+    --color-dark1: #31281e;
+    --color-dark2: #504302;
+    --color-border1: #e8eaed;
+
+}
+
+@layer base{
+    body{
+        font-family: 'Rubik', sans-serif;
+    }
+}
+
+@layer components{
+    .active-button-tab{
+        @apply px-3 py-1 bg-yellow rounded-[100px] shadow-sm text-[14px] text-black font-semibold whitespace-nowrap cursor-pointer ;
+    }
+    .inactive-button-tab{
+      @apply  px-3 py-1  rounded-[100px] shadow-xl text-[14px] text-black font-semibold whitespace-nowrap  cursor-pointer;
+    }
+
+    .mobile-header-button{
+
+        @apply bg-amber md:bg-white md:uppercase border border-[#FFD35E] md:border-0 py-1 px-2.5
+        md:py-0 md:px-0 rounded-full md:rounded-none
+    }
+
+}
+
+@layer utilities{
+    .bg-center_top_6px {
+        background-position: center top 6px;
+    }
+    .text-black{
+        @apply text-[#222222];
+    }
+}

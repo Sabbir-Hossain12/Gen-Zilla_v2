@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 
 @endpush
@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    
+
     @include('backend.include.order-dashboard')
 
 
@@ -100,17 +100,17 @@
                             <label for="email" class="col-form-label">Email</label>
                             <input type="text" class="form-control" id="email" name="email">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="phone" class="col-form-label">Phone</label>
                             <input type="text" class="form-control" id="phone" name="phone">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="type" class="col-form-label">Role</label>
                             <input type="text" class="form-control" name="type" id="type">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="password" class="col-form-label">Password</label>
                             <input type="password" class="form-control" name="password" id="password">
@@ -121,7 +121,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -178,8 +178,8 @@
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -188,14 +188,14 @@
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let orderTable = $('#orderTable').DataTable({
                 order: [
                     [0, 'asc']
                 ],
                 processing: true,
                 serverSide: true,
-                
+
                 ajax: "{{route('admin.order.all.data')}}",
                 // pageLength: 30,
 
@@ -212,7 +212,7 @@
                     {
                         data: 'date',
                         width:'10%'
-                      
+
 
                     },
                     {
@@ -220,17 +220,17 @@
                         width:'15%'
 
                     },
-                    
+
                     // {
                     //     data: 'address',
                     //     width: '10%'
                     // },
-                    
+
                     {
                         data: 'productInfo',
                         width: '20%'
                         // render: function (data) {
-                        //     return data.slice(0,5); 
+                        //     return data.slice(0,5);
                         // }
 
                     },
@@ -241,7 +241,7 @@
                         },
 
                     },
-                    
+
                     {
                         data: 'order_status',
                         orderable: false,
@@ -261,7 +261,7 @@
                         }
 
                     },
-                    
+
                     {
                         data: 'payment_status',
                         orderable: false,
@@ -279,18 +279,18 @@
                                     ${options}
                                     </select>`;
                         }
-                       
+
 
                     },
                     {
-                        data:'payment_method', 
+                        data:'payment_method',
                         orderable: false,
                         render:function (data)
                         {
                           return `<span class="badge badge-lg bg-success px-2">${data}</span>`
                         }
                     },
-                 
+
 
                     {
                         data: 'action',
@@ -535,7 +535,7 @@
             })
 
         }
-        
+
         function orderPaymentStatusChange(id,status)
         {
             $.ajax({
@@ -554,7 +554,7 @@
                     console.log('error')
                 }
             })
-            
+
         }
     </script>
 

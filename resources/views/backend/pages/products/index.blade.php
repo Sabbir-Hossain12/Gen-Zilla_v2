@@ -3,9 +3,9 @@
 @push('backendCss')
     {{--    <meta name="csrf_token" content="{{ csrf_token() }}" />--}}
 
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
-    <link href="{{asset('public/backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
+    <link href="{{asset('backend')}}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css"
           rel="stylesheet" type="text/css">
 <style>
 
@@ -57,7 +57,7 @@
                                 <th >Image</th>
                                 <th >Product Name</th>
                                 <th>SKU</th>
-                                
+
                                 <th>Available Stock</th>
                                 <th>Sold Stock</th>
                                 <th>Popular Status</th>
@@ -82,14 +82,14 @@
     </div>
 
     {{--    Table Ends--}}
-    
+
 @endsection
 
 @push('backendJs')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -98,7 +98,7 @@
 
             var token = $("input[name='_token']").val();
 
-            //Show Data through Datatable 
+            //Show Data through Datatable
             let productTable = $('#productTable').DataTable({
                 order: [
                     [0, 'asc']
@@ -126,12 +126,12 @@
                         data: 'product_name',
                         width: '20%',
 
-                    },  
+                    },
                     {
                         data: 'sku',
 
-                    }, 
-                    
+                    },
+
                     {
                         data: 'available_qty',
                         width: '5%'
@@ -155,7 +155,7 @@
                         orderable: false,
                         searchable: false,
                     },
-                    
+
                     {
                         data: 'status',
                         name: 'Status',
@@ -172,7 +172,7 @@
 
                 ]
             });
-            
+
 
             // Delete Products
             $(document).on('click', '#deleteProductBtn', function () {
@@ -199,7 +199,7 @@
                                     '_token': token
                                 },
                                 success: function (res) {
-                                    
+
                                     if (res.message=='success') {
                                         Swal.fire({
                                             title: "Deleted!",
@@ -229,7 +229,7 @@
             $(document).on('click', '#status', function () {
                 let id = $(this).data('id');
                 let status = $(this).data('status')
-               
+
                 $.ajax(
                     {
                         type: 'post',
@@ -265,8 +265,8 @@
                     }
                 )
             })
-            
-            //Change  Featured Product Status 
+
+            //Change  Featured Product Status
             $(document).on('click', '#featuredStatus', function () {
                 let id = $(this).data('id');
                 let status = $(this).data('status')
@@ -306,8 +306,8 @@
                     }
                 )
             })
-            
-            //Change  Hot Product Status 
+
+            //Change  Hot Product Status
             $(document).on('click', '#hotStatus', function () {
                 let id = $(this).data('id');
                 let status = $(this).data('status')
@@ -348,7 +348,7 @@
                 )
             })
 
-            //Change  Popular Product Status 
+            //Change  Popular Product Status
             $(document).on('click', '#popularStatus', function () {
                 let id = $(this).data('id');
                 let status = $(this).data('status')

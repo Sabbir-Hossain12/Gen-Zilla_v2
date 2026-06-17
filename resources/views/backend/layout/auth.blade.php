@@ -11,10 +11,10 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description"/>
     <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('public/backend')}}/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{asset('backend')}}/assets/images/favicon.ico">
 
     <!-- preloader css -->
-    <link rel="stylesheet" href="{{asset('public/backend')}}/assets/css/preloader.min.css" type="text/css"/>
+    <link rel="stylesheet" href="{{asset('backend')}}/assets/css/preloader.min.css" type="text/css"/>
 
     <!-- Bootstrap Css -->
     <link href="{{asset('backend')}}/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet"

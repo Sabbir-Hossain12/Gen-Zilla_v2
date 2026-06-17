@@ -10,9 +10,9 @@
 
 @push('backendCss')
 
-    <link href="{{ asset('public/backend') }}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend') }}/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
-    <link href="{{ asset('public/backend') }}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend') }}/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
 
 @endpush
 
@@ -92,7 +92,7 @@
                                 <label class="form-label" id="code">Coupon Name</label>
                                 <input class="form-control" id="coupon_name" type="text" name="coupon_name" required>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label" id="code">Coupon Code</label>
                                 <input class="form-control" id="code" type="text" name="code" required>
@@ -121,7 +121,7 @@
                                 <label for="expire_date" class="form-label">Expire Date</label>
                                 <input type="date" class="form-control" name="expire_date" id="expire_date" required>
                             </div>
-                            
+
                             <div class="d-flex justify-content-end align-items-center">
                                 <button type="button" class="btn btn-secondary waves-effect me-3"
                                   data-bs-dismiss="modal">Close </button>
@@ -189,7 +189,7 @@
                                 <input type="date" class="form-control" name="expire_date" id="up_expire_date" required>
                             </div>
 
-                           
+
 
                             <div class="d-flex justify-content-end align-items-center">
                                 <button type="button" class="btn btn-secondary waves-effect me-3"
@@ -213,8 +213,8 @@
 
 @push('backendJs')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="{{asset('public/backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('backend')}}/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
 
@@ -247,11 +247,11 @@
                     {
                         data: 'quantity',
                     },
-                    
+
                     {
                         data: 'expire_date',
                     },
-                  
+
                     {
                         data: 'status',
                         orderable: false,
@@ -362,14 +362,14 @@
                     success: function (res) {
                         let data = res.success;
                         // console.log(res)
-                        
+
                         $('#id').val(data.id);
                         $('#up_code').val(data.code);
                         $('#up_discount').val(data.discount);
                         $('#up_amount').val(data.amount);
                         $('#up_expire_date').val(data.expire_date);
                         $('#up_status').val(data.status);
-                        
+
                         $('#EditCoupon').find('#coupon_name').val(data.coupon_name);
                         $('#EditCoupon').find('#quantity').val(data.quantity);
                         $('#EditCoupon').find('#max_used').val(data.max_used);

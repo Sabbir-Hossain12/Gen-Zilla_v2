@@ -175,7 +175,7 @@ class ProductsController extends Controller
             $productDetails->total_qty = $request->initial_stock;
             $productDetails->available_qty = $request->initial_stock;
             $productDetails->purchase_price = $request->purchase_price;
-            
+
 
 
 //            $imageFields = ['productImg_1', 'productImg_2', 'productImg_3'];
@@ -189,7 +189,7 @@ class ProductsController extends Controller
                 $encoded = $imgs->toWebp(80);
                 $encodedFilename = $request->product_name.time().'.webp';
                 $encoded->save(public_path('backend/assets/images/uploads/products').'/'.$encodedFilename);
-                $productDetails->productThumbnail_img = 'public/backend/assets/images/uploads/products/'.$encodedFilename;
+                $productDetails->productThumbnail_img = 'backend/assets/images/uploads/products/'.$encodedFilename;
             }
 
 //              Store Slider Images
