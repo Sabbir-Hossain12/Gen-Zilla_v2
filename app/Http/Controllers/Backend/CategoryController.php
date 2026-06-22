@@ -23,12 +23,12 @@ class CategoryController extends Controller
     public function getData()
     {
         // get all data
-        $categories= Category::all();
-        
+        $categories= Category::query();
+
         return DataTables::of($categories)
-            
-            ->addColumn('categoryImg', function ($category) {    
-                return '<img src="'.asset( $category->category_img_path ).'" width="200px">';
+
+            ->addColumn('categoryImg', function ($category) {
+                return '<img src="'.asset( $category->category_img_path ).'" width="auto" height="auto">';
             })
 
             ->addColumn('frontStatus', function ($category) {
@@ -74,12 +74,12 @@ class CategoryController extends Controller
             })
 
             ->addColumn('action', function ($category) {
-                return '<div class="d-flex gap-3"> 
+                return '<div class="d-flex gap-3">
                     <a class="btn btn-sm btn-primary" id="editButton" href="javascript:void(0)" data-id="'.$category->id.'" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fas fa-edit"></i></a>
                     <a class="btn btn-sm btn-danger" href="javascript:void(0)" data-id="'.$category->id.'" id="deleteBrandBtn"> <i class="fas fa-trash"></i></a>
                 </div>';
             })
-            
+
             ->rawColumns(['categoryImg','frontStatus','topCategoryStatus','status','action'])
             ->make(true);
     }
@@ -157,22 +157,22 @@ class CategoryController extends Controller
         $category->topCategory_status     = $request->topCategory_status;
         $category->status                 = $request->status;
         $category->gender                 = $request->gender;
-        
-        
+
+
         if( $request->file('category_img') ){
             $images = $request->file('category_img');
 
             $imageName          = $request->slug . rand(1, 99999999) . '.' . $images->getClientOriginalExtension();
             $imagePath          = 'public/backend/images/category/';
-            $images->move($imagePath, $imageName);
+            $images->move(public_path($imagePath), $imageName);
 
             $category->category_img_path   =  $imagePath . $imageName;
             $category->category_img        =  $imageName;
         }
-        
+
         // dd($category);
         $category->save();
-        
+
         return response()->json(['message'=> "Successfully Category Created!", 'status' => true]);
     }
 
@@ -198,7 +198,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        
+
          $category->category_name          = $request->category_name;
          $category->slug                   = Str::slug($request->category_name);
          $category->front_status           = $request->front_status;
@@ -215,7 +215,7 @@ class CategoryController extends Controller
 
              $imageName          = $request->slug . rand(1, 99999999) . '.' . $images->getClientOriginalExtension();
              $imagePath          = 'public/backend/images/category/';
-             $images->move($imagePath, $imageName);
+             $images->move(public_path($imagePath), $imageName);
 
              $category->category_img_path   =  $imagePath . $imageName;
          }
@@ -236,14 +236,14 @@ class CategoryController extends Controller
             }
         }
         $category->delete();
-        
+
         return response()->json(['message' => 'Category has been deleted.'], 200);
     }
 
     public function getSubCategories(Request $request,Category $category)
     {
         $subcats= SubCategory::where('category_id', $category->id)->get();
-        
+
         return response()->json(['message' => 'success', 'data' => $subcats], 200);
     }
 }

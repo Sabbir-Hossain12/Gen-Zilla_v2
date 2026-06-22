@@ -103,14 +103,14 @@
 
                             <div class="mb-3">
                                 <label for="subcategory_img" class="form-label">SubCategory Image </label>
-                                <input type="file" class="form-control" name="subcategory_img" id="subcategory_img" required>
+                                <input type="file" class="form-control" name="subcategory_img" id="subcategory_img">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Status</label>
                                 <select class="form-select" name="status">
                                     <option value="" disabled selected>Select</option>
-                                    <option value="1">Active</option>
+                                    <option value="1" selected>Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
                             </div>
