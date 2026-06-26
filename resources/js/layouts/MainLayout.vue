@@ -6,24 +6,24 @@ import Header from "@/components/Header.vue";
 </script>
 
 <template>
-  <!-- Header -->
-  <Header></Header>
+    <!-- Header -->
+    <Header></Header>
 
-  <main class="md:max-w-387 mx-auto">
-    <slot></slot>
+    <main class="md:max-w-387 mx-auto">
+        <slot></slot>
 
-    <!-- Route content goes here -->
-    <router-view/>
-  </main>
+        <!-- Route content goes here -->
+        <router-view/>
+    </main>
 
-  <!-- Shopping Card-->
-  <MiniCart></MiniCart>
+    <!-- Shopping Card-->
+    <MiniCart></MiniCart>
 
-  <!-- Footer -->
-  <Footer></Footer>
+    <!-- Footer -->
+    <Footer></Footer>
 
-  <!-- Mobile Footer -->
-  <MobileFooter></MobileFooter>
+    <!-- Mobile Footer -->
+    <MobileFooter></MobileFooter>
 
 
 </template>
