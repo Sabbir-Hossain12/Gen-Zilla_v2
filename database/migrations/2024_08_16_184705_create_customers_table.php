@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            
+
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('company name')->nullable();
@@ -24,9 +25,9 @@ return new class extends Migration
             $table->string('country')->default('Bangladesh');
             $table->string('phone');
             $table->string('email');
-            
+
             $table->tinyInteger('status')->default(1);
-            
+
             $table->timestamps();
         });
     }

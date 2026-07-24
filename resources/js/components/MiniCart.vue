@@ -6,14 +6,14 @@ const { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty } = useMiniC
 <template>
   <button
       class="bg-primary fixed top-1/2 right-4 hidden md:block   shadow-sm rounded-sm text-white text-[12px] cursor-pointer
-              transition-all duration-300 ease-linear"
+              transition-all duration-300 ease-linear z-99"
       @click="openMiniCard">
     <p class="  bg-center bg-no-repeat bg-center_top_6px    font-semibold px-3 pt-6 pb-1"
        style="background-image:url('https://d2t8nl1y0ie1km.cloudfront.net/public/minicart-icon.svg')">0 Items</p>
     <p class="w-full rounded-b-[5px] bg-black px-3 py-1">৳0</p>
   </button>
 
-  <div id="mini-cart" :class="isOpen ? 'opacity-100 translate-x-0 ' +
+  <div id="mini-cart" :class="isOpen ? 'opacity-100 translate-x-0 z-100 ' +
    'pointer-events-auto': 'opacity-0 translate-x-full pointer-events-none'"
        class=" fixed right-0 top-0 md:top-17 bottom-0 bg-[#F8F8F8] text-[#1D1D1B]
        w-full md:w-[350px] z-60 shadow-sm transition-all duration-300 ease-linear flex flex-col">

@@ -37,7 +37,7 @@ const hoveredIndex = ref(null)
         </router-link>
         <!-- Right side: expand/collapse button -->
         <button aria-label="Expand Food category" class="ml-2" v-show="category.subcategories">
-          <i class="fa-solid fa-chevron-right text-[#94a3b8]"></i>
+            <font-awesome-icon icon="chevron-right" class="text-[#94a3b8]" />
         </button>
 
       <!--  Sub Category  -->

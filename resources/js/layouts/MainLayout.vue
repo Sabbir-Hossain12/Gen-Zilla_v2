@@ -25,7 +25,6 @@ import Header from "@/components/Header.vue";
     <!-- Mobile Footer -->
     <MobileFooter></MobileFooter>
 
-
 </template>
 
 <style scoped>

@@ -5,6 +5,10 @@ import Checkout from "../pages/Checkout.vue";
 import Success from "../pages/Success.vue";
 import CategoryProducts from "../pages/product/CategoryProducts.vue";
 import SubcategoryProducts from "../pages/product/SubcategoryProducts.vue";
+import Dashboard from "@/pages/user/Dashboard.vue";
+import OrderHistory from "@/pages/user/OrderHistory.vue";
+import PersonalInfo from "@/pages/user/PersonalInfo.vue";
+import Wishlist from "@/pages/user/Wishlist.vue";
 
 // Import your page views
 
@@ -44,6 +48,27 @@ const routes = [
         name: 'Success',
         component: Success,
     },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard
+    },
+    {
+        path: '/order-history',
+        name:'OrderHistory',
+        component: OrderHistory
+    },
+    {
+        path: '/personal-info',
+        name:'PersonalInfo',
+        component: PersonalInfo
+    },
+    {
+        path: '/wishlist',
+        name:'Wishlist',
+        component: Wishlist
+    },
+
     // {
     //     path: '/:pathMatch(.*)*',
     //     name: 'NotFound',

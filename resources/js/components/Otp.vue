@@ -1,5 +1,6 @@
 <script setup>
 
+import Xmark from "@/components/Xmark.vue";
 </script>
 
 <template>
@@ -13,7 +14,9 @@
             <button onclick="closeModal('otpModal')"
                     class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center
                      text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
-                <i class="fa-solid fa-xmark text-base"></i>
+<!--                <i class="fa-solid fa-xmark text-base"></i>-->
+                <Xmark></Xmark>
+
             </button>
 
             <!-- Logo -->

@@ -1,4 +1,6 @@
 <script setup>
+import Xmark from "@/components/Xmark.vue";
+
 defineProps({ modelValue: Boolean })
 const emit = defineEmits(['update:modelValue'])
 const close = () => emit('update:modelValue', false)
@@ -9,16 +11,14 @@ const close = () => emit('update:modelValue', false)
         <div v-if="modelValue" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
              @click.self="close">
             <div id="loginModal"
-                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
-                 onclick="handleBackdropClick(event, 'loginModal')">
+                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
 
                 <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm pt-14 pb-8 px-8">
 
                     <!-- Close -->
-                    <button onclick="closeModal('loginModal')"
-                            class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center
+                    <button class="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center
                      text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors">
-                        <i class="fa-solid fa-xmark text-base"></i>
+                        <Xmark @click="close()"></Xmark>
                     </button>
 
                     <!-- Logo -->
@@ -75,12 +75,6 @@ const close = () => emit('update:modelValue', false)
                         </svg>
                         <span class="text-sm font-medium text-gray-700">Sign in with Google</span>
                     </button>
-
-                    <!-- Footer -->
-                    <p class="text-center text-xs text-gray-400 mt-5">
-                        Don't have an account?
-                        <a href="#" class="text-[#E8312A] font-semibold hover:underline">Register</a>
-                    </p>
 
                 </div>
             </div>

@@ -5,13 +5,20 @@ import {categories} from "@/data/Categories";
 import {useSidebar} from "@/composable/useSidebar";
 import Login from "@/components/Login.vue";
 import {ref} from "vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+
 const showLogin = ref(false);
+const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
 
 const toggleSidebar = () => {
     console.log(isOpen.value)
     isOpen.value = !isOpen.value;
 };
+
+const toggleUserDropdown = () => {
+    showUserDropdown.value = !showUserDropdown.value;
+}
 
 function filterCategories() {
     return categories.value.filter(category => category.topbar)
@@ -21,15 +28,13 @@ function filterCategories() {
 <template>
     <header class="sticky top-0 z-50 shadow-md">
         <!--Top Header-->
-        <nav class="bg-primary px-2.5 py-1.5" id="main-header">
+        <nav class="bg-primary px-2.5 py-1.5  md:block" id="main-header">
             <div class="max-w-387 mx-auto">
                 <div class="px-2 flex items-center justify-between  gap-2 md:gap-3">
                     <!-- Logo-->
 
                     <button class="md:hidden cursor-pointer w-10 h-10" @click="toggleSidebar">
-
-                        <i class="fa-solid text-white text-xl"
-                           :class="isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+                        <FontAwesomeIcon class="text-white text-xl" :icon="isOpen ? 'xmark' : 'bars'"></FontAwesomeIcon>
                     </button>
                     <router-link :to="{name: 'Home'}">
                         <img :src="shwapno_logo" alt="">
@@ -52,8 +57,8 @@ function filterCategories() {
                         <!-- Search Button -->
                         <button
                             class="px-4 py-1.5 bg-yellow-400 text-white font-semibold rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-2
-                focus:ring-yellow-400">
-                            <i class="fa-solid fa-magnifying-glass text-black"></i>
+                            focus:ring-yellow-400 cursor-pointer">
+                            <FontAwesomeIcon icon="magnifying-glass" class="text-black"/>
                         </button>
                     </div>
                     <!--App Download Section-->
@@ -68,11 +73,61 @@ function filterCategories() {
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
                         <!-- Login/Signup  -->
+                        <!--                        <button-->
+                        <!--                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"-->
+                        <!--                            @click="showLogin = true">-->
+                        <!--                            <i class="fa-solid fa-user text-white"></i>-->
+                        <!--                            <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>-->
+                        <!--                        </button>-->
+
                         <button
-                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger" @click="showLogin = true">
-                            <i class="fa-solid fa-user text-white"></i>
-                            <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>
+                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
+                            @click="toggleUserDropdown">
+                            <font-awesome-icon icon="user" class="text-secondary"/>
+                            <span class="text-secondary text-xs font-bold ">Welcome</span>
                         </button>
+
+                        <div v-show="showUserDropdown"
+                             class="absolute right-2 top-15 mt-2 w-64 bg-[#ffffff] rounded-lg shadow-lg border border-gray-100 text-xs">
+                            <div class="flex flex-col space-y-2 p-1 ">
+                                <RouterLink to="/dashboard" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
+
+                                        <span class="text-red-600 text-xl">
+                                            <font-awesome-icon icon="house" class="text-primary"/>
+                                        </span>
+                                        <span class="font-semibold text-gray-700">Dashboard</span>
+
+                                </RouterLink>
+
+                                <RouterLink to="/order-history" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
+                                    <span class="text-red-600 text-xl">
+                                      <font-awesome-icon icon="receipt" class="text-primary"/>
+                                    </span>
+                                    <span class="font-semibold text-gray-700">Order History</span>
+                                </RouterLink>
+
+                                <RouterLink to="/personal-info" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                    <span class="text-red-600 text-xl">
+                                       <font-awesome-icon icon="user" class="text-primary"/>
+                                    </span>
+                                    <span class="font-semibold text-gray-700">Personal Info</span>
+                                </RouterLink>
+
+                                <RouterLink to="/wishlist" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
+                                    <span class="text-red-600 text-xl">
+                                       <font-awesome-icon icon="heart" class="text-primary"/>
+                                    </span>
+                                    <span class="font-semibold text-gray-700">Wishlist</span>
+                                </RouterLink>
+
+                                <RouterLink to="" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                    <span class="text-red-600 text-xl">
+                                       <font-awesome-icon icon="fa-arrow-right-from-bracket" class="text-primary"/>
+                                    </span>
+                                    <span class="font-semibold text-gray-700">Logout</span>
+                                </RouterLink>
+                            </div>
+                        </div>
                     </div>
 
                     <!--Mobile Right Menu-->
