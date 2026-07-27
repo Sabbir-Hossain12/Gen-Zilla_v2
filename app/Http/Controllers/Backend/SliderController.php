@@ -28,25 +28,25 @@ class SliderController extends Controller
 
         return DataTables::of($sliders)
             ->addColumn('sliderImage', function ($slider) {
-                return '<img src="'.asset($slider->slider_img).'" width="200px" alt=""/>';
+                return '<img src="' . asset($slider->slider_img) . '" width="200px" alt=""/>';
             })
             ->addColumn('status', function ($slider) {
                 if ($slider->status == 1) {
                     return '<a class="status" id="adminStatus" href="javascript:void(0)"
-                        data-id="'.$slider->id.'" data-status="'.$slider->status.'"> <i
+                        data-id="' . $slider->id . '" data-status="' . $slider->status . '"> <i
                         class="fa-solid fa-toggle-on fa-2x"></i>
                     </a>';
                 } else {
                     return '<a class="status" id="adminStatus" href="javascript:void(0)"
-                        data-id="'.$slider->id.'" data-status="'.$slider->status.'"> <i
+                        data-id="' . $slider->id . '" data-status="' . $slider->status . '"> <i
                           class="fa-solid fa-toggle-off fa-2x" style="color: grey"></i>
                     </a>';
                 }
             })
             ->addColumn('action', function ($slider) {
-                return '<div class="d-flex gap-2"> <a class="editButton btn btn-sm btn-primary" href="javascript:void(0)" data-id="'.$slider->id.'" data-bs-toggle="modal" data-bs-target="#editSliderModal"><i class="fas fa-edit"></i></a>
+                return '<div class="d-flex gap-2"> <a class="editButton btn btn-sm btn-primary" href="javascript:void(0)" data-id="' . $slider->id . '" data-bs-toggle="modal" data-bs-target="#editSliderModal"><i class="fas fa-edit"></i></a>
 
-                                                             <a class="btn btn-sm btn-danger" href="javascript:void(0)" data-id="'.$slider->id.'" id="deleteSliderBtn"> <i class="fas fa-trash"></i></a>
+                                                             <a class="btn btn-sm btn-danger" href="javascript:void(0)" data-id="' . $slider->id . '" id="deleteSliderBtn"> <i class="fas fa-trash"></i></a>
                                                            </div>';
 
             })
@@ -68,59 +68,42 @@ class SliderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'slider_title_1' => [ 'string'],
-            'slider_title_2' => [ 'string'],
-            'slider_title_3' => [ 'string'],
+            'slider_title_1' => ['string'],
+            'slider_title_2' => ['string'],
+            'slider_title_3' => ['string'],
             'slider_img' => ['max:2048'],
-            'slider_text'=> [ 'string'],
-            'slider_btn_name'=> [ 'string'],
-            'slider_btn_link'=> [ 'string'],
+            'slider_text' => ['string'],
+            'slider_btn_name' => ['string'],
+            'slider_btn_link' => ['string'],
         ]);
-        
+
 
         $slider = new Slider();
         $slider->slider_title_1 = $request->slider_title_1;
         $slider->slider_title_2 = $request->slider_title_2;
         $slider->slider_title_3 = $request->slider_title_3;
-     
-        $slider->slug= Str::slug($request->slider_title_1);
-      
+
+        $slider->slug = Str::slug($request->slider_title_1);
+
         $slider->slider_text = $request->slider_text;
         $slider->slider_btn_name = $request->slider_btn_name;
         $slider->slider_btn_link = $request->slider_btn_link;
-       
-        
+
+
         if ($request->hasFile('slider_img')) {
-
-            //create new manager instance with desired driver
-            $manager = new ImageManager(new Driver());
-
-            //Read Image
-            $imgs = $manager->read($request->slider_img);
-
-            // encoding jpeg data
-            $encoded = $imgs->toWebp(80);
-            $encoded=$imgs->resize(884,549);
-            // Save the encoded image to the file system
-            $encodedFilename = time() . '.webp';
-            $encoded->save(public_path('backend/assets/images/uploads/sliders') . '/' . $encodedFilename);
+            $file = $request->file('slider_img');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('backend/assets/images/uploads/sliders') . '/' . $filename);
 
             //Save image to Database
-
-            $slider->slider_img = 'public/backend/assets/images/uploads/sliders/'.$encodedFilename;
-           
-            
+            $slider->slider_img = 'backend/assets/images/uploads/sliders/' . $filename;
         }
-        
-        $slider->save();
-        
-        
-        return response()->json(['message' => 'success'], 201);
-        
-        
 
-       
-       
+        $slider->save();
+
+
+        return response()->json(['message' => 'success'], 201);
+
     }
 
     /**
@@ -145,16 +128,16 @@ class SliderController extends Controller
     public function update(Request $request, Slider $slider)
     {
         $request->validate([
-            'slider_title_1' => [ 'string'],
-            'slider_title_2' => [ 'string'],
-            'slider_title_3' => [ 'string'],
-            'slider_img' => ['max:2048'],
-            'slider_text'=> [ 'string'],
-            'slider_btn_name'=> [ 'string'],
-            'slider_btn_link'=> [ 'string'],
+            'slider_title_1' => ['string'],
+            'slider_title_2' => ['string'],
+            'slider_title_3' => ['string'],
+            'slider_img' => ['image','max:10048'],
+            'slider_text' => ['string'],
+            'slider_btn_name' => ['string'],
+            'slider_btn_link' => ['string'],
         ]);
 
-        
+
         $slider->slider_title_1 = $request->slider_title_1;
         $slider->slider_title_2 = $request->slider_title_2;
         $slider->slider_title_3 = $request->slider_title_3;
@@ -162,40 +145,25 @@ class SliderController extends Controller
         $slider->slider_text = $request->slider_text;
         $slider->slider_btn_name = $request->slider_btn_name;
         $slider->slider_btn_link = $request->slider_btn_link;
-        
+
 
         if ($request->hasFile('slider_img')) {
-            
-            if ($slider->slider_img) {
-                if (file_exists($slider->slider_img)) {
-                    unlink($slider->slider_img);
-                }
-            }
 
-
-            //create new manager instance with desired driver
-            $manager = new ImageManager(new Driver());
-
-            //Read Image
-            $imgs = $manager->read($request->slider_img);
-
-            // encoding jpeg data
-            $encoded = $imgs->toWebp(80);
-            $encoded=$imgs->resize(884,549);
-
-            // Save the encoded image to the file system
-            $encodedFilename = time() . '.webp';
-            $encoded->save(public_path('backend/assets/images/uploads/sliders') . '/' . $encodedFilename);
+//            if ($slider->slider_img) {
+//                if (file_exists($slider->slider_img)) {
+//                    unlink($slider->slider_img);
+//                }
+//            }
+            $file = $request->file('slider_img');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('backend/assets/images/uploads/sliders'), $filename);
 
             //Save image to Database
-
-            $slider->slider_img = 'public/backend/assets/images/uploads/sliders/'.$encodedFilename;
-            
+            $slider->slider_img = 'backend/assets/images/uploads/sliders/' . $filename;
         }
-        
-        $slider->update();
+
+        $slider->save();
         return response()->json(['message' => 'success'], 201);
-        
     }
 
     /**
@@ -203,15 +171,15 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
-     $result=   $slider->delete();
+        $result = $slider->delete();
 
-     
-        if ($result &&  $slider->slider_img) {
+
+        if ($result && $slider->slider_img) {
             if (file_exists($slider->slider_img)) {
                 unlink($slider->slider_img);
             }
         }
-        
+
         return response()->json(['message' => 'success'], 200);
     }
 

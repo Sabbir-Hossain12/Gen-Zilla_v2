@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Admins</h4>
+                <h4 class="mb-sm-0 font-size-18">Attribute Values</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -249,7 +249,7 @@
                             attrvalueTable.ajax.reload()
                             swal.fire({
                                 title: "Success",
-                                text: "Admin Created !",
+                                text: "Value Created !",
                                 icon: "success"
                             })
 

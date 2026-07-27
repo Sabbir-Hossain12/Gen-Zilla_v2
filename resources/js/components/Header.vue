@@ -72,13 +72,13 @@ function filterCategories() {
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger">
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
-                        <!-- Login/Signup  -->
-                        <!--                        <button-->
-                        <!--                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"-->
-                        <!--                            @click="showLogin = true">-->
-                        <!--                            <i class="fa-solid fa-user text-white"></i>-->
-                        <!--                            <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>-->
-                        <!--                        </button>-->
+<!--                        Login/Signup-->
+                        <button
+                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
+                            @click="showLogin = true">
+                            <i class="fa-solid fa-user text-white"></i>
+                            <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>
+                        </button>
 
                         <button
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
@@ -90,37 +90,42 @@ function filterCategories() {
                         <div v-show="showUserDropdown"
                              class="absolute right-2 top-15 mt-2 w-64 bg-[#ffffff] rounded-lg shadow-lg border border-gray-100 text-xs">
                             <div class="flex flex-col space-y-2 p-1 ">
-                                <RouterLink to="/dashboard" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
+                                <RouterLink to="/dashboard"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
 
                                         <span class="text-red-600 text-xl">
                                             <font-awesome-icon icon="house" class="text-primary"/>
                                         </span>
-                                        <span class="font-semibold text-gray-700">Dashboard</span>
+                                    <span class="font-semibold text-gray-700">Dashboard</span>
 
                                 </RouterLink>
 
-                                <RouterLink to="/order-history" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
+                                <RouterLink to="/order-history"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
                                     <span class="text-red-600 text-xl">
                                       <font-awesome-icon icon="receipt" class="text-primary"/>
                                     </span>
                                     <span class="font-semibold text-gray-700">Order History</span>
                                 </RouterLink>
 
-                                <RouterLink to="/personal-info" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                <RouterLink to="/personal-info"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="user" class="text-primary"/>
                                     </span>
                                     <span class="font-semibold text-gray-700">Personal Info</span>
                                 </RouterLink>
 
-                                <RouterLink to="/wishlist" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
+                                <RouterLink to="/wishlist"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="heart" class="text-primary"/>
                                     </span>
                                     <span class="font-semibold text-gray-700">Wishlist</span>
                                 </RouterLink>
 
-                                <RouterLink to="" class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                <RouterLink to=""
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="fa-arrow-right-from-bracket" class="text-primary"/>
                                     </span>

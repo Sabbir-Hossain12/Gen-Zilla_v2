@@ -21,7 +21,7 @@ class AttrvalueController extends Controller
 
     public function getData()
     {
-        $attrValues = Attrvalue::all();
+        $attrValues = Attrvalue::latest();
 
 
         return DataTables::of($attrValues)
@@ -65,19 +65,19 @@ class AttrvalueController extends Controller
                 'value'=>['string']
             ]
         );
-        
+
         $attribute_name= Attribute::where('id',$request->attribute_id)->pluck('attribute_name')->first();
-        
-        
+
+
         $attrValue= new Attrvalue();
-        
+
         $attrValue->attribute_id =$request->attribute_id;
         $attrValue->attribute_name= $attribute_name;
         $attrValue->value= $request->value;
-        $attrValue->status= $request->status;    
-    
+        $attrValue->status= $request->status;
+
       $result=  $attrValue->save();
-        
+
         if ($result)
         {
             return response()->json(['message'=>'success'],200);
@@ -101,7 +101,7 @@ class AttrvalueController extends Controller
      */
     public function edit(Attrvalue $attribute_value)
     {
-        
+
         return response()->json(['message' => 'success', 'data' => $attribute_value], 200);
 
     }
