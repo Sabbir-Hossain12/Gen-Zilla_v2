@@ -274,10 +274,7 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      */
-    public
-    function show(
-        Product $products
-    ) {
+    public function show(Product $products) {
         //
     }
 

@@ -93,7 +93,7 @@ class SliderController extends Controller
         if ($request->hasFile('slider_img')) {
             $file = $request->file('slider_img');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('backend/assets/images/uploads/sliders') . '/' . $filename);
+            $file->move(public_path('backend/assets/images/uploads/sliders'), $filename);
 
             //Save image to Database
             $slider->slider_img = 'backend/assets/images/uploads/sliders/' . $filename;

@@ -3,11 +3,13 @@ import MobileSidebar from "@/components/MobileSidebar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import {Swiper, SwiperSlide} from 'swiper/vue';
 import {Autoplay,Navigation} from 'swiper/modules';
+// import axios from "axios";
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
+import {onMounted} from "vue";
 
 // swiper.js
 const onSwiper = (swiper) => {
@@ -16,6 +18,11 @@ const onSwiper = (swiper) => {
 const onSlideChange = () => {
     console.log('slide change');
 };
+
+onMounted(async function ()
+{
+    const data = await axios.get('')
+})
 
 </script>
 

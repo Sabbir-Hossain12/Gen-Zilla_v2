@@ -22,7 +22,7 @@ class BannerController extends Controller
 
     public function getData()
     {
-        $banners = Banner::all();
+        $banners = Banner::query();
 
 
         return DataTables::of($banners)
@@ -70,9 +70,9 @@ class BannerController extends Controller
             'banner_title_1' => [ 'string'],
             'banner_title_2' => [ 'string'],
             'banner_img' => ['max:2048'],
-           
+
             'banner_btn_name'=> [ 'string'],
-           
+
         ]);
 
 
@@ -91,24 +91,13 @@ class BannerController extends Controller
 
         if ($request->hasFile('banner_img')) {
 
-            //create new manager instance with desired driver
-            $manager = new ImageManager(new Driver());
-
-            //Read Image
-            $imgs = $manager->read($request->banner_img);
-
-            // encoding jpeg data
-            $encoded = $imgs->toWebp(80);
-
-            // Save the encoded image to the file system
-            $encodedFilename = time() . '.webp';
-            $encoded->save(public_path('backend/assets/images/uploads/banners') . '/' . $encodedFilename);
+            $file = $request->file('banner_img');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('backend/assets/images/uploads/banners'), $filename);
 
             //Save image to Database
 
-            $banner->banner_img = 'public/backend/assets/images/uploads/banners/'.$encodedFilename;
-
-
+            $banner->banner_img = 'backend/assets/images/uploads/banners/'.$filename;
         }
 
         $banner->save();
@@ -143,7 +132,7 @@ class BannerController extends Controller
             'banner_title_2' => [ 'string'],
             'banner_img' => ['max:2048'],
             'banner_btn_name'=> [ 'string'],
-            
+
         ]);
 
 
@@ -151,7 +140,7 @@ class BannerController extends Controller
         $banner->banner_title_1 = $request->banner_title_1;
         $banner->banner_title_2 = $request->banner_title_2;
         $banner->banner_title_3 = $request->banner_title_3;
-        
+
 
         $banner->banner_link = $request->banner_link;
         $banner->banner_btn_name = $request->banner_btn_name;
@@ -166,31 +155,16 @@ class BannerController extends Controller
                 }
             }
 
+            $file = $request->file('banner_img');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
 
-
-
-            //create new manager instance with desired driver
-            $manager = new ImageManager(new Driver());
-
-            //Read Image
-            $imgs = $manager->read($request->banner_img);
-
-            // encoding jpeg data
-            $encoded = $imgs->toWebp(80);
-
-            // Save the encoded image to the file system
-            $encodedFilename = time() . '.webp';
-            $encoded->save(public_path('backend/assets/images/uploads/banners') . '/' . $encodedFilename);
+            $file->move(public_path('backend/assets/images/uploads/banners'), $filename);
 
             //Save image to Database
-
-            $banner->banner_img = 'public/backend/assets/images/uploads/banners/'.$encodedFilename;
-
-
+            $banner->banner_img = 'backend/assets/images/uploads/banners/'.$filename;
         }
 
-        $banner->update();
-
+        $banner->save();
 
         return response()->json(['message' => 'success'], 201);
     }
