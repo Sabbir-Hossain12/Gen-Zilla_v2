@@ -23,6 +23,9 @@ const toggleUserDropdown = () => {
 function filterCategories() {
     return categories.value.filter(category => category.topbar)
 }
+
+//Auth
+const isAuth = ref(0);
 </script>
 
 <template>
@@ -73,14 +76,14 @@ function filterCategories() {
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
 <!--                        Login/Signup-->
-                        <button
+                        <button v-if="!isAuth"
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
                             @click="showLogin = true">
                             <i class="fa-solid fa-user text-white"></i>
                             <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>
                         </button>
 
-                        <button
+                        <button v-else
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
                             @click="toggleUserDropdown">
                             <font-awesome-icon icon="user" class="text-secondary"/>

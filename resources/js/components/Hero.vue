@@ -2,7 +2,7 @@
 import MobileSidebar from "@/components/MobileSidebar.vue";
 import Sidebar from "@/components/Sidebar.vue";
 import {Swiper, SwiperSlide} from 'swiper/vue';
-import {Autoplay,Navigation} from 'swiper/modules';
+import {Autoplay, Navigation} from 'swiper/modules';
 // import axios from "axios";
 
 // Import Swiper styles
@@ -19,8 +19,7 @@ const onSlideChange = () => {
     console.log('slide change');
 };
 
-onMounted(async function ()
-{
+onMounted(async function () {
     const data = await axios.get('')
 })
 
@@ -54,11 +53,15 @@ onMounted(async function ()
             <!--Category Cards-->
             <div class="grid grid-cols-2 md:grid-cols-5 mt-3 gap-x-2 md:gap-3 gap-y-4 md:gap-y-0 px-1 md:px-0">
                 <div class="relative flex flex-col items-center justify-center rounded">
-                    <img
-                        src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65f7d0a7115075f231e8689c_Eggs_300.webp"
-                        class="rounded" alt="">
-                    <span
-                        class="rounded-full bg-yellow px-3 text-dark2 w-full md:w-[85%] text-center py-1 text-[14px] absolute -bottom-3 font-bold">Eggs</span>
+                    <a href="">
+                        <img
+                            src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65f7d0a7115075f231e8689c_Eggs_300.webp"
+                            class="rounded" alt="">
+                    </a>
+                        <span
+                            class="rounded-full bg-yellow px-3 text-dark2 w-full md:w-[85%] text-center
+                         py-1 text-[14px] absolute -bottom-3 font-bold">Eggs</span>
+
                 </div>
                 <div class="relative flex flex-col items-center justify-center rounded">
                     <img

@@ -97,7 +97,7 @@ import Hero from "../components/Hero.vue";
          <!--  Category Nav -->
          <div>
            <div class="mx-3 mb-2 my-5 md:my-0">
-             <div class="flex justify-start items-center gap-2 overflow-x-auto">
+             <div class="flex justify-start items-center gap-2 overflow-x-auto mb-2">
                <button class="active-button-tab">Scoop Heaven</button>
                <button class="inactive-button-tab">Refreshing Drinks</button>
                <button class="inactive-button-tab">Fragrance Collection</button>

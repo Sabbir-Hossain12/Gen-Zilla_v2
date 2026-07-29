@@ -1,14 +1,5 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\Frontend\CheckoutController;
-use App\Http\Controllers\Frontend\DashboardController;
-use App\Http\Controllers\Frontend\OrderController;
-use App\Http\Controllers\Frontend\ProductController;
-use App\Http\Controllers\Frontend\WebviewController;
-use App\Http\Controllers\Frontend\WishlistController;
-use App\Http\Controllers\SslCommerzPaymentController;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Route;
 
 
@@ -86,7 +77,6 @@ Route::view('/','app');
 
 
 
-require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 
 

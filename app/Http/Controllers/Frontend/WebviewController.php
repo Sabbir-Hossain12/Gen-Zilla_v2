@@ -3,112 +3,175 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\Slider;
 use App\Models\Subcategory;
 use App\Models\ThemeColor;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WebviewController extends Controller
 {
-    public function index()
+    public function slider()
     {
-        return view('frontend.pages.webview');
-    }
-    
-    public function aboutPage()
-    {
-        return view('frontend.pages.static-pages.about');
-    }
+        try {
+            $sliders = Slider::where('status', 1)->get();
 
-    public function contactPage()
-    {
-        return view('frontend.pages.static-pages.contact');
-    }
+            return response()->json([
+                'success' => true,
+                'message' => 'Slider List Fetched',
+                'data' => $sliders
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Slider Issue:' . $e->getMessage());
 
-    public function searchProduct(Request $request)
-    {
-        $products = Product::where('product_name', 'like', '%'.$request->search.'%')->with('productDetail', 'weights',
-            'colors', 'sizes')->get();
-
-        $categories = Category::where('status', 1)->with('products')->get();
-        return view('frontend.pages.products.search', compact('products', 'categories'));
-    }
-
-    public function productByCategory(Category $category)
-    {
-        $products = Product::where('category_id', $category->id)->with('productDetail', 'weights', 'colors',
-            'sizes')->get();
-
-        $categories = Category::where('status', 1)->with('products')->get();
-        return view('frontend.pages.products.category-product', compact('products', 'categories','category'));
-    }
-
-
-    public function productBySubCategory(Subcategory $subcategory)
-    {
-        $products = Product::where('subcategory_id', $subcategory->id)->with('productDetail', 'weights', 'colors',
-            'sizes')->get();
-        $categories = Category::where('status', 1)->with('products')->get();
-        return view('frontend.pages.products.subcategory-product', compact('products','categories'));
-
-    }
-
-
-    public function allProducts()
-    {
-        $products= Product::with('productDetail', 'weights', 'colors', 'sizes')->get();
-        $categories = Category::where('status', 1)->with('products')->get();
-
-        return view('frontend.pages.products.all-product', compact('products', 'categories'));
-
-    }
-
-    public function getThemeColor()
-    {
-        $themeColor= ThemeColor::first();
-        
-//        dd($themeColor);
-        if ($themeColor)
-        {
-            return response()->view('css.dynamic-theme', compact('themeColor'));
-//                ->header('Content-Type', 'text/css');
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
         }
-        return response('/* Default CSS if no theme settings are found */', 200)
-            ->header('Content-Type', 'text/css');
     }
 
-
-    public function getReviews($id)
+    public function featuredSubcategory()
     {
-         $reviews=   Review::where('status', 1)->where('product_id', $id)  ->with('user')->get();
-            
-            
-            return response()->json(['reviews' => $reviews], 200);
+        try {
+            $subcategories = Subcategory::where('status', 1)->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Featured Subcategory List Fetched',
+                'data' => $subcategories
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Featured Subcategory Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
     }
 
-    public function submitReview(Request $request)
+    public function hotProducts()
     {
-//        dd($request->all());
-        $request->validate([
-            'rating' => 'required|numeric|min:1|max:5',
-            'review_text' => 'required|string',
-        ]);
-        
-        $review= new Review();
-        $review->user_id = auth()->user()->id;
-        $review->product_id = $request->product_id;
-        $review->rating = $request->rating;
-        $review->review_text = $request->review_text;
-        $review->status = 0;
-        $review->review_date=today();
-        $review->save();
-        
-        return response()->json(['message' => 'Review submitted successfully and Pending for Approval'], 200);
-    }
-        
+        try {
+            $products = Product::where('status', 1)
+                ->where('isHot', 1)
+                ->get();
 
+            return response()->json([
+                'success' => true,
+                'message' => 'Hot Product List Fetched',
+                'data' => $products
+            ]);
+
+        }
+        catch (\Exception $e) {
+            Log::error('Hot Product Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function popularProducts()
+    {
+        try {
+            $products = Product::where('status', 1)
+                ->where('isPopular', 1)
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Popular Product List Fetched',
+                'data' => $products
+            ]);
+
+        }
+        catch (\Exception $e) {
+            Log::error('Popular Product Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function featuredProducts()
+    {
+        try {
+            $products = Product::where('status', 1)
+                ->where('isFeatured', 1)
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Featured Product List Fetched',
+                'data' => $products
+            ]);
+
+        }
+        catch (\Exception $e) {
+            Log::error('Featured Product Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function showBanner()
+    {
+        try {
+            $banner = Banner::where('status',1)->where('banner_type', 'small')->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Banner Image Fetched',
+                'data' => $banner
+            ]);
+        }
+        catch (\Exception $e) {
+            Log::error('Banner Image Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+
+    }
+
+    public function frontCategories()
+    {
+        try {
+            $categories = Category::where('status', 1)
+                ->where('front_status',1)
+                ->with('products')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Front Categories Fetched',
+                'data' => $categories
+            ]);
+        }
+        catch (\Exception $e) {
+            Log::error('Front Categories Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
 
 }
