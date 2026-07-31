@@ -4,6 +4,15 @@ import Xmark from "@/components/Xmark.vue";
 defineProps({ modelValue: Boolean })
 const emit = defineEmits(['update:modelValue'])
 const close = () => emit('update:modelValue', false)
+
+const sendOtp = async () => {
+    try {
+        const res = await axios.post('api/v1/auth/send-otp', { phone: phone.value })
+        if (res.data.success) showOtpModal.value = true
+    } catch (err) {
+        console.error(err)
+    }
+}
 </script>
 
 <template>

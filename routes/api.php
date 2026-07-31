@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\Auth\AuthController;
 use App\Http\Controllers\Frontend\WebviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,10 @@ Route::prefix('v1')->group(function () {
 
        return response()->json($categories);
     });
+
+    //Auth
+    Route::post('/auth/send-otp', [AuthController::class, 'sendOtp']);
+    Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp']);
 
     //Home Page
     Route::get('/sliders', [WebviewController::class, 'slider']);

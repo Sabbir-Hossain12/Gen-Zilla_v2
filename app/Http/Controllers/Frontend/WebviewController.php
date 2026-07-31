@@ -49,7 +49,7 @@ class WebviewController extends Controller
         } catch (\Exception $e) {
             Log::error('Featured Subcategory Issue:' . $e->getMessage());
 
-            return response([
+            return response()->json([
                 'success' => false,
                 'message' => 'Something Went Wrong',
             ]);

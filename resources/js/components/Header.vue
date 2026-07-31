@@ -6,6 +6,7 @@ import {useSidebar} from "@/composable/useSidebar";
 import Login from "@/components/Login.vue";
 import {ref} from "vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import Otp from "@/components/Otp.vue";
 
 const showLogin = ref(false);
 const showUserDropdown = ref(false)
@@ -187,6 +188,7 @@ const isAuth = ref(0);
 
     <!--  Login Modal  -->
     <Login v-model="showLogin"></Login>
+    <Otp v-model="showOtpModal"></Otp>
 </template>
 
 <style scoped>
