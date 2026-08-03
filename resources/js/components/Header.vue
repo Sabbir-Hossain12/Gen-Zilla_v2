@@ -3,12 +3,14 @@ import shwapno_logo from "@/assets/img/shwapno_logo.png";
 import app_download from "@/assets/img/app-download.png";
 import {categories} from "@/data/Categories";
 import {useSidebar} from "@/composable/useSidebar";
-import Login from "@/components/Login.vue";
-import {ref} from "vue";
+import SendOtp from "@/components/SendOtp.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import Otp from "@/components/Otp.vue";
+import VerifyOtp from "@/components/VerifyOtp.vue";
 
-const showLogin = ref(false);
+import {useAuth} from "../stores/auth.js";
+import {ref} from "vue";
+
+const auth = useAuth();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
 
@@ -69,17 +71,17 @@ const isAuth = ref(0);
                     <a class="cursor-pointer hidden lg:block" href="#">
                         <img :src="app_download" alt="" height="40" width="175">
                     </a>
-                    <!--Language and Login/Signup-->
+                    <!--Language and SendOtp/Signup-->
                     <div class="hidden lg:flex gap-2 items-center">
                         <!-- Language button-->
                         <button
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger">
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
-<!--                        Login/Signup-->
+<!--                        SendOtp/Signup-->
                         <button v-if="!isAuth"
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
-                            @click="showLogin = true">
+                            @click="auth.showSendOtpModal = true">
                             <i class="fa-solid fa-user text-white"></i>
                             <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>
                         </button>
@@ -186,9 +188,9 @@ const isAuth = ref(0);
         </nav>
     </header>
 
-    <!--  Login Modal  -->
-    <Login v-model="showLogin"></Login>
-    <Otp v-model="showOtpModal"></Otp>
+    <!--  SendOtp Modal  -->
+    <SendOtp v-model="auth.showSendOtpModal"></SendOtp>
+    <VerifyOtp></VerifyOtp>
 </template>
 
 <style scoped>
