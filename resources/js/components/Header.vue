@@ -14,6 +14,8 @@ const auth = useAuth();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
 
+
+
 const toggleSidebar = () => {
     console.log(isOpen.value)
     isOpen.value = !isOpen.value;
@@ -27,8 +29,6 @@ function filterCategories() {
     return categories.value.filter(category => category.topbar)
 }
 
-//Auth
-const isAuth = ref(0);
 </script>
 
 <template>
@@ -79,7 +79,7 @@ const isAuth = ref(0);
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
 <!--                        SendOtp/Signup-->
-                        <button v-if="!isAuth"
+                        <button v-if="!auth.isAuthenticated"
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
                             @click="auth.showSendOtpModal = true">
                             <i class="fa-solid fa-user text-white"></i>
@@ -130,13 +130,13 @@ const isAuth = ref(0);
                                     <span class="font-semibold text-gray-700">Wishlist</span>
                                 </RouterLink>
 
-                                <RouterLink to=""
+                                <button   @click="auth.handleLogout()"
                                             class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="fa-arrow-right-from-bracket" class="text-primary"/>
                                     </span>
                                     <span class="font-semibold text-gray-700">Logout</span>
-                                </RouterLink>
+                                </button>
                             </div>
                         </div>
                     </div>

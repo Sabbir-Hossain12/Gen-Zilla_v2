@@ -1,10 +1,11 @@
 import {defineStore} from "pinia";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 
 export const useAuth = defineStore('auth', () => {
-    const isAuthenticated = ref(false);
-    const token = ref(localStorage.getItem('token'));
+    const token = ref(localStorage.getItem('token') || null);
+    let isAuthenticated = computed(()=> !!token.value);
+
     const phone = ref('');
     // const otp = ref('');
     // const expires = ref('');
@@ -35,14 +36,35 @@ export const useAuth = defineStore('auth', () => {
                 alert('Login Successful')
             showSendOtpModal.value = false;
             showVerifyOtpModal.value = false;
+            localStorage.setItem('token', res.data.token);
+            token.value = res.data.token;
 
         } catch (err) {
             console.log(err)
         }
     }
 
+    async function handleLogout() {
+        try {
+            await axios.post('/api/v1/logout', {}, {
+                headers: {
+                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                }
+            })
+
+            // Clear local state + storage
+            token.value = null
+            localStorage.removeItem('token')
+
+            alert('Logged out successfully')
+        } catch (error) {
+            console.error('Logout failed:', error)
+            alert('Something went wrong while logging out')
+        }
+    }
+
     //Expose
-    return {isAuthenticated, token, sendOtp, verifyOtp, showSendOtpModal, showVerifyOtpModal,phone}
+    return {isAuthenticated, token, sendOtp, verifyOtp, showSendOtpModal, showVerifyOtpModal, phone, handleLogout}
 
 })
 

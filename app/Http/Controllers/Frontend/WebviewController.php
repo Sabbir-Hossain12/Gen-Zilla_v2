@@ -61,6 +61,7 @@ class WebviewController extends Controller
         try {
             $products = Product::where('status', 1)
                 ->where('isHot', 1)
+                ->with('productDetail','colors','sizes','weights')
                 ->get();
 
             return response()->json([
@@ -85,6 +86,7 @@ class WebviewController extends Controller
         try {
             $products = Product::where('status', 1)
                 ->where('isPopular', 1)
+                ->with('productDetail','colors','sizes','weights')
                 ->get();
 
             return response()->json([
@@ -109,12 +111,38 @@ class WebviewController extends Controller
         try {
             $products = Product::where('status', 1)
                 ->where('isFeatured', 1)
+                ->with('productDetail','colors','sizes','weights')
                 ->get();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Featured Product List Fetched',
                 'data' => $products
+            ]);
+
+        }
+        catch (\Exception $e) {
+            Log::error('Featured Product Issue:' . $e->getMessage());
+
+            return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function productDetails(string $slug)
+    {
+        try {
+            $details = Product::where('status', 1)
+                ->where('slug', $slug)
+                ->with('productDetail','colors','sizes','weights')
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product Detail Fetched',
+                'data' => $details
             ]);
 
         }

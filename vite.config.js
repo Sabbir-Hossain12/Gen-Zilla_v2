@@ -4,6 +4,8 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import tailwindcss from '@tailwindcss/vite'
+import {devtools} from "vue";
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -17,7 +19,7 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        vue(),
+        vue(),vueDevTools(),
         tailwindcss(),
 
     ],

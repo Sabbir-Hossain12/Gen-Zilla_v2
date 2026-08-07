@@ -1,13 +1,10 @@
 <script setup>
 import MainLayout from "@/layouts/MainLayout.vue";
-// function switchImg(el) {
-//   document.getElementById('mainImg').src = el.querySelector('img').src;
-//   document.querySelectorAll('[onclick="switchImg(this)"]').forEach(t => {
-//     t.className = t.className.replace('border-[#E8312A]', 'border-transparent');
-//   });
-//   el.className = el.className.replace('border-transparent', 'border-[#E8312A]');
-// }
+import {useProduct} from "@/stores/product.js";
+import {defineStore} from "pinia";
 
+const detail = useProduct();
+detail.getProductDetails();
 </script>
 
 <template>

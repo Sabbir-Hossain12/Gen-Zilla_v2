@@ -20,7 +20,7 @@ const routes = [
         component: Home,
     },
     {
-        path: '/product/:id',
+        path: '/product/:slug',
         name: 'ProductDetails',
         component: ProductDetails,
         props: true, // allows route params as props
