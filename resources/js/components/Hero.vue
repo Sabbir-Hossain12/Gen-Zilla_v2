@@ -13,10 +13,10 @@ import {onMounted, reactive, ref} from "vue";
 
 // swiper.js
 const onSwiper = (swiper) => {
-    console.log(swiper);
+
 };
 const onSlideChange = () => {
-    console.log('slide change');
+
 };
 
 const subcategories = ref([])

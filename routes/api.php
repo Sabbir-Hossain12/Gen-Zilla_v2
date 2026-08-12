@@ -26,7 +26,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/banner', [WebviewController::class, 'showBanner']);
     Route::get('/front-categories', [WebviewController::class, 'frontCategories']);
 
-    Route::get('/product-details/{slug}', [WebviewController::class, 'productDetails']);
+    Route::get('/details/{slug}', [WebviewController::class, 'productDetails']);
 
     Route::middleware('auth:sanctum')->group( function (){
         Route::post('/logout', [AuthController::class, 'logout']);

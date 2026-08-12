@@ -9,7 +9,6 @@ let categories = ref([]);
 onMounted(async function (){
     try {
         const response = await fetch('/api/v1/categories')
-        console.log(response)// Laravel API endpoint
         if (!response.ok) throw new Error('Network error')
         categories.value = await response.json()
     } catch (error) {

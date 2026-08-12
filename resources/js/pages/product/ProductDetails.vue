@@ -1,10 +1,17 @@
 <script setup>
 import MainLayout from "@/layouts/MainLayout.vue";
 import {useProduct} from "@/stores/product.js";
-import {defineStore} from "pinia";
+import { useRoute } from 'vue-router'
+import {onMounted} from "vue";
 
-const detail = useProduct();
-detail.getProductDetails();
+//fetch URL product Parameter
+const route = useRoute()
+const slug = route.params.slug;
+
+console.log('slug:',slug)
+const productStore = useProduct();
+
+productStore.getProductDetails(slug);
 </script>
 
 <template>
@@ -13,10 +20,10 @@ detail.getProductDetails();
   <div class="max-w-7xl mx-auto px-4 pt-4 pb-2">
     <nav class="flex items-center gap-1 text-sm text-gray-500">
       <a href="#" class="hover:text-[#E8312A]">Home</a>
-      <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+      <i class="fas fa-chevron-right text-xs text-gray-400"></i>
       <span>...</span>
       <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-      <span class="font-semibold text-gray-700">ACI Pure Puffed Rice 500gm</span>
+      <span class="font-semibold text-gray-700">{{ productStore.productDetails.product_name }}</span>
     </nav>
   </div>
 
@@ -35,12 +42,12 @@ detail.getProductDetails();
           </button>
         </div>
         <div class="flex gap-2 mt-3">
-          <div @click="switchImg(this)"
+          <div @click=""
                class="border-2 border-[#E8312A] rounded-md cursor-pointer overflow-hidden w-16 h-16 shrink-0">
             <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65fa961e115075f231ecce6b_Radhuni-Shadmishali-Seasoning-Mixed-96gm_1_415.webp"
                  class="w-full h-full object-contain" alt="thumb1"/>
           </div>
-          <div @click="switchImg(this)"
+          <div @click=""
                class="border-2 border-transparent hover:border-[#E8312A] rounded-md cursor-pointer overflow-hidden w-16 h-16 shrink-0">
             <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/692ed719d5287d4d62f634cb_Supermom-Baby-Diaper-Medium-50Pcs_1_80.webp"
                  class="w-full h-full object-contain" alt="thumb2"/>

@@ -17,7 +17,6 @@ const {isOpen} = useSidebar();
 
 
 const toggleSidebar = () => {
-    console.log(isOpen.value)
     isOpen.value = !isOpen.value;
 };
 

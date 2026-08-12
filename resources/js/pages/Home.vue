@@ -9,8 +9,6 @@ import ProductCart from "@/components/ProductCart.vue";
 const product = useProduct();
 // Call the store action to fetch popular products from the API
 product.getPopularProducts();
-
-
 </script>
 
 <template>
