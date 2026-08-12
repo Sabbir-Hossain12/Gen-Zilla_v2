@@ -136,7 +136,7 @@ class WebviewController extends Controller
         try {
             $details = Product::where('status', 1)
                 ->where('slug', $slug)
-                ->with('productDetail','colors','sizes','weights')
+                ->with('productDetail','colors','sizes','weights','brand','category','subcategory')
                 ->first();
 
             return response()->json([
