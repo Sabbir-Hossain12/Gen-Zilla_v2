@@ -3,15 +3,20 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import {useProduct} from "@/stores/product.js";
 import {useRoute} from 'vue-router'
 import {computed, onMounted, ref} from "vue";
+import {storeToRefs} from "pinia";
 
 //fetch URL product Parameter
 const route = useRoute()
 const slug = route.params.slug;
 
-console.log('slug:', slug)
 const productStore = useProduct();
+const { productDetails } = storeToRefs(productStore)
 
-productStore.getProductDetails(slug);
+onMounted(async () => {
+    await productStore.getProductDetails(slug)
+    initialSalePrice()
+
+})
 
 const baseUrl = import.meta.env.VITE_APP_URL;
 
@@ -31,21 +36,23 @@ const tags = computed(() => {
     }
 })
 
-const salePrice = computed(() => {
-    try {
-        if (productStore.productDetails.colors.length > 0) {
-            return productStore.productDetails.colors[0].productSalePrice;
-        } else if (productStore.productDetails.sizes.length > 0) {
-            return productStore.productDetails.sizes[0].productSalePrice;
-        } else {
-            return productStore.productDetails.weights[0].productSalePrice;
+let salePrice = ref(0);
 
-        }
-
-    } catch (e) {
-        return []
+function initialSalePrice() {
+    const d = productStore.productDetails;
+    if (d.colors?.length > 0) {
+        salePrice.value = Math.round(d.colors[0].productSalePrice);
+    } else if (d.sizes?.length > 0) {
+        salePrice.value = Math.round(d.sizes[0].productSalePrice);
+    } else if (d.weights?.length > 0) {
+        salePrice.value = Math.round(d.weights[0].productSalePrice);
     }
-})
+}
+
+function setSalePrice(productSalePrice) {
+    salePrice.value = Math.round(productSalePrice);
+}
+
 const attribute = ref('')
 const variants = computed(() => {
     try {
@@ -69,18 +76,31 @@ const variants = computed(() => {
 const stockStatus = computed(() => {
     try {
         return productStore.productDetails.product_detail.available_qty > 0;
-
     } catch (e) {
         return []
     }
 })
 
-const product = productStore.productDetails.value;
+const activeTab = ref('overview')
 
+//Cart
+// const cart = useCartStore()
 
-
-
-
+//
+// // add item
+// async function addVariant(variant) {
+//     await cart.addItem({
+//         product_id: variant.product_id,
+//         variant_type: 'color',
+//         variant_id: variant.id,
+//         product_img: variant.image,
+//         product_name: variant.product_name,
+//         variant_label: variant.color_title,
+//         price: variant.productSalePrice,
+//         qty: 1,
+//         session_token: localStorage.getItem('cart_token')
+//     })
+// }
 </script>
 
 <template>
@@ -108,7 +128,7 @@ const product = productStore.productDetails.value;
                 <!-- LEFT: Product Images -->
                 <div class="md:col-span-4 bg-white border border-gray-100 rounded-lg p-4">
                     <div class="relative flex items-center justify-center bg-white rounded-lg h-72 overflow-hidden">
-                        <img id="mainImg" v-if="productStore.productDetails.product_detail.productThumbnail_img"
+                        <img id="mainImg" v-if="productStore.productDetails?.product_detail?.productThumbnail_img"
                              :src="baseUrl + '/' + productStore.productDetails.product_detail.productThumbnail_img"
                              class="object-contain h-full w-full" :alt="productStore.productDetails.product_name"/>
                         <button
@@ -150,11 +170,12 @@ const product = productStore.productDetails.value;
                             <button
                                 v-for="variant in variants"
                                 :key="variant.id"
+                                @click="setSalePrice(variant.productSalePrice)"
                                 type="button"
                                 class="px-4 py-1.5 rounded-full text-sm font-medium border border-gray-300 text-gray-700 bg-white
                                                 hover:border-[#E8312A] hover:text-[#E8312A]
                                                 transition-colors duration-150 cursor-pointer
-                                                focus:outline-none focus:ring-2 focus:ring-[#E8312A]/30">
+                                                focus:outline-none focus:ring-2 focus:ring-primary/80">
                                 {{ variant.color_title || variant.size_title || variant.weight_title }}
                             </button>
                         </div>
@@ -185,41 +206,32 @@ const product = productStore.productDetails.value;
                     <div class="bg-white border border-gray-100 rounded-lg p-4 flex flex-col gap-3">
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600"><span
-                                class="font-semibold">SKU:</span> {{ productStore.productDetails.product_detail.SKU || 'N/A' }}</span>
+                                class="font-semibold">SKU:</span> {{
+                                    productStore.productDetails.product_detail?.SKU || 'N/A'
+                                }}</span>
                             <span class="flex items-center gap-1 text-green-600 text-sm font-medium">
-              <i class="fa-solid fa-circle-check text-xs"></i> {{ stockStatus? 'In Stock' : 'Out Of Stock'}}
+              <i class="fa-solid fa-circle-check text-xs"></i> {{ stockStatus ? 'In Stock' : 'Out Of Stock' }}
             </span>
                         </div>
 
                         <div class="text-sm text-gray-600">
                             <span class="font-semibold">Brand: </span>
-                            <a href="#" class="text-[#E8312A] hover:underline font-medium">{{ productStore.productDetails.brand.brand_name || 'Loading..' }}</a>
+                            <a href="#" class="text-[#E8312A] hover:underline font-medium">{{
+                                    productStore.productDetails.brand?.brand_name || 'Loading..'
+                                }}</a>
                         </div>
 
-                        <p class="text-sm text-gray-600 leading-relaxed">{{ productStore.productDetails.short_desc || 'Loading ..'}}</p>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            {{ productStore.productDetails.short_desc || 'Loading ..' }}</p>
 
                         <hr class="border-gray-100"/>
 
                         <div class="flex items-center gap-3 flex-wrap">
                             <button
                                 class="flex items-center gap-1.5 border border-gray-200 rounded-full px-3 py-1.5 text-sm text-gray-600 hover:border-[#E8312A] hover:text-[#E8312A] transition-colors">
-                                <i class="fa-regular fa-heart text-sm"></i>
+                                <font-awesome-icon icon="fa-solid fa-heart" class="text-primary" />
                                 <span>Add to Wishlist</span>
                             </button>
-                            <div class="flex items-center gap-2">
-                                <a href="#"
-                                   class="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center text-white transition-colors">
-                                    <i class="fa-brands fa-facebook-f text-xs"></i>
-                                </a>
-                                <a href="#"
-                                   class="w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white transition-colors">
-                                    <i class="fa-brands fa-facebook-messenger text-xs"></i>
-                                </a>
-                                <a href="#"
-                                   class="w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center text-white transition-colors">
-                                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                                </a>
-                            </div>
                         </div>
 
                         <hr class="border-gray-100"/>
@@ -279,16 +291,50 @@ const product = productStore.productDetails.value;
                 </div>
             </div>
 
-            <!-- Reviews Section -->
             <div class="mt-8 bg-white border border-gray-100 rounded-lg overflow-hidden">
-                <div class="p-4 border-b border-gray-100">
-                    <button class="bg-[#F5C518] text-black font-semibold px-5 py-1.5 rounded-full text-sm">Reviews
+
+                <!-- Tab Buttons -->
+                <div class="flex items-center gap-2 p-4 border-b border-gray-100">
+                    <button
+                        @click="activeTab = 'overview'"
+                        :class="[
+          'px-5 py-1.5 rounded-full text-sm font-semibold transition-colors duration-150',
+          activeTab === 'overview'
+            ? 'bg-[#F5C518] text-black'
+            : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
+        ]"
+                    >
+                        Overview
+                    </button>
+
+                    <button
+                        @click="activeTab = 'reviews'"
+                        :class="[
+          'px-5 py-1.5 rounded-full text-sm font-semibold transition-colors duration-150',
+          activeTab === 'reviews'
+            ? 'bg-[#F5C518] text-black'
+            : 'bg-white border border-gray-300 text-gray-600 hover:border-gray-400'
+        ]"
+                    >
+                        Reviews
                     </button>
                 </div>
-                <div class="py-16 flex flex-col items-center justify-center text-gray-400">
+
+                <!-- Overview Panel -->
+                <div v-if="activeTab === 'overview'" class="p-6">
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-5 mb-4">
+                        <h3 class="text-blue-700 font-bold text-lg mb-3">📦 Product Overview</h3>
+                        <div v-html="productDetails?.product_detail?.long_desc"></div>
+                    </div>
+                </div>
+
+                <!-- Reviews Panel -->
+                <div v-else-if="activeTab === 'reviews'" class="py-16 flex flex-col items-center justify-center text-gray-400">
                     <i class="fa-regular fa-star text-4xl mb-3 text-gray-300"></i>
                     <p class="font-semibold text-gray-500">No reviews yet, Be the first one to review !</p>
                 </div>
+
             </div>
         </div>
     </MainLayout>

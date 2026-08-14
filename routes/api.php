@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\Auth\AuthController;
+use App\Http\Controllers\Frontend\Cart\CartController;
 use App\Http\Controllers\Frontend\WebviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,19 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/details/{slug}', [WebviewController::class, 'productDetails']);
 
+
+
     Route::middleware('auth:sanctum')->group( function (){
         Route::post('/logout', [AuthController::class, 'logout']);
+
+        //Cart
+        Route::prefix('carts')->group(function () {
+            Route::get('/', [CartController::class, 'index']);
+            Route::post('/', [CartController::class, 'store']);
+            Route::put('/{cart}', [CartController::class, 'update']);
+            Route::delete('/{cart}', [CartController::class, 'destroy']);
+            // clear cart (delete by session_token or user_id)
+            Route::delete('/', [CartController::class, 'clear']);
+        });
     });
 });
