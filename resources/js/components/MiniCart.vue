@@ -42,7 +42,7 @@ onMounted(async () => {
     <!--  Products Section  -->
     <div class="overflow-y-auto grow min-h-0 p-1 ">
       <!--  Single Products-->
-      <div v-for="cartItem in cart.items" class="overflow-hidden flex items-center gap-x-3 py-2 border-b-2 border-b-gray-200 ">
+      <div  class="overflow-hidden flex items-center gap-x-3 py-2 border-b-2 border-b-gray-200 ">
         <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/67c02190656b9dabf0b44640_2819508_1_80.webp"
              height="45" width="56" class="text-center" alt="">
         <div class="flex-1 min-w-0">
@@ -63,11 +63,13 @@ onMounted(async () => {
               <div class="space-x-2">
                 <button @click="minusQty"
                         class="text-xs text-primary font-medium rounded-full bg-secondary shadow-xl p-1.5 cursor-pointer">
-                  <i class="fa-solid fa-minus"></i></button>
+                    <font-awesome-icon icon="fa-solid fa-minus" style="color: rgb(216, 7, 65);" />
+                </button>
                 <span class="text-xs text-primary font-medium">{{ qty}}</span>
                 <button @click="plusQty"
                         class="text-xs text-primary font-medium rounded-full bg-secondary shadow-xl p-1.5 cursor-pointer">
-                  <i class="fa-solid fa-plus"></i></button>
+                    <font-awesome-icon icon="fa-solid fa-plus" style="color: rgb(216, 7, 65);" />
+                </button>
               </div>
             </div>
           </div>

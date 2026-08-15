@@ -4,6 +4,7 @@ import {useProduct} from "@/stores/product.js";
 import {useRoute} from 'vue-router'
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
+import {useCart} from "@/stores/cart.js";
 
 //fetch URL product Parameter
 const route = useRoute()
@@ -11,6 +12,7 @@ const slug = route.params.slug;
 
 const productStore = useProduct();
 const { productDetails } = storeToRefs(productStore)
+
 
 onMounted(async () => {
     await productStore.getProductDetails(slug)
@@ -49,21 +51,30 @@ function initialSalePrice() {
     }
 }
 
-function setSalePrice(productSalePrice) {
+const variant_label= ref('');
+function setSalePrice(productSalePrice,variant_label1) {
     salePrice.value = Math.round(productSalePrice);
+    variant_label.value = variant_label1;
 }
 
 const attribute = ref('')
+
+// const
 const variants = computed(() => {
     try {
         if (productStore.productDetails.colors.length > 0) {
             attribute.value = 'color';
+            variant_label.value = productStore.productDetails.colors[0].color_title;
             return productStore.productDetails.colors;
         } else if (productStore.productDetails.sizes.length > 0) {
             attribute.value = 'size';
+            variant_label.value = productStore.productDetails.sizes[0].size_title;
+
             return productStore.productDetails.sizes;
         } else {
             attribute.value = 'weight';
+            variant_label.value = productStore.productDetails.weights[0].weight_title;
+
             return productStore.productDetails.weights;
 
         }
@@ -84,23 +95,21 @@ const stockStatus = computed(() => {
 const activeTab = ref('overview')
 
 //Cart
-// const cart = useCartStore()
+const cart = useCart();
 
 //
 // // add item
-// async function addVariant(variant) {
-//     await cart.addItem({
-//         product_id: variant.product_id,
-//         variant_type: 'color',
-//         variant_id: variant.id,
-//         product_img: variant.image,
-//         product_name: variant.product_name,
-//         variant_label: variant.color_title,
-//         price: variant.productSalePrice,
-//         qty: 1,
-//         session_token: localStorage.getItem('cart_token')
-//     })
-// }
+async function addToCart() {
+    await cart.addItem({
+        product_id: productDetails.value.id,
+        variant_type: attribute.value,
+        product_img: productDetails.value?.product_detail?.productThumbnail_img,
+        product_name: productDetails.value.product_name,
+        variant_label: variant_label.value,
+        price: salePrice.value,
+        qty: 1,
+    })
+}
 </script>
 
 <template>
@@ -170,7 +179,7 @@ const activeTab = ref('overview')
                             <button
                                 v-for="variant in variants"
                                 :key="variant.id"
-                                @click="setSalePrice(variant.productSalePrice)"
+                                @click="setSalePrice(variant.productSalePrice, variant.color_title || variant.size_title || variant.weight_title)"
                                 type="button"
                                 class="px-4 py-1.5 rounded-full text-sm font-medium border border-gray-300 text-gray-700 bg-white
                                                 hover:border-[#E8312A] hover:text-[#E8312A]
@@ -181,8 +190,8 @@ const activeTab = ref('overview')
                         </div>
                     </div>
 
-                    <button
-                        class="bg-[#E8312A] hover:bg-[#C4251F] text-white font-semibold rounded-full px-8 py-2.5 flex items-center gap-2 w-fit transition-colors duration-200">
+                    <button @click="addToCart()"
+                        class="bg-[#E8312A] hover:bg-[#C4251F] text-white font-semibold rounded-full px-8 py-2.5 flex items-center gap-2 w-fit transition-colors duration-200 cursor-pointer">
                         <i class="fa-solid fa-plus text-sm"></i>
                         <span>Add to Bag</span>
                     </button>

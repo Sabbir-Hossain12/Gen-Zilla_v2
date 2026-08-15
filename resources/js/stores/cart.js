@@ -39,10 +39,16 @@ export const useCart = defineStore('cart', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.post('/api/carts', payload)
+            const res = await axios.post('/api/v1/carts', payload, {
+                headers: {
+                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                }
+            })
             // API returns created item
             items.value.push(res.data.data)
-            return res.data.data
+            // return res.data.data
+
+            alert('Product Added to Cart');
         } catch (err) {
             error.value = err
             throw err

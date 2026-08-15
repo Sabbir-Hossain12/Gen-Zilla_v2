@@ -36,7 +36,6 @@ class CartController extends Controller
             'variant_label' => 'nullable|string|max:255',
             'price' => 'required|numeric|min:0',
             'qty' => 'required|integer|min:1',
-            'session_token' => 'nullable|string',
             'user_id' => 'nullable|integer|exists:users,id',
         ];
 
@@ -47,18 +46,31 @@ class CartController extends Controller
         }
 
         try {
-            $cart = Cart::create([
-                'user_id' => $request->user_id,
-                'session_token' => $request->session_token,
-                'product_id' => $request->product_id,
-                'variant_type' => $request->variant_type,
-                'variant_id' => $request->variant_id,
-                'product_img' => $request->product_img,
-                'product_name' => $request->product_name,
-                'variant_label' => $request->variant_label,
-                'price' => $request->price,
-                'qty' => $request->qty,
-            ]);
+            $userId = auth()->id();
+            // Check if cart row already exists for same product + variant
+            $cart = Cart::where('user_id', $userId)
+                ->where('product_id', $request->product_id)
+                ->where('variant_id', $request->variant_id)
+                ->first();
+
+            if ($cart) {
+                // Increase qty
+                $cart->qty += $request->qty;
+                $cart->save();
+            } else {
+                // Create new row
+                $cart = Cart::create([
+                    'user_id' => $userId,
+                    'product_id' => $request->product_id,
+                    'variant_type' => $request->variant_type,
+                    'variant_id' => $request->variant_id,
+                    'product_img' => $request->product_img,
+                    'product_name' => $request->product_name,
+                    'variant_label' => $request->variant_label,
+                    'price' => $request->price,
+                    'qty' => $request->qty,
+                ]);
+            }
 
             return response()->json(['success' => true, 'data' => $cart], 201);
         } catch (\Throwable $e) {
@@ -66,26 +78,38 @@ class CartController extends Controller
         }
     }
 
-    public function update(Request $request, Cart $cart)
+    public function updateQuantity(Request $request, Cart $cart)
     {
+        // Validation rules
         $rules = [
-            'qty' => 'nullable|integer|min:1',
-            'price' => 'nullable|numeric|min:0',
-            'variant_label' => 'nullable|string|max:255',
+            'qty' => 'required|integer|min:1'
         ];
 
         $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         try {
-            $cart->fill($request->only(['qty', 'price', 'variant_label']));
+            // Update quantity
+            $cart->qty = $request->qty;
             $cart->save();
 
-            return response()->json(['success' => true, 'data' => $cart], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart Quantity updated successfully',
+                'data' => $cart
+            ], 200);
         } catch (\Throwable $e) {
-            return response()->json(['success' => false, 'message' => 'Failed to update cart item', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update cart quantity',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -107,18 +131,10 @@ class CartController extends Controller
         try {
             $query = Cart::query();
 
-            if ($request->filled('session_token')) {
-                $query->where('session_token', $request->session_token);
-            }
+            $deleted = $query->where('user_id', auth()->id())->delete();
 
-            if ($request->filled('user_id')) {
-                $query->where('user_id', $request->user_id);
-            }
-
-            $deleted = $query->delete();
-
-            return response()->json(['success' => true, 'deleted' => $deleted], 200);
-        } catch (\Throwable $e) {
+            return response()->json(['success' => true, 'message'=> 'Cart Cleared Successfully'], 200);
+        } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Failed to clear cart', 'error' => $e->getMessage()], 500);
         }
     }

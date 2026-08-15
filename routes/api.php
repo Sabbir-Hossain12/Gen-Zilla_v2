@@ -38,10 +38,10 @@ Route::prefix('v1')->group(function () {
         Route::prefix('carts')->group(function () {
             Route::get('/', [CartController::class, 'index']);
             Route::post('/', [CartController::class, 'store']);
-            Route::put('/{cart}', [CartController::class, 'update']);
-            Route::delete('/{cart}', [CartController::class, 'destroy']);
+            Route::put('/{cart}', [CartController::class, 'updateQuantity']);
+            Route::post('/{cart}', [CartController::class, 'destroy']);
             // clear cart (delete by session_token or user_id)
-            Route::delete('/', [CartController::class, 'clear']);
+            Route::post('/clear', [CartController::class, 'clear']);
         });
     });
 });
