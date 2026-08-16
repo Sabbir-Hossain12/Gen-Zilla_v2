@@ -97,6 +97,11 @@ const activeTab = ref('overview')
 //Cart
 const cart = useCart();
 
+onMounted(async () => {
+    // fetch Cart
+    // await cart.fetchCart();
+    console.log('cart items:',cart.items)
+})
 //
 // // add item
 async function addToCart() {

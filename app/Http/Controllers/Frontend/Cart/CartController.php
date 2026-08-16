@@ -50,7 +50,8 @@ class CartController extends Controller
             // Check if cart row already exists for same product + variant
             $cart = Cart::where('user_id', $userId)
                 ->where('product_id', $request->product_id)
-                ->where('variant_id', $request->variant_id)
+                ->where('variant_type', $request->variant_type)
+                ->where('variant_label', $request->variant_label)
                 ->first();
 
             if ($cart) {

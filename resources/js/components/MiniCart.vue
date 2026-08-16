@@ -2,14 +2,19 @@
 import { useMiniCart } from "@/composable/useMiniCart";
 import {onMounted} from "vue";
 import {useCart} from "@/stores/cart.js";
+import {storeToRefs} from "pinia";
 const { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty } = useMiniCart();
 
 const cart = useCart()
-
+const baseUrl = import.meta.env.VITE_APP_URL;
 onMounted(async () => {
     // fetch Cart
     await cart.fetchCart();
+
 })
+const {items,totalQty,subtotal,token} = storeToRefs(cart)
+
+
 </script>
 
 <template>
@@ -31,7 +36,7 @@ onMounted(async () => {
     <div class="card-header px-2.5 py-1.5 bg-yellow flex justify-between shrink-0">
       <div class="space-x-1">
         <i class="fa-solid fa-basket-shopping bg-transparent"></i>
-        <span class="">1 Items</span>
+        <span class="">{{ totalQty}} Items</span>
       </div>
       <div class="space-x-1 cursor-pointer" @click="closeMiniCard">
         <i class="fa-solid fa-xmark bg-transparent"></i>
@@ -42,31 +47,33 @@ onMounted(async () => {
     <!--  Products Section  -->
     <div class="overflow-y-auto grow min-h-0 p-1 ">
       <!--  Single Products-->
-      <div  class="overflow-hidden flex items-center gap-x-3 py-2 border-b-2 border-b-gray-200 ">
-        <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/67c02190656b9dabf0b44640_2819508_1_80.webp"
+      <div v-for="item in items"  class="overflow-hidden flex items-center gap-x-3 py-2 border-b-2 border-b-gray-200 ">
+        <img :src="baseUrl + '/' + item.product_img"
              height="45" width="56" class="text-center" alt="">
         <div class="flex-1 min-w-0">
           <a class="text-xs mb-0.5 block min-w-full overflow-hidden text-ellipsis
-          whitespace-nowrap leading-none text-black font-semibold ">Wow! Masala Instant Noodles 496gm
+          whitespace-nowrap leading-none text-black font-semibold ">{{ item.product_name }}
           </a>
           <div class="flex justify-between mt-1.5 whitespace-nowrap">
             <div class="space-x-2">
-              <span class="text-primary text-sm font-semibold">৳99</span>
-              <span class="text-primary text-xs font-medium">৳175 | <span class="text-gray-500">Piece</span></span>
+              <span class="text-primary text-sm font-semibold">৳{{ item.price}}</span>
+              <span class="text-primary text-xs font-medium"> <span class="text-gray-500">Piece</span></span>
             </div>
 
             <div class="flex justify-between">
               <div class="mr-3 ">
-                <button class="text-xs text-gray-500 cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
+                <button class="text-xs text-gray-500 cursor-pointer" @click="item.removeItem(item.id)">
+                    <font-awesome-icon icon="fa-solid fa-trash-can" style="color: rgb(216, 7, 65);" />
+                </button>
               </div>
 
               <div class="space-x-2">
-                <button @click="minusQty"
+                <button @click="cart.updateQuantity(item.id, item.qty - 1)"
                         class="text-xs text-primary font-medium rounded-full bg-secondary shadow-xl p-1.5 cursor-pointer">
                     <font-awesome-icon icon="fa-solid fa-minus" style="color: rgb(216, 7, 65);" />
                 </button>
-                <span class="text-xs text-primary font-medium">{{ qty}}</span>
-                <button @click="plusQty"
+                <span class="text-xs text-primary font-medium">{{ item.qty }}</span>
+                <button @click="cart.updateQuantity(item.id, item.qty + 1)"
                         class="text-xs text-primary font-medium rounded-full bg-secondary shadow-xl p-1.5 cursor-pointer">
                     <font-awesome-icon icon="fa-solid fa-plus" style="color: rgb(216, 7, 65);" />
                 </button>
@@ -84,7 +91,7 @@ onMounted(async () => {
     <div class="flex shrink-0">
       <div class="flex h-11 w-1/2 items-center justify-center bg-yellow text-sm font-medium leading-none text-black">
         <h4
-            class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳2,666</h4></div>
+            class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳{{ subtotal}}</h4></div>
       <router-link :to="{name: 'Checkout'}" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white">Place order</router-link>
     </div>
   </div>
