@@ -1,6 +1,8 @@
 import {defineStore} from "pinia";
 import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
+import { Toast } from "toaster-js";
+import "toaster-js/default.css";
 
 export const useCart = defineStore('cart', () => {
 
@@ -24,6 +26,7 @@ export const useCart = defineStore('cart', () => {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
             })
+            items.value =[];
             items.value = res.data.data || []
             return items.value
         } catch (err) {
@@ -35,6 +38,7 @@ export const useCart = defineStore('cart', () => {
     }
 
     async function addItem(payload) {
+
         // payload should match API: product_id, variant_type, variant_id, product_img, product_name, variant_label, price, qty, session_token, user_id
         loading.value = true
         error.value = null
@@ -44,11 +48,10 @@ export const useCart = defineStore('cart', () => {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
             })
-            // API returns created item
-            items.value.push(res.data.data)
-            // return res.data.data
 
-            alert('Product Added to Cart');
+            await fetchCart()
+
+            new Toast("Product Added to Cart!", Toast.TYPE_DONE);
         } catch (err) {
             error.value = err
             throw err
@@ -84,12 +87,15 @@ export const useCart = defineStore('cart', () => {
     async function removeItem(id) {
         loading.value = true
         error.value = null
+
         try {
             await axios.post(`/api/v1/carts/${id}`,{},{
                 headers: {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
             })
+            new Toast("Product Deleted from Cart!", Toast.TYPE_DONE);
+
             items.value = items.value.filter(i => i.id !== id)
             return true
         } catch (err) {

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Frontend\Order;
 
 use App\Http\Controllers\Controller;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderProduct;
-use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,52 +14,39 @@ use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $user_id = auth()->id();
+        $cartItems = Cart::where('user_id', $user_id)->get();
 
-        if (Cart::content()->isEmpty()) {
-            return redirect()->back()->with('error',
-                'Your cart is empty. Please add items to your cart before placing an order.');
+        if ($cartItems->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cart is empty'
+            ], 404);
         }
+
         DB::beginTransaction();
+
         try {
 //            dd($request->all());
 
-//            $request->validate([
-//                'first_name' => ['required', 'string', 'max:255'],
-//                'last_name' => ['string', 'max:255'],
-//                'company_name' => ['string', 'max:255'],
-//                'address_1' => ['required', 'string', 'max:255'],
-//                'address_2' => ['string', 'max:255'],
-//                'state_district' => ['string', 'max:255'],
-//                'zip' => ['required', 'string', 'max:255'],
-//                'country' => ['required', 'string', 'max:255'],
-//                'phone' => ['string', 'max:255'],
-//                'email' => ['string', 'email', 'max:255'],
-//                'area' => ['string', 'max:255'],
-//                'thana' => ['string', 'max:255'],
-//                'gender' => ['string', 'max:255'],
-//
-//            ]);
+            $request->validate([
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name' => ['string', 'max:255'],
+                'company_name' => ['string', 'max:255'],
+                'address_1' => ['required', 'string', 'max:255'],
+                'address_2' => ['string', 'max:255'],
+                'state_district' => ['string', 'max:255'],
+                'zip' => ['required', 'string', 'max:255'],
+                'country' => ['required', 'string', 'max:255'],
+                'phone' => ['string', 'max:255'],
+                'email' => ['string', 'email', 'max:255'],
+                'area' => ['string', 'max:255'],
+                'thana' => ['string', 'max:255'],
+                'gender' => ['string', 'max:255'],
+
+            ]);
 
 
 //           Create Customer
@@ -92,7 +78,7 @@ class OrderController extends Controller
                 $order->coupon_id = Session::get('coupon')['id'];
             }
 
-            $order->invoiceID = 'BM'.rand('100000', '999999');
+            $order->invoiceID = 'BM' . rand('100000', '999999');
             $order->tran_id = $tranId;
             $order->payment_method = $request->payment_method;
             $order->shipping_charge = $request->shipping_charge;
@@ -107,7 +93,7 @@ class OrderController extends Controller
             $order->save();
 
 //          Create Order Products
-            foreach (Cart::content() as $cartItem) {
+            foreach ($cartItems as $cartItem) {
                 $orderProduct = new OrderProduct();
                 $orderProduct->order_id = $order->id;
                 $orderProduct->product_id = $cartItem->id;
@@ -138,7 +124,7 @@ class OrderController extends Controller
                 $post_data['tran_id'] = $tranId; // tran_id must be unique
 
                 # CUSTOMER INFORMATION
-                $post_data['cus_name'] = $request->first_name.' '.$request->last_name;
+                $post_data['cus_name'] = $request->first_name . ' ' . $request->last_name;
                 $post_data['cus_email'] = $request->email ?? 'customer@mail.com';
                 $post_data['cus_add1'] = $request->address_1;
                 $post_data['cus_add2'] = $request->address_2 ?? '';
@@ -150,7 +136,7 @@ class OrderController extends Controller
                 $post_data['cus_fax'] = "123456";
 
                 # SHIPMENT INFORMATION
-                $post_data['ship_name'] = $request->first_name.' '.$request->last_name;
+                $post_data['ship_name'] = $request->first_name . ' ' . $request->last_name;
                 $post_data['ship_add1'] = $request->address_1;
                 $post_data['ship_add2'] = $request->address_2 ?? '';
                 $post_data['ship_city'] = $request->state_district ?? 'Dhaka';
@@ -173,43 +159,11 @@ class OrderController extends Controller
                     $payment_options = array();
                 }
             }
-            return view('frontend.pages.orders.order-success', compact('order' ));
+            return view('frontend.pages.orders.order-success', compact('order'));
         } catch (Exception $exception) {
             DB::rollBack();
 
             dd($exception->getMessage());
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

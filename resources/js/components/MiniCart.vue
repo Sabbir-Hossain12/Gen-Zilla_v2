@@ -62,7 +62,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
 
             <div class="flex justify-between">
               <div class="mr-3 ">
-                <button class="text-xs text-gray-500 cursor-pointer" @click="item.removeItem(item.id)">
+                <button class="text-xs text-gray-500 cursor-pointer" @click="cart.removeItem(item.id)">
                     <font-awesome-icon icon="fa-solid fa-trash-can" style="color: rgb(216, 7, 65);" />
                 </button>
               </div>
@@ -81,7 +81,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
             </div>
           </div>
           <div class="flex flex-wrap empty:hidden">
-            <div class="mr-2 rounded-md px-1 text-xs leading-none text-gray-500">৳76 off</div>
+            <div class="mr-2 rounded-md px-1 text-xs leading-none text-gray-500">{{ item.variant_type }} : {{ item.variant_label }}</div>
           </div>
         </div>
       </div>

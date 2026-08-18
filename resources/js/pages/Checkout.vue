@@ -1,6 +1,17 @@
 <script setup>
 
 import MainLayout from "@/layouts/MainLayout.vue";
+import {useCart} from "@/stores/cart.js";
+import {onMounted} from "vue";
+import {storeToRefs} from "pinia";
+
+const cart = useCart()
+const baseUrl = import.meta.env.VITE_APP_URL;
+onMounted(async () => {
+    // fetch Cart
+    await cart.fetchCart();
+})
+
 </script>
 
 <template>
@@ -280,45 +291,17 @@ import MainLayout from "@/layouts/MainLayout.vue";
           <div class="flex flex-col divide-y divide-gray-100">
 
             <!-- Item 1 -->
-            <div class="flex items-center gap-3 py-3">
+            <div v-for="item in cart.items" :key="item.id" class="flex items-center gap-3 py-3">
               <div class="relative shrink-0">
-                <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65fa961e115075f231ecce6b_Radhuni-Shadmishali-Seasoning-Mixed-96gm_1_415.webp"
+                <img :src="baseUrl + '/' + item.product_img"
                      class="w-14 h-14 object-contain border border-gray-100 rounded-md" alt=""/>
-                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">1</span>
+                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">{{ item.qty || 1}}</span>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-gray-800 truncate">ACI Pure Puffed Rice 500gm</p>
-                <p class="text-xs text-gray-400 mt-0.5">Per Piece</p>
+                <p class="text-sm font-semibold text-gray-800 truncate">{{ item.product_name || 'loading'}}</p>
+                <p class="text-xs text-gray-400 mt-0.5">{{ item.variant_type }} : {{ item.variant_label }}</p>
               </div>
-              <span class="text-sm font-bold text-[#E8312A] shrink-0">৳75</span>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="flex items-center gap-3 py-3">
-              <div class="relative shrink-0">
-                <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/67c02190656b9dabf0b44640_2819508_1_80.webp"
-                     class="w-14 h-14 object-contain border border-gray-100 rounded-md" alt=""/>
-                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">2</span>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-gray-800 truncate">Wow! Masala Instant Noodles 496gm</p>
-                <p class="text-xs text-gray-400 mt-0.5">Per Piece</p>
-              </div>
-              <span class="text-sm font-bold text-[#E8312A] shrink-0">৳198</span>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="flex items-center gap-3 py-3">
-              <div class="relative shrink-0">
-                <img src="https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/692ed719d5287d4d62f634cb_Supermom-Baby-Diaper-Medium-50Pcs_1_80.webp"
-                     class="w-14 h-14 object-contain border border-gray-100 rounded-md" alt=""/>
-                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">1</span>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-gray-800 truncate">Supermom Baby Diaper Medium 50Pcs</p>
-                <p class="text-xs text-gray-400 mt-0.5">Per Pack</p>
-              </div>
-              <span class="text-sm font-bold text-[#E8312A] shrink-0">৳1,500</span>
+              <span class="text-sm font-bold text-[#E8312A] shrink-0">৳{{ item.price}}</span>
             </div>
 
           </div>
@@ -327,7 +310,7 @@ import MainLayout from "@/layouts/MainLayout.vue";
           <div class="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4">
             <div class="flex justify-between text-sm text-gray-600">
               <span>Subtotal (4 items)</span>
-              <span class="font-medium">৳1,773</span>
+              <span class="font-medium">৳{{ cart.subtotal }}</span>
             </div>
             <div class="flex justify-between text-sm text-gray-600">
               <span>Delivery Charge</span>
