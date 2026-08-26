@@ -2,7 +2,7 @@
 
 import MainLayout from "@/layouts/MainLayout.vue";
 import {useCart} from "@/stores/cart.js";
-import {onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 
 const cart = useCart()
@@ -10,7 +10,20 @@ const baseUrl = import.meta.env.VITE_APP_URL;
 onMounted(async () => {
     // fetch Cart
     await cart.fetchCart();
+    await cart.fetchDeliveryList();
 })
+const selectedDeliveryId = ref(1);
+const selectedDelivery = computed(() =>
+    cart.deliveryList.find(d => d.id === selectedDeliveryId.value)
+)
+const selectedDeliveryCharge = computed(() =>
+    selectedDelivery.value?.delivery_charge || 0
+)
+
+const total = computed(() =>
+    cart.subtotal + selectedDeliveryCharge.value
+)
+
 
 </script>
 
@@ -147,33 +160,18 @@ onMounted(async () => {
         <div class="bg-white border border-gray-100 rounded-lg p-5">
           <div class="flex items-center gap-2 mb-5">
             <div class="w-6 h-6 rounded-full bg-[#E8312A] text-white flex items-center justify-center text-xs font-bold">2</div>
-            <h2 class="text-base font-bold text-gray-800">Delivery Time</h2>
+            <h2 class="text-base font-bold text-gray-800">Delivery Area</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <label class="flex items-center gap-3 border-2 border-[#E8312A] rounded-lg p-3 cursor-pointer bg-red-50">
-              <input type="radio" name="delivery" checked class="accent-[#E8312A]"/>
+            <label v-for="delivery in  cart.deliveryList" :key="delivery.id" :class="delivery.id===1 ? 'border-2 border-[#E8312A]' : ''" class="flex items-center gap-3  rounded-lg p-3 cursor-pointer bg-red-50">
+              <input type="radio" name="delivery" :value="delivery.id" v-model="selectedDeliveryId" class="accent-[#E8312A]"/>
               <div>
-                <p class="text-sm font-semibold text-gray-800">Express</p>
-                <p class="text-xs text-gray-500">1–2 hours</p>
-                <p class="text-xs font-bold text-[#E8312A] mt-0.5">৳60</p>
+                <p class="text-sm font-semibold text-gray-800">{{ delivery.delivery_title || '' }}</p>
+                <p class="text-xs text-gray-500"></p>
+                <p class="text-xs font-bold text-[#E8312A] mt-0.5">৳{{ delivery.delivery_charge || ''}}</p>
               </div>
             </label>
-            <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#E8312A] transition-colors">
-              <input type="radio" name="delivery" class="accent-[#E8312A]"/>
-              <div>
-                <p class="text-sm font-semibold text-gray-800">Standard</p>
-                <p class="text-xs text-gray-500">3–5 hours</p>
-                <p class="text-xs font-bold text-[#E8312A] mt-0.5">৳30</p>
-              </div>
-            </label>
-            <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#E8312A] transition-colors">
-              <input type="radio" name="delivery" class="accent-[#E8312A]"/>
-              <div>
-                <p class="text-sm font-semibold text-gray-800">Scheduled</p>
-                <p class="text-xs text-gray-500">Pick a time slot</p>
-                <p class="text-xs font-bold text-[#E8312A] mt-0.5">৳30</p>
-              </div>
-            </label>
+
           </div>
         </div>
 
@@ -309,17 +307,17 @@ onMounted(async () => {
           <!-- Price Breakdown -->
           <div class="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4">
             <div class="flex justify-between text-sm text-gray-600">
-              <span>Subtotal (4 items)</span>
+              <span>Subtotal ({{ cart.totalQty }} items)</span>
               <span class="font-medium">৳{{ cart.subtotal }}</span>
             </div>
             <div class="flex justify-between text-sm text-gray-600">
               <span>Delivery Charge</span>
-              <span class="font-medium">৳60</span>
+              <span class="font-medium">৳{{ selectedDelivery?.delivery_charge || 0 }}</span>
             </div>
-            <div class="flex justify-between text-sm text-green-600">
-              <span>Discount</span>
-              <span class="font-medium">- ৳76</span>
-            </div>
+<!--            <div class="flex justify-between text-sm text-green-600">-->
+<!--              <span>Discount</span>-->
+<!--              <span class="font-medium">- ৳76</span>-->
+<!--            </div>-->
             <div class="flex justify-between text-sm text-gray-600">
               <span>Promo Code</span>
               <span class="text-gray-400 italic">Not applied</span>
@@ -329,14 +327,14 @@ onMounted(async () => {
           <!-- Total -->
           <div class="mt-3 flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3 border border-gray-100">
             <span class="text-base font-bold text-gray-800">Total</span>
-            <span class="text-xl font-bold text-[#E8312A]">৳1,757</span>
+            <span class="text-xl font-bold text-[#E8312A]">৳{{ total}}</span>
           </div>
 
           <!-- Savings badge -->
-          <div class="mt-2 flex items-center justify-center gap-1.5 bg-green-50 border border-green-100 rounded-md px-3 py-2">
-            <i class="fa-solid fa-tag text-green-600 text-xs"></i>
-            <span class="text-xs text-green-700 font-semibold">You are saving ৳76 on this order!</span>
-          </div>
+<!--          <div class="mt-2 flex items-center justify-center gap-1.5 bg-green-50 border border-green-100 rounded-md px-3 py-2">-->
+<!--            <i class="fa-solid fa-tag text-green-600 text-xs"></i>-->
+<!--            <span class="text-xs text-green-700 font-semibold">You are saving ৳76 on this order!</span>-->
+<!--          </div>-->
 
           <!-- Place Order Button -->
           <router-link :to="{ name: 'Success' }" class="mt-5 w-full bg-[#E8312A] hover:bg-[#C4251F] text-white font-bold rounded-full py-3.5 text-base flex items-center justify-center gap-2 transition-colors shadow-sm">

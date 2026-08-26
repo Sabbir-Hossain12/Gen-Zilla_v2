@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\Frontend\Auth\AuthController;
 use App\Http\Controllers\Frontend\Cart\CartController;
+use App\Http\Controllers\Frontend\Order\OrderController;
 use App\Http\Controllers\Frontend\WebviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-    Route::get('/categories',function ()
-    {
-       $categories = \App\Models\Category::with('subcategories')->get();
+    Route::get('/categories', function () {
+        $categories = \App\Models\Category::with('subcategories')->get();
 
-       return response()->json($categories);
+        return response()->json($categories);
     });
 
     //Auth
@@ -30,9 +30,11 @@ Route::prefix('v1')->group(function () {
     Route::get('/details/{slug}', [WebviewController::class, 'productDetails']);
 
 
-
-    Route::middleware('auth:sanctum')->group( function (){
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
+
+        //Delivery zone
+        Route::get('/delivery-list',[OrderController::class, 'deliveryList']);
 
         //Cart
         Route::prefix('carts')->group(function () {
@@ -43,5 +45,9 @@ Route::prefix('v1')->group(function () {
             // clear cart (delete by session_token or user_id)
             Route::post('/clear', [CartController::class, 'clear']);
         });
+
+        //Checkout Order
+        Route::post('/order-submit', [OrderController::class, 'orderSubmit']);
+
     });
 });

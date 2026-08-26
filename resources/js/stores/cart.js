@@ -8,6 +8,7 @@ export const useCart = defineStore('cart', () => {
 
     // state
     const items = ref([]) // array of cart rows
+    const deliveryList = ref([])
     const loading = ref(false)
     const error = ref(null)
     const token = ref(localStorage.getItem('token') || null);
@@ -124,6 +125,26 @@ export const useCart = defineStore('cart', () => {
         }
     }
 
+    async function fetchDeliveryList() {
+        try {
+            const res = await axios.get('/api/v1/delivery-list', {
+                headers: {
+                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                }
+            })
+            deliveryList.value =[];
+            deliveryList.value = res.data.data || []
+            return deliveryList.value
+        } catch (err) {
+            error.value = err
+            throw err
+        } finally {
+            loading.value = false
+        }
+    }
+
+
+
     return {
         items,
         loading,
@@ -134,7 +155,11 @@ export const useCart = defineStore('cart', () => {
         addItem,
         updateQuantity,
         removeItem,
-        clearCart
+        clearCart,
+        fetchDeliveryList,
+        deliveryList
+
+
     }
 })
 

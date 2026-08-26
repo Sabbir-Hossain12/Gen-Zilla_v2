@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Frontend\Order;
 use App\Http\Controllers\Controller;
 use App\Library\SslCommerz\SslCommerzNotification;
 use App\Models\Customer;
+use App\Models\DeliveryCharge;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use Exception;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
-    public function store(Request $request)
+    public function orderSubmit(Request $request)
     {
         $user_id = auth()->id();
         $cartItems = Cart::where('user_id', $user_id)->get();
@@ -29,8 +31,6 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-//            dd($request->all());
-
             $request->validate([
                 'first_name' => ['required', 'string', 'max:255'],
                 'last_name' => ['string', 'max:255'],
@@ -47,7 +47,6 @@ class OrderController extends Controller
                 'gender' => ['string', 'max:255'],
 
             ]);
-
 
 //           Create Customer
             $customer = new Customer();
@@ -89,7 +88,6 @@ class OrderController extends Controller
             $order->order_status = 'Pending';
             $order->payment_status = 'Pending';
             $order->payment_method = $request->payment_method;
-
             $order->save();
 
 //          Create Order Products
@@ -112,11 +110,11 @@ class OrderController extends Controller
             }
 
             DB::commit();
-            Cart::destroy();
+            Cart::where('user_id', $user_id)->delete();
             Session::forget('coupon');
 
             if ($request->payment_method == 'sslcommerzz') {
-//                dd($request->all());
+//              dd($request->all());
 
                 $post_data = array();
                 $post_data['total_amount'] = $request->total; # You cant not pay less than 10
@@ -159,11 +157,29 @@ class OrderController extends Controller
                     $payment_options = array();
                 }
             }
-            return view('frontend.pages.orders.order-success', compact('order'));
-        } catch (Exception $exception) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Order placed successfully',
+                'data' => $order,
+            ]);
+        } catch (Exception $e) {
             DB::rollBack();
 
-            dd($exception->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
+    }
+
+    public function deliveryList()
+    {
+        $list = DeliveryCharge::where('status', 1)->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delivery List Fetched Successfully',
+            'data' => $list,
+        ], 200);
     }
 }
