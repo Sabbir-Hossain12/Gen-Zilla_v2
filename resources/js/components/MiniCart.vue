@@ -13,8 +13,6 @@ onMounted(async () => {
 
 })
 const {items,totalQty,subtotal,token} = storeToRefs(cart)
-
-
 </script>
 
 <template>
@@ -23,8 +21,8 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
               transition-all duration-300 ease-linear z-99"
       @click="openMiniCard">
     <p class="  bg-center bg-no-repeat bg-center_top_6px    font-semibold px-3 pt-6 pb-1"
-       style="background-image:url('https://d2t8nl1y0ie1km.cloudfront.net/public/minicart-icon.svg')">0 Items</p>
-    <p class="w-full rounded-b-[5px] bg-black px-3 py-1">৳0</p>
+       style="background-image:url('https://d2t8nl1y0ie1km.cloudfront.net/public/minicart-icon.svg')">{{ cart.totalQty || '0' }} Items</p>
+    <p class="w-full rounded-b-[5px] bg-black px-3 py-1">৳{{ cart.subtotal || '0'}}</p>
   </button>
 
   <div id="mini-cart" :class="isOpen ? 'opacity-100 translate-x-0 z-100 ' +

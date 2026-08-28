@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Frontend\Order;
 
 use App\Http\Controllers\Controller;
 use App\Library\SslCommerz\SslCommerzNotification;
+use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\DeliveryCharge;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use Exception;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -38,13 +38,9 @@ class OrderController extends Controller
                 'address_1' => ['required', 'string', 'max:255'],
                 'address_2' => ['string', 'max:255'],
                 'state_district' => ['string', 'max:255'],
-                'zip' => ['required', 'string', 'max:255'],
                 'country' => ['required', 'string', 'max:255'],
                 'phone' => ['string', 'max:255'],
                 'email' => ['string', 'email', 'max:255'],
-                'area' => ['string', 'max:255'],
-                'thana' => ['string', 'max:255'],
-                'gender' => ['string', 'max:255'],
 
             ]);
 
@@ -77,10 +73,12 @@ class OrderController extends Controller
                 $order->coupon_id = Session::get('coupon')['id'];
             }
 
+            $deliveryCharge= DeliveryCharge::where('id', $request->delivery_id)->first()->delivery_charge ?? 0;
+
             $order->invoiceID = 'BM' . rand('100000', '999999');
             $order->tran_id = $tranId;
             $order->payment_method = $request->payment_method;
-            $order->shipping_charge = $request->shipping_charge;
+            $order->shipping_charge = $deliveryCharge;
             $order->order_note = $request->order_note;
             $order->subtotal = $request->subtotal;
             $order->total = $request->total;
@@ -94,18 +92,13 @@ class OrderController extends Controller
             foreach ($cartItems as $cartItem) {
                 $orderProduct = new OrderProduct();
                 $orderProduct->order_id = $order->id;
-                $orderProduct->product_id = $cartItem->id;
-                $orderProduct->product_name = $cartItem->name;
-
-
+                $orderProduct->product_id = $cartItem->product_id;
+                $orderProduct->product_name = $cartItem->product_name;
                 $orderProduct->product_price = $cartItem->price;
                 $orderProduct->quantity = $cartItem->qty;
                 $orderProduct->total = $cartItem->qty * $cartItem->price;
+                $orderProduct->variant = $cartItem->variant_label;
 
-                $orderProduct->color = $cartItem->options->color;
-                $orderProduct->size = $cartItem->options->size;
-                $orderProduct->weight = $cartItem->options->weight;
-                $orderProduct->purchase_price = $cartItem->options->purchase_price;
                 $orderProduct->save();
             }
 
