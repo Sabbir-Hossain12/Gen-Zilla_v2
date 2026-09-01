@@ -44,9 +44,11 @@ const routes = [
         component: Checkout,
     },
     {
-        path: '/success',
+        path: '/success/:invoiceID',
         name: 'Success',
         component: Success,
+        props: true, // allows route params as props
+
     },
     {
         path: '/dashboard',

@@ -6,6 +6,10 @@ import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import axios from "axios";
 import {Toast} from "toaster-js";
+import Router from "@/router/index.js";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const cart = useCart()
 const baseUrl = import.meta.env.VITE_APP_URL;
@@ -39,11 +43,45 @@ const token = ref(localStorage.getItem('token') || null);
 
 async function submitOrder() {
     try {
+        if (cart.items.length === 0) {
+            new Toast("Your Cart is Empty, Add some Products First !", Toast.TYPE_WARNING)
+
+            return;
+        }
+
+        if (name.value === '') {
+            new Toast("Name field required", Toast.TYPE_WARNING);
+
+            return 0;
+        }
+
+        if (phone.value === '') {
+            new Toast("Phone field required", Toast.TYPE_WARNING)
+
+            return 0;
+        }
+
+        const regex = /^[0-9]{11}$/; // exactly 10 digits
+
+        if (!regex.test(phone.value)) {
+            new Toast("Phone Number Format doesnt Match", Toast.TYPE_WARNING)
+
+            return 0;
+        }
+
+
+        if (address.value === '') {
+            new Toast("Address field required", Toast.TYPE_WARNING)
+
+            return 0;
+        }
+
+
         const res = await axios.post('/api/v1/order-submit', {
             "first_name": name.value,
             "address_1": address.value,
-            "email":email.value,
-            "phone":phone.value,
+            "email": email.value,
+            "phone": phone.value,
             "country": "Bangladesh",
             "order_note": orderNote.value,
             "delivery_id": delivery_id.value,
@@ -55,7 +93,13 @@ async function submitOrder() {
                 Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
             }
         })
-        console.log('Order Successful')
+
+        if (res.data.success === true)
+        {
+            console.log('here')
+            await router.push(`/success/${res.data.data.invoiceID}`)
+        }
+
     } catch (err) {
         throw err
     } finally {
@@ -279,7 +323,9 @@ async function submitOrder() {
                                     <img :src="baseUrl + '/' + item.product_img"
                                          class="w-14 h-14 object-contain border border-gray-100 rounded-md" alt=""/>
                                     <span
-                                        class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">{{ item.qty || 1 }}</span>
+                                        class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#E8312A] text-white text-[10px] font-bold flex items-center justify-center">{{
+                                            item.qty || 1
+                                        }}</span>
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-gray-800 truncate">
