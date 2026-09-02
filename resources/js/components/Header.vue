@@ -15,7 +15,6 @@ const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
 
 
-
 const toggleSidebar = () => {
     isOpen.value = !isOpen.value;
 };
@@ -26,6 +25,12 @@ const toggleUserDropdown = () => {
 
 function filterCategories() {
     return categories.value.filter(category => category.topbar)
+}
+
+//Logout
+async function logout() {
+    showUserDropdown.value = false;
+    await auth.handleLogout();
 }
 
 </script>
@@ -77,17 +82,17 @@ function filterCategories() {
                             class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger">
                             <span class="text-secondary text-xs font-bold">বাংলা</span>
                         </button>
-<!--                        SendOtp/Signup-->
+                        <!--                        SendOtp/Signup-->
                         <button v-if="!auth.isAuthenticated"
-                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
-                            @click="auth.showSendOtpModal = true">
+                                class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
+                                @click="auth.showSendOtpModal = true">
                             <i class="fa-solid fa-user text-white"></i>
                             <span class="text-secondary text-xs font-bold ">Sign in / Sign up</span>
                         </button>
 
                         <button v-else
-                            class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
-                            @click="toggleUserDropdown">
+                                class="flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer hover:bg-danger"
+                                @click="toggleUserDropdown">
                             <font-awesome-icon icon="user" class="text-secondary"/>
                             <span class="text-secondary text-xs font-bold ">Welcome</span>
                         </button>
@@ -129,8 +134,8 @@ function filterCategories() {
                                     <span class="font-semibold text-gray-700">Wishlist</span>
                                 </RouterLink>
 
-                                <button   @click="auth.handleLogout()"
-                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                <button @click="logout()"
+                                        class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="fa-arrow-right-from-bracket" class="text-primary"/>
                                     </span>

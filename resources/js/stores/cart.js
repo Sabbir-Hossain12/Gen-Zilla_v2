@@ -1,9 +1,11 @@
 import {defineStore} from "pinia";
 import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
-import { Toast } from "toaster-js";
+import {Toast} from "toaster-js";
 import "toaster-js/default.css";
+import ToasterUi from 'toaster-ui';
 
+const toaster = new ToasterUi();
 export const useCart = defineStore('cart', () => {
 
     // state
@@ -27,7 +29,7 @@ export const useCart = defineStore('cart', () => {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
             })
-            items.value =[];
+            items.value = [];
             items.value = res.data.data || []
             return items.value
         } catch (err) {
@@ -39,6 +41,10 @@ export const useCart = defineStore('cart', () => {
     }
 
     async function addItem(payload) {
+        if (!token.value) {
+            toaster.addToast(`Please Log in to Continue`, 'error', {duration: 5000})
+
+        }
 
         // payload should match API: product_id, variant_type, variant_id, product_img, product_name, variant_label, price, qty, session_token, user_id
         loading.value = true
@@ -61,11 +67,12 @@ export const useCart = defineStore('cart', () => {
         }
     }
 
+
     async function updateQuantity(id, qty) {
         loading.value = true
         error.value = null
         try {
-            const res = await axios.put(`/api/v1/carts/${id}`, { qty }, {
+            const res = await axios.put(`/api/v1/carts/${id}`, {qty}, {
                 headers: {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
@@ -90,7 +97,7 @@ export const useCart = defineStore('cart', () => {
         error.value = null
 
         try {
-            await axios.post(`/api/v1/carts/${id}`,{},{
+            await axios.post(`/api/v1/carts/${id}`, {}, {
                 headers: {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
@@ -107,14 +114,14 @@ export const useCart = defineStore('cart', () => {
         }
     }
 
-    async function clearCart({ sessionToken = null, userId = null } = {}) {
+    async function clearCart({sessionToken = null, userId = null} = {}) {
         loading.value = true
         error.value = null
         try {
             const params = {}
             if (sessionToken) params.session_token = sessionToken
             if (userId) params.user_id = userId
-            await axios.delete('/api/carts', { params })
+            await axios.delete('/api/carts', {params})
             items.value = []
             return true
         } catch (err) {
@@ -132,7 +139,7 @@ export const useCart = defineStore('cart', () => {
                     Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
                 }
             })
-            deliveryList.value =[];
+            deliveryList.value = [];
             deliveryList.value = res.data.data || []
             return deliveryList.value
         } catch (err) {
@@ -142,7 +149,6 @@ export const useCart = defineStore('cart', () => {
             loading.value = false
         }
     }
-
 
 
     return {

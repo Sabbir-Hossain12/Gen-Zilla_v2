@@ -1,10 +1,13 @@
 import {defineStore} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import ToasterUi from 'toaster-ui';
+
+const toaster = new ToasterUi();
 
 export const useAuth = defineStore('auth', () => {
     const token = ref(localStorage.getItem('token') || null);
-    let isAuthenticated = computed(()=> !!token.value);
+    let isAuthenticated = computed(() => !!token.value);
 
     const phone = ref('');
     // const otp = ref('');
@@ -15,14 +18,14 @@ export const useAuth = defineStore('auth', () => {
 
     async function sendOtp() {
         try {
-            const res = await axios.post('api/v1/auth/send-otp', {phone: phone.value})
-            if (res.data.success)
-                alert(`6 Digit OTP send to your phone number ! ${res.data.otp}`)
-            // otp.value = res.data.otp;
-            // expires.value = res.data.expires_in;
-            showSendOtpModal.value = false;
-            showVerifyOtpModal.value = true;
-
+            const res = await axios.post('/api/v1/auth/send-otp', {phone: phone.value})
+            if (res.data.success) {
+                toaster.addToast(`6 Digit OTP send to your phone number!`, 'info',{ duration:5000})
+                // otp.value = res.data.otp;
+                // expires.value = res.data.expires_in;
+                showSendOtpModal.value = false;
+                showVerifyOtpModal.value = true;
+            }
         } catch (err) {
             console.log(err)
         }
@@ -31,16 +34,22 @@ export const useAuth = defineStore('auth', () => {
 
     async function verifyOtp(otp) {
         try {
-            const res = await axios.post('api/v1/auth/verify-otp', {phone: phone.value, otp})
-            if (res.data.success)
-                alert('Login Successful')
-            showSendOtpModal.value = false;
-            showVerifyOtpModal.value = false;
-            localStorage.setItem('token', res.data.token);
-            token.value = res.data.token;
+            const res = await axios.post('/api/v1/auth/verify-otp', {phone: phone.value, otp})
+            if (res.data.success) {
+                toaster.addToast(`Login Successful`, 'success', {duration: 5000})
+                showSendOtpModal.value = false;
+                showVerifyOtpModal.value = false;
+                localStorage.setItem('token', res.data.token);
+                token.value = res.data.token;
+            }
+            else {
+                toaster.addToast(`Incorrect OTP, Try Again`, 'error', {duration: 5000})
 
+            }
         } catch (err) {
-            console.log(err)
+            // console.log(err)
+            toaster.addToast(`Incorrect OTP`, 'error', {duration: 5000})
+
         }
     }
 
@@ -56,10 +65,9 @@ export const useAuth = defineStore('auth', () => {
             token.value = null
             localStorage.removeItem('token')
 
-            alert('Logged out successfully')
+            toaster.addToast(`You have been Logged Out`, 'info',{ duration:5000})
         } catch (error) {
-            console.error('Logout failed:', error)
-            alert('Something went wrong while logging out')
+            toaster.addToast('Something went wrong while logging out')
         }
     }
 
