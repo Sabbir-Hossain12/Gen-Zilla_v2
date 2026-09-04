@@ -48,6 +48,7 @@ Route::prefix('v1')->group(function () {
 
         //Checkout Order
         Route::post('/order-submit', [OrderController::class, 'orderSubmit']);
+        Route::get('/order/{invoiceID}', [OrderController::class, 'orderByInvoiceID']);
 
     });
 });

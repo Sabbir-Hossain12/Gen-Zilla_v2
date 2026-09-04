@@ -175,4 +175,17 @@ class OrderController extends Controller
             'data' => $list,
         ], 200);
     }
+
+    public function orderByInvoiceID(string $invoiceID)
+    {
+        $order = Order::where('invoiceID', $invoiceID)
+            ->with('orderProducts','customer')
+            ->first();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order Fetched Successfully',
+            'data' => $order,
+        ]);
+    }
 }

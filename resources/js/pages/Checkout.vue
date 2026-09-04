@@ -84,7 +84,7 @@ async function submitOrder() {
             "phone": phone.value,
             "country": "Bangladesh",
             "order_note": orderNote.value,
-            "delivery_id": delivery_id.value,
+            "delivery_id": delivery_id,
             "payment_method": paymentMethod.value,
             "subtotal": subtotal,
             "total": total.value
