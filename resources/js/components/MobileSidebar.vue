@@ -2,8 +2,21 @@
 
 import sidebar1 from "@/assets/img/nav1.webp";
 import {useSidebar} from "@/composable/useSidebar.js";
-import {categories} from "@/data/Categories";
+import {onMounted, ref} from 'vue'
+
 const {isOpen} = useSidebar();
+
+let categories = ref([]);
+
+onMounted(async function () {
+    try {
+        const response = await fetch('/api/v1/categories')
+        if (!response.ok) throw new Error('Network error')
+        categories.value = await response.json()
+    } catch (error) {
+        console.error('Fetch failed:', error)
+    }
+})
 </script>
 
 <template>
@@ -18,7 +31,7 @@ const {isOpen} = useSidebar();
         <!-- Left side: icon + label -->
         <router-link :to="{name: 'CategoryProducts', params: {category_slug: category.slug}}" class="flex items-center gap-2">
           <img :src="sidebar1" alt="Food category icon" class="h-6 w-6"/>
-          <span class="text-[16px] font-medium">{{ category.name}}</span>
+          <span class="text-[16px] font-medium">{{ category.category_name}}</span>
         </router-link>
         <!-- Right side: expand/collapse button -->
         <button aria-label="Expand Food category" class="ml-2">

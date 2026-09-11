@@ -8,11 +8,64 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import VerifyOtp from "@/components/VerifyOtp.vue";
 
 import {useAuth} from "../stores/auth.js";
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import axios from "axios";
 
 const auth = useAuth();
+const router = useRouter();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
+
+//Search
+const query = ref('');
+const searchResults = ref([]);
+const showSearchDropdown = ref(false);
+let searchTimer = null;
+
+watch(query, (val) => {
+    clearTimeout(searchTimer);
+    if (!val.trim()) {
+        searchResults.value = [];
+        showSearchDropdown.value = false;
+        return;
+    }
+    searchTimer = setTimeout(async () => {
+        try {
+            const res = await axios.get('/api/v1/search', {params: {q: val.trim()}});
+            searchResults.value = res.data.success ? res.data.data : [];
+        } catch (err) {
+            console.error('Search error:', err);
+            searchResults.value = [];
+        }
+        showSearchDropdown.value = true;
+    }, 300);
+});
+
+function goToProduct(slug) {
+    showSearchDropdown.value = false;
+    query.value = '';
+    router.push({name: 'ProductDetails', params: {slug}});
+}
+
+//Calculate Sale Price (matches ProductCart logic)
+function getSalePrice(product) {
+    if (product.sizes?.length) {
+        return product.sizes[0].productSalePrice
+    } else if (product.weights?.length) {
+        return product.weights[0].productSalePrice
+    } else if (product.colors?.length) {
+        return product.colors[0].productSalePrice
+    }
+    return product.product_detail?.sale_price ?? 0
+}
+
+function submitSearch() {
+    const term = query.value.trim();
+    if (!term) return;
+    showSearchDropdown.value = false;
+    router.push({name: 'SearchResults', query: {q: term}});
+}
 
 
 const toggleSidebar = () => {
@@ -56,20 +109,47 @@ async function logout() {
                         <span class="text-secondary text-xs ">Select your delivery location</span>
                     </button>
                     <!-- Search Sections-->
-                    <div class="flex items-center bg-white rounded-md shadow-sm w-full max-w-lg ">
+                    <div class="flex items-center bg-white rounded-md shadow-sm w-full max-w-lg relative">
                         <!-- Input -->
-                        <input
-                            type="text"
-                            placeholder="Search your products"
-                            class="flex-1 px-4 py-1.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-l-md"
-                        />
+                        <form @submit.prevent="submitSearch" class="flex items-center w-full">
+                            <input
+                                v-model="query"
+                                type="text"
+                                placeholder="Search your products"
+                                class="flex-1 px-4 py-1.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-l-md"
+                            />
 
-                        <!-- Search Button -->
-                        <button
-                            class="px-4 py-1.5 bg-yellow-400 text-white font-semibold rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-2
-                            focus:ring-yellow-400 cursor-pointer">
-                            <FontAwesomeIcon icon="magnifying-glass" class="text-black"/>
-                        </button>
+                            <!-- Search Button -->
+                            <button
+                                type="submit"
+                                class="px-4 py-1.5 bg-yellow-400 text-white font-semibold rounded-r-md hover:bg-yellow-500 focus:outline-none focus:ring-2
+                                focus:ring-yellow-400 cursor-pointer">
+                                <FontAwesomeIcon icon="magnifying-glass" class="text-black"/>
+                            </button>
+                        </form>
+
+                        <!-- Close overlay -->
+                        <div v-if="showSearchDropdown"
+                             class="fixed inset-0 z-40"
+                             @click="showSearchDropdown = false"></div>
+
+                        <!-- Search Suggestions Dropdown -->
+                        <div v-if="showSearchDropdown"
+                             class="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 z-50 max-h-96 overflow-y-auto">
+                            <button
+                                v-for="product in searchResults"
+                                :key="product.id"
+                                @click="goToProduct(product.slug)"
+                                class="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-100 border-b border-gray-100 cursor-pointer">
+                                <img :src="product.product_detail?.productThumbnail_img"
+                                     class="w-10 h-10 object-cover rounded" alt="">
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span class="text-sm font-medium text-gray-800 truncate">{{ product.product_name }}</span>
+                                    <span class="text-xs text-primary font-bold">৳{{ parseInt(getSalePrice(product)) }}</span>
+                                </div>
+                            </button>
+                            <p v-if="!searchResults.length" class="p-3 text-sm text-gray-500">No products found.</p>
+                        </div>
                     </div>
                     <!--App Download Section-->
                     <a class="cursor-pointer hidden lg:block" href="#">

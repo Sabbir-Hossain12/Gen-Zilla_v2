@@ -5,6 +5,7 @@ import Checkout from "../pages/Checkout.vue";
 import Success from "../pages/Success.vue";
 import CategoryProducts from "../pages/product/CategoryProducts.vue";
 import SubcategoryProducts from "../pages/product/SubcategoryProducts.vue";
+import SearchResults from "../pages/SearchResults.vue";
 import Dashboard from "@/pages/user/Dashboard.vue";
 import OrderHistory from "@/pages/user/OrderHistory.vue";
 import PersonalInfo from "@/pages/user/PersonalInfo.vue";
@@ -24,6 +25,11 @@ const routes = [
         name: 'ProductDetails',
         component: ProductDetails,
         props: true, // allows route params as props
+    },
+    {
+        path: '/search',
+        name: 'SearchResults',
+        component: SearchResults,
     },
     {
       path: '/:category_slug',
