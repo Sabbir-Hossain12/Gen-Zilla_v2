@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Page;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Slider;
@@ -13,6 +15,7 @@ use App\Models\ThemeColor;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class WebviewController extends Controller
 {
@@ -374,6 +377,126 @@ class WebviewController extends Controller
             Log::error('Subcategory Products Issue:' . $e->getMessage());
 
             return response([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function header()
+    {
+        try {
+            $topCategories = Category::where('status', 1)
+                ->where('topCategory_status', 1)
+                ->get();
+
+            $brands = Brand::where('status', 1)->get();
+
+            $pages = Page::where('status', 1)
+                ->get()
+                ->map(function ($page) {
+                    $page->slug = $page->slug ?: Str::slug($page->title);
+
+                    return $page;
+                });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Header Data Fetched',
+                'data' => [
+                    'topCategories' => $topCategories,
+                    'brands' => $brands,
+                    'pages' => $pages,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Header Data Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function brands()
+    {
+        try {
+            $brands = Brand::where('status', 1)->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Brand List Fetched',
+                'data' => $brands
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Brand List Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function brandProducts(string $slug)
+    {
+        try {
+            $brand = Brand::where('slug', $slug)
+                ->where('status', 1)
+                ->with(['products' => function ($query) {
+                    $query->where('status', 1)
+                        ->with('productDetail','colors','sizes','weights');
+                }])
+                ->first();
+
+            if (! $brand) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Brand Not Found',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Brand Products Fetched',
+                'data' => $brand
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Brand Products Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function showPage(string $slug)
+    {
+        try {
+            $page = Page::where('status', 1)
+                ->get()
+                ->first(function ($item) use ($slug) {
+                    return $item->slug === $slug || Str::slug($item->title) === $slug;
+                });
+
+            if (! $page) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Page Not Found',
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Page Fetched',
+                'data' => $page
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Page Fetch Issue:' . $e->getMessage());
+
+            return response()->json([
                 'success' => false,
                 'message' => 'Something Went Wrong',
             ]);

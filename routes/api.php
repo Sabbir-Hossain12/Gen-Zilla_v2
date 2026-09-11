@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp']);
 
     //Home Page
+    Route::get('/header', [WebviewController::class, 'header']);
     Route::get('/home', [WebviewController::class, 'home']);
     Route::get('/sliders', [WebviewController::class, 'slider']);
     Route::get('/featured-subcategories', [WebviewController::class, 'featuredSubcategory']);
@@ -32,6 +33,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/search', [WebviewController::class, 'search']);
     Route::get('/categories/{slug}/products', [WebviewController::class, 'categoryProducts']);
     Route::get('/subcategories/{slug}/products', [WebviewController::class, 'subcategoryProducts']);
+
+    Route::get('/brands', [WebviewController::class, 'brands']);
+    Route::get('/brands/{slug}/products', [WebviewController::class, 'brandProducts']);
+    Route::get('/pages/{slug}', [WebviewController::class, 'showPage']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);

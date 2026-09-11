@@ -1,14 +1,13 @@
 <script setup>
 import shwapno_logo from "@/assets/img/shwapno_logo.png";
 import app_download from "@/assets/img/app-download.png";
-import {categories} from "@/data/Categories";
 import {useSidebar} from "@/composable/useSidebar";
 import SendOtp from "@/components/SendOtp.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import VerifyOtp from "@/components/VerifyOtp.vue";
 
 import {useAuth} from "../stores/auth.js";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
 
@@ -16,6 +15,24 @@ const auth = useAuth();
 const router = useRouter();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
+
+//Header nav data
+const topCategories = ref([])
+const brands = ref([])
+const pages = ref([])
+
+onMounted(async () => {
+    try {
+        const res = await axios.get('/api/v1/header')
+        if (res.data.success) {
+            topCategories.value = res.data.data.topCategories || []
+            brands.value = res.data.data.brands || []
+            pages.value = res.data.data.pages || []
+        }
+    } catch (err) {
+        console.error('Error fetching header data:', err)
+    }
+})
 
 //Search
 const query = ref('');
@@ -74,10 +91,6 @@ const toggleSidebar = () => {
 
 const toggleUserDropdown = () => {
     showUserDropdown.value = !showUserDropdown.value;
-}
-
-function filterCategories() {
-    return categories.value.filter(category => category.topbar)
 }
 
 //Logout
@@ -247,25 +260,21 @@ async function logout() {
                     <span class="font-bold text-[13px]">SHOP BY CATEGORY</span>
                 </div>
                 <ul class="flex items-center gap-2 md:gap-5 text-[11px] md:text-[14px] md:font-medium font-semibold text-nowrap overflow-hidden">
-                    <li class="mobile-header-button" v-for="(category,index) in filterCategories()" :key="index">
+                    <li class="mobile-header-button" v-for="(category,index) in topCategories" :key="index">
                         <router-link :to="{name: 'CategoryProducts', params: {category_slug: category.slug}}">
-                            {{ category.name }}
+                            {{ category.category_name }}
                         </router-link>
                     </li>
-
+                    <li class="mobile-header-button">
+                        <router-link :to="{name: 'Brands'}">Brands</router-link>
+                    </li>
                 </ul>
                 <ul class="hidden md:flex items-center gap-2">
-                    <li>
-                        <a class="flex items-center gap-1">
-                            <i class="fa-solid fa-store text-danger"></i>
-                            <span class="text-[12px] font-light">Our Outlets</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center gap-1">
+                    <li v-for="page in pages" :key="page.id">
+                        <router-link :to="{name: 'PageView', params: {slug: page.slug}}" class="flex items-center gap-1">
                             <i class="fa-regular fa-circle-question text-danger"></i>
-                            <span class="text-[12px] font-light">Help Line</span>
-                        </a>
+                            <span class="text-[12px] font-light">{{ page.title }}</span>
+                        </router-link>
                     </li>
                 </ul>
             </div>

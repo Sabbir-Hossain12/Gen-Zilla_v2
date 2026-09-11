@@ -3,7 +3,7 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import ProductCart from "@/components/ProductCart.vue";
 
 import {useRoute} from 'vue-router'
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import axios from "axios";
 
 
@@ -11,7 +11,9 @@ const route = useRoute()
 const category = ref(null)
 const loading = ref(true)
 
-onMounted(async () => {
+async function fetchCategory() {
+    loading.value = true
+    category.value = null
     try {
         const res = await axios.get(`/api/v1/categories/${route.params.category_slug}/products`)
         if (res.data.success) {
@@ -22,7 +24,11 @@ onMounted(async () => {
     } finally {
         loading.value = false
     }
-})
+}
+
+onMounted(fetchCategory)
+
+watch(() => route.params.category_slug, fetchCategory)
 </script>
 
 <template>

@@ -6,6 +6,9 @@ import Success from "../pages/Success.vue";
 import CategoryProducts from "../pages/product/CategoryProducts.vue";
 import SubcategoryProducts from "../pages/product/SubcategoryProducts.vue";
 import SearchResults from "../pages/SearchResults.vue";
+import Brands from "../pages/brands/Brands.vue";
+import BrandProducts from "../pages/brands/BrandProducts.vue";
+import PageView from "../pages/PageView.vue";
 import Dashboard from "@/pages/user/Dashboard.vue";
 import OrderHistory from "@/pages/user/OrderHistory.vue";
 import PersonalInfo from "@/pages/user/PersonalInfo.vue";
@@ -30,6 +33,23 @@ const routes = [
         path: '/search',
         name: 'SearchResults',
         component: SearchResults,
+    },
+    {
+        path: '/brands',
+        name: 'Brands',
+        component: Brands,
+    },
+    {
+        path: '/brands/:slug',
+        name: 'BrandProducts',
+        component: BrandProducts,
+        props: true,
+    },
+    {
+        path: '/pages/:slug',
+        name: 'PageView',
+        component: PageView,
+        props: true,
     },
     {
       path: '/:category_slug',
