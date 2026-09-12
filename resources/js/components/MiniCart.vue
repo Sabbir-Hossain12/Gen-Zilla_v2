@@ -3,6 +3,7 @@ import { useMiniCart } from "@/composable/useMiniCart";
 import {onMounted} from "vue";
 import {useCart} from "@/stores/cart.js";
 import {storeToRefs} from "pinia";
+import {formatPrice} from "@/utils/price";
 const { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty } = useMiniCart();
 
 const cart = useCart()
@@ -54,7 +55,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
           </a>
           <div class="flex justify-between mt-1.5 whitespace-nowrap">
             <div class="space-x-2">
-              <span class="text-primary text-sm font-semibold">৳{{ item.price}}</span>
+              <span class="text-primary text-sm font-semibold">৳{{ formatPrice(item.price) }}</span>
               <span class="text-primary text-xs font-medium"> <span class="text-gray-500">Piece</span></span>
             </div>
 
@@ -89,7 +90,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
     <div class="flex shrink-0">
       <div class="flex h-11 w-1/2 items-center justify-center bg-yellow text-sm font-medium leading-none text-black">
         <h4
-            class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳{{ subtotal}}</h4></div>
+             class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳{{ formatPrice(subtotal) }}</h4></div>
       <router-link :to="{name: 'Checkout'}" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white">Place order</router-link>
     </div>
   </div>

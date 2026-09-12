@@ -1,18 +1,16 @@
-<?php
+﻿<?php
 
 use App\Http\Controllers\Frontend\Auth\AuthController;
 use App\Http\Controllers\Frontend\Cart\CartController;
+use App\Http\Controllers\Frontend\DashboardController;
 use App\Http\Controllers\Frontend\Order\OrderController;
 use App\Http\Controllers\Frontend\WebviewController;
+use App\Http\Controllers\Frontend\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-    Route::get('/categories', function () {
-        $categories = \App\Models\Category::with('subcategories')->get();
-
-        return response()->json($categories);
-    });
+    Route::get('/categories', [WebviewController::class, 'categories']);
 
     //Auth
     Route::post('/auth/send-otp', [AuthController::class, 'sendOtp']);
@@ -57,6 +55,43 @@ Route::prefix('v1')->group(function () {
         //Checkout Order
         Route::post('/order-submit', [OrderController::class, 'orderSubmit']);
         Route::get('/order/{invoiceID}', [OrderController::class, 'orderByInvoiceID']);
+        //User Dashboard
+        Route::prefix('dashboard')->group(function () {
+            Route::get('/stats', [DashboardController::class, 'stats']);
+        });
+
+        //Order History
+        Route::get('/orders', [OrderController::class, 'orderHistory']);
+        Route::get('/orders/{invoiceID}', [OrderController::class, 'orderByInvoiceID']);
+
+        //Profile
+        Route::get('/profile', [DashboardController::class, 'getProfileDetails']);
+        Route::post('/profile', [DashboardController::class, 'updateProfileDetails']);
+        Route::post('/profile/image', [DashboardController::class, 'updateProfileImage']);
+        Route::post('/profile/password', [DashboardController::class, 'updatePassword']);
+
+        //Wishlist
+        Route::get('/wishlists', [WishlistController::class, 'index']);
+        Route::post('/wishlists', [WishlistController::class, 'store']);
+        Route::delete('/wishlists/{wishlist}', [WishlistController::class, 'destroy']);
+
+        //User Dashboard
+        Route::get('/dashboard-stats', [DashboardController::class, 'stats']);
+        Route::get('/dashboard-recent-orders', [DashboardController::class, 'recentOrders']);
+
+        //Order History
+        Route::get('/orders', [OrderController::class, 'orderHistory']);
+
+        //Profile
+        Route::get('/profile', [DashboardController::class, 'getProfileDetails']);
+        Route::post('/profile', [DashboardController::class, 'updateProfileDetails']);
+        Route::post('/profile/image', [DashboardController::class, 'updateProfileImage']);
+        Route::post('/profile/password', [DashboardController::class, 'updatePassword']);
+
+        //Wishlist
+        Route::get('/wishlists', [WishlistController::class, 'index']);
+        Route::post('/wishlists', [WishlistController::class, 'store']);
+        Route::post('/wishlists/{wishlist}', [WishlistController::class, 'destroy']);
 
     });
 });

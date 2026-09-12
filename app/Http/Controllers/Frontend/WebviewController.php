@@ -19,6 +19,31 @@ use Illuminate\Support\Str;
 
 class WebviewController extends Controller
 {
+    public function categories()
+    {
+        try {
+            $categories = Category::with(['subcategories' => function ($query) {
+                $query->where('status', 1)->orderBy('subcategory_name');
+            }])
+                ->where('status', 1)
+                ->orderBy('category_name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category List Fetched',
+                'data' => $categories
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Category List Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
     public function slider()
     {
         try {

@@ -1,6 +1,34 @@
 <script setup>
 import MainLayout from "@/layouts/MainLayout.vue";
 import DashboardSidebar from "@/components/DashboardSidebar.vue";
+import {useUser} from "@/stores/user";
+import {onMounted, ref} from "vue";
+
+const user = useUser();
+const activeStatus = ref('All');
+
+async function loadOrders() {
+    try {
+        await user.fetchOrderHistory({page: 1, perPage: 10, status: activeStatus.value});
+    } catch (err) {
+        console.error("Failed to load orders", err);
+    }
+}
+
+async function changeStatus(filter) {
+    activeStatus.value = filter;
+    await loadOrders();
+}
+
+async function goToPage(page) {
+    try {
+        await user.fetchOrderHistory({page, perPage: 10, status: activeStatus.value});
+    } catch (err) {
+        console.error("Failed to load orders", err);
+    }
+}
+
+onMounted(loadOrders);
 </script>
 
 <template>
@@ -18,13 +46,14 @@ import DashboardSidebar from "@/components/DashboardSidebar.vue";
                     <h1 class="text-2xl font-bold text-dark1">Order History</h1>
                     <p class="text-gray-500 mt-1">Track and review all your past orders.</p>
                 </div>
-                <select class="border border-border1 rounded-md px-3 py-2 text-sm text-dark1">
-                    <option>All Orders</option>
-                    <option>Pending</option>
-                    <option>Processing</option>
-                    <option>Delivered</option>
-                    <option>Cancelled</option>
-                </select>
+                    <select v-model="activeStatus" @change="changeStatus(activeStatus)"
+                            class="border border-border1 rounded-md px-3 py-2 text-sm text-dark1">
+                        <option>All</option>
+                        <option>Pending</option>
+                        <option>Processing</option>
+                        <option>Delivered</option>
+                        <option>Cancelled</option>
+                    </select>
             </div>
 
             <div class="bg-white rounded-lg border border-border1 shadow-sm overflow-hidden">
@@ -40,37 +69,16 @@ import DashboardSidebar from "@/components/DashboardSidebar.vue";
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-border1">
-                    <tr>
-                        <td class="px-6 py-4 font-medium">INV-2026-0912</td>
-                        <td class="px-6 py-4 text-gray-500">21 Jul 2026</td>
-                        <td class="px-6 py-4 text-gray-500">bKash</td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full bg-amber text-dark2 text-xs font-semibold">Pending</span></td>
-                        <td class="px-6 py-4 text-right font-semibold">৳2,450</td>
-                        <td class="px-6 py-4 text-right"><a href="#" class="text-primary font-medium hover:underline">View</a></td>
+                    <tr v-if="user.orders.length === 0">
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-500">No orders found.</td>
                     </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-medium">INV-2026-0876</td>
-                        <td class="px-6 py-4 text-gray-500">14 Jul 2026</td>
-                        <td class="px-6 py-4 text-gray-500">Cash on Delivery</td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">Delivered</span></td>
-                        <td class="px-6 py-4 text-right font-semibold">৳980</td>
-                        <td class="px-6 py-4 text-right"><a href="#" class="text-primary font-medium hover:underline">View</a></td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-medium">INV-2026-0842</td>
-                        <td class="px-6 py-4 text-gray-500">09 Jul 2026</td>
-                        <td class="px-6 py-4 text-gray-500">Card</td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">Processing</span></td>
-                        <td class="px-6 py-4 text-right font-semibold">৳3,200</td>
-                        <td class="px-6 py-4 text-right"><a href="#" class="text-primary font-medium hover:underline">View</a></td>
-                    </tr>
-                    <tr>
-                        <td class="px-6 py-4 font-medium">INV-2026-0801</td>
-                        <td class="px-6 py-4 text-gray-500">02 Jul 2026</td>
-                        <td class="px-6 py-4 text-gray-500">bKash</td>
-                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full bg-danger/20 text-danger text-xs font-semibold">Cancelled</span></td>
-                        <td class="px-6 py-4 text-right font-semibold">৳1,150</td>
-                        <td class="px-6 py-4 text-right"><a href="#" class="text-primary font-medium hover:underline">View</a></td>
+                    <tr v-for="order in user.orders" :key="order.id">
+                        <td class="px-6 py-4 font-medium">{{ order.invoiceID }}</td>
+                        <td class="px-6 py-4 text-gray-500">{{ order.order_date }}</td>
+                        <td class="px-6 py-4 text-gray-500">{{ order.payment_method }}</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 rounded-full bg-amber text-dark2 text-xs font-semibold">{{ order.order_status }}</span></td>
+                        <td class="px-6 py-4 text-right font-semibold">৳{{ Number(order.total).toLocaleString() }}</td>
+                        <td class="px-6 py-4 text-right"><RouterLink :to="`/order-details/${order.invoiceID}`" class="text-primary font-medium hover:underline">View</RouterLink></td>
                     </tr>
                     </tbody>
                 </table>

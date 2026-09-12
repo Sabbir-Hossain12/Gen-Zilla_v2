@@ -3,6 +3,7 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import { useRoute, RouterLink } from "vue-router";
 import axios from "axios";
 import { onMounted, ref, computed } from "vue";
+import {formatPrice} from "@/utils/price";
 
 const route = useRoute();
 const invoiceID = route.params.invoiceID;
@@ -204,7 +205,7 @@ onMounted(() => {
                                 </p>
                             </div>
                             <div class="text-right shrink-0">
-                                <p class="text-sm font-bold text-[#E8312A]">৳{{ item.product_price }}</p>
+                                <p class="text-sm font-bold text-[#E8312A]">৳{{ formatPrice(item.product_price) }}</p>
                                 <p class="text-xs text-gray-400">Qty: {{ item.quantity }}</p>
                             </div>
                         </div>
@@ -214,7 +215,7 @@ onMounted(() => {
                     <div class="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4">
                         <div class="flex justify-between text-sm text-gray-600">
                             <span>Subtotal ({{ totalItemsCount }} items)</span>
-                            <span class="font-medium">৳{{ order.subtotal }}</span>
+                            <span class="font-medium">৳{{ formatPrice(order.subtotal) }}</span>
                         </div>
                         <div class="flex justify-between text-sm text-gray-600">
                             <span>Delivery Charge</span>
@@ -222,18 +223,18 @@ onMounted(() => {
                         </div>
                         <div v-if="order.discount_amount" class="flex justify-between text-sm text-green-600">
                             <span>Discount</span>
-                            <span class="font-medium">− ৳{{ order.discount_amount }}</span>
+                            <span class="font-medium">− ৳{{ formatPrice(order.discount_amount) }}</span>
                         </div>
                         <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-1">
                             <span class="text-base font-bold text-gray-800">Total Payable</span>
-                            <span class="text-xl font-bold text-[#E8312A]">৳{{ order.total }} {{ order.currency }}</span>
+                            <span class="text-xl font-bold text-[#E8312A]">৳{{ formatPrice(order.total) }} {{ order.currency }}</span>
                         </div>
                     </div>
 
                     <!-- Discount Tag -->
                     <div v-if="order.discount_amount" class="mt-3 flex items-center gap-1.5 bg-green-50 border border-green-100 rounded-md px-3 py-2">
                         <i class="fa-solid fa-tag text-green-600 text-xs"></i>
-                        <span class="text-xs text-green-700 font-semibold">You saved ৳{{ order.discount_amount }} on this order!</span>
+                        <span class="text-xs text-green-700 font-semibold">You saved ৳{{ formatPrice(order.discount_amount) }} on this order!</span>
                     </div>
                 </div>
 
@@ -284,7 +285,7 @@ onMounted(() => {
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-gray-800">{{ order.payment_method || 'Cash on Delivery' }}</p>
-                                <p class="text-xs text-gray-500">Pay ৳{{ order.total }} when order arrives</p>
+                                <p class="text-xs text-gray-500">Pay ৳{{ formatPrice(order.total) }} when order arrives</p>
                             </div>
                             <span class="ml-auto text-xs bg-yellow-100 text-yellow-700 font-semibold px-2 py-0.5 rounded-full">
                                 {{ order.payment_status }}

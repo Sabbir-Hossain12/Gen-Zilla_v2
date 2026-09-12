@@ -58,7 +58,7 @@ const routes = [
       props: true, // allows route params as props
     },
     {
-        path:'/:subcategory_slug',
+        path:'/:category_slug/:subcategory_slug',
         name: 'SubcategoryProducts',
         component: SubcategoryProducts,
         props: true, // allows route params as props

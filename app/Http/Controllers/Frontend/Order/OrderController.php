@@ -188,4 +188,24 @@ class OrderController extends Controller
             'data' => $order,
         ]);
     }
+
+    public function orderHistory(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $status = $request->get('status');
+
+        $query = Order::where('user_id', auth()->id())->with('orderProducts');
+
+        if ($status && $status !== 'All') {
+            $query->where('order_status', $status);
+        }
+
+        $orders = $query->orderBy('id', 'desc')->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order History Fetched Successfully',
+            'data' => $orders,
+        ], 200);
+    }
 }

@@ -17,7 +17,7 @@ export const useCart = defineStore('cart', () => {
 
     // getters
     const totalQty = computed(() => items.value.reduce((s, i) => s + (i.qty || 0), 0))
-    const subtotal = computed(() => items.value.reduce((s, i) => s + (parseFloat(i.price) * (i.qty || 0)), 0))
+    const subtotal = computed(() => Math.round(items.value.reduce((s, i) => s + (parseFloat(i.price) * (i.qty || 0)), 0)))
 
     // actions
     async function fetchCart() {

@@ -1,5 +1,6 @@
 <script setup>
 import {useCart} from "@/stores/cart.js";
+import {formatPrice} from "@/utils/price";
 
 const props = defineProps({
     products: {
@@ -58,7 +59,7 @@ function addToCart(product) {
                 {{ product.product_name }}
             </router-link>
             <div class="flex items-center justify-center gap-1 my-2 flex-wrap leading-none">
-                <span class="text-primary text-[15px] font-bold">৳{{ parseInt(getSalePrice(product)) }}</span>
+                                <span class="text-primary text-[15px] font-bold">৳{{ formatPrice(getSalePrice(product)) }}</span>
                 <span class="text-[13px] mt-0.5">Per unit </span>
             </div>
             <div class="mt-8 hidden md:block">

@@ -19,6 +19,42 @@ class DashboardController extends Controller
         return view('frontend.pages.dashboard.user-dashboard', compact('user', 'total_orders', 'pending_orders','wishlists'));
     }
 
+    public function stats()
+    {
+        $user_id = auth()->id();
+        $total_orders = Order::where('user_id', $user_id)->count();
+        $pending_orders = Order::where('user_id', $user_id)->where('order_status', 'Pending')->count();
+        $delivered_orders = Order::where('user_id', $user_id)->where('order_status', 'Delivered')->count();
+        $wishlists = auth()->user()->wishlists()->count();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dashboard Stats Fetched Successfully',
+            'data' => [
+                'total_orders' => $total_orders,
+                'pending_orders' => $pending_orders,
+                'delivered_orders' => $delivered_orders,
+                'wishlists' => $wishlists,
+                'name' => auth()->user()->name,
+            ],
+        ], 200);
+    }
+
+    public function recentOrders()
+    {
+        $orders = Order::where('user_id', auth()->id())
+            ->with('orderProducts')
+            ->orderBy('id', 'desc')
+            ->take(5)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Recent Orders Fetched Successfully',
+            'data' => $orders,
+        ], 200);
+    }
+
     public function orderDetails(string $id)
     {
         $order=Order::where('id',$id)->with('orderProducts','customer','products')->first();
@@ -40,12 +76,16 @@ class DashboardController extends Controller
             $file = $request->file('profile_pic');
             $filename = time().uniqid().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('/frontend/images/upload/profile/'), $filename);
-            $url = 'public/frontend/images/upload/profile/'.$filename;
+            $url = asset('frontend/images/upload/profile/'.$filename);
             $user->profile_pic = $url;
             $user->save();
         }
 
-        return redirect()->back()->with('success', 'Profile Image Updated Successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile Image Updated Successfully',
+            'data' => $user,
+        ], 200);
     }
 
 

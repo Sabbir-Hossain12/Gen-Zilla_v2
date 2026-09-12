@@ -13,17 +13,24 @@ class WishlistController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        
-     $wishlists=   Wishlist::where('user_id',Auth::user()->id)->with('product')->get();
-        
-//   dd($wishlist);
-     return view('frontend.pages.products.wishlist',compact('wishlists'));
-     
+
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)->with('product')->get();
+
+        // API (SPA) request -> return JSON
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Wishlist Fetched Successfully',
+                'data' => $wishlists,
+            ], 200);
+        }
+
+        return view('frontend.pages.products.wishlist', compact('wishlists'));
     }
 
     /**
@@ -86,15 +93,18 @@ class WishlistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Wishlist $wishlist,Request $request)
+    public function destroy(Wishlist $wishlist, Request $request)
     {
 //        dd($request->all());
         
         $wishlist->delete();
 
+        if ($request->expectsJson() || $request->is('api/*')) {
+            return response()->json(['success' => true, 'message' => 'Removed From Wishlist'],200);
+        }
+
         Toastr::success('Success','Your message has been sent successfully.');
         return redirect()->back();
-//        return response()->json(['message' => 'Removed From Wishlist'],200);
     }
 
 

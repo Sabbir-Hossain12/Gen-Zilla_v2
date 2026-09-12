@@ -10,6 +10,7 @@ import {useAuth} from "../stores/auth.js";
 import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
+import {formatPrice} from "@/utils/price";
 
 const auth = useAuth();
 const router = useRouter();
@@ -158,7 +159,7 @@ async function logout() {
                                      class="w-10 h-10 object-cover rounded" alt="">
                                 <div class="flex flex-col flex-1 min-w-0">
                                     <span class="text-sm font-medium text-gray-800 truncate">{{ product.product_name }}</span>
-                                    <span class="text-xs text-primary font-bold">৳{{ parseInt(getSalePrice(product)) }}</span>
+                                    <span class="text-xs text-primary font-bold">৳{{formatPrice(getSalePrice(product))}}</span>
                                 </div>
                             </button>
                             <p v-if="!searchResults.length" class="p-3 text-sm text-gray-500">No products found.</p>

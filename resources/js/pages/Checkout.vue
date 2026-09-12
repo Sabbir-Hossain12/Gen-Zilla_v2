@@ -5,6 +5,7 @@ import {useCart} from "@/stores/cart.js";
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import axios from "axios";
+import {formatPrice} from "@/utils/price";
 import {Toast} from "toaster-js";
 import Router from "@/router/index.js";
 import {useRouter} from "vue-router";
@@ -333,7 +334,7 @@ async function submitOrder() {
                                     <p class="text-xs text-gray-400 mt-0.5">{{ item.variant_type }} :
                                         {{ item.variant_label }}</p>
                                 </div>
-                                <span class="text-sm font-bold text-[#E8312A] shrink-0">৳{{ item.price }}</span>
+                                <span class="text-sm font-bold text-[#E8312A] shrink-0">৳{{ formatPrice(item.price) }}</span>
                             </div>
 
                         </div>
@@ -342,7 +343,7 @@ async function submitOrder() {
                         <div class="mt-4 flex flex-col gap-2 border-t border-gray-100 pt-4">
                             <div class="flex justify-between text-sm text-gray-600">
                                 <span>Subtotal ({{ cart.totalQty }} items)</span>
-                                <span class="font-medium">৳{{ cart.subtotal }}</span>
+                                <span class="font-medium">৳{{ formatPrice(cart.subtotal) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600">
                                 <span>Delivery Charge</span>
@@ -362,7 +363,7 @@ async function submitOrder() {
                         <div
                             class="mt-3 flex justify-between items-center bg-gray-50 rounded-lg px-4 py-3 border border-gray-100">
                             <span class="text-base font-bold text-gray-800">Total</span>
-                            <span class="text-xl font-bold text-[#E8312A]">৳{{ total }}</span>
+                            <span class="text-xl font-bold text-[#E8312A]">৳{{ formatPrice(total) }}</span>
                         </div>
 
                         <!-- Savings badge -->
