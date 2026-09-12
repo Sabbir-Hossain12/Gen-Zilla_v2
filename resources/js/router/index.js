@@ -1,20 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from "../pages/Home.vue";
-import ProductDetails from "../pages/product/ProductDetails.vue";
-import Checkout from "../pages/Checkout.vue";
-import Success from "../pages/Success.vue";
-import CategoryProducts from "../pages/product/CategoryProducts.vue";
-import SubcategoryProducts from "../pages/product/SubcategoryProducts.vue";
-import SearchResults from "../pages/SearchResults.vue";
-import Brands from "../pages/brands/Brands.vue";
-import BrandProducts from "../pages/brands/BrandProducts.vue";
-import PageView from "../pages/PageView.vue";
-import Dashboard from "@/pages/user/Dashboard.vue";
-import OrderHistory from "@/pages/user/OrderHistory.vue";
-import PersonalInfo from "@/pages/user/PersonalInfo.vue";
-import Wishlist from "@/pages/user/Wishlist.vue";
 
-// Import your page views
+// Lazy-loaded (code-split) page components — each is its own async chunk,
+// downloaded only when its route is first visited.
+const ProductDetails = () => import("../pages/product/ProductDetails.vue");
+const Checkout = () => import("../pages/Checkout.vue");
+const Success = () => import("../pages/Success.vue");
+const CategoryProducts = () => import("../pages/product/CategoryProducts.vue");
+const SubcategoryProducts = () => import("../pages/product/SubcategoryProducts.vue");
+const SearchResults = () => import("../pages/SearchResults.vue");
+const Brands = () => import("../pages/brands/Brands.vue");
+const BrandProducts = () => import("../pages/brands/BrandProducts.vue");
+const PageView = () => import("../pages/PageView.vue");
+const Dashboard = () => import("@/pages/user/Dashboard.vue");
+const OrderHistory = () => import("@/pages/user/OrderHistory.vue");
+const PersonalInfo = () => import("@/pages/user/PersonalInfo.vue");
+const Wishlist = () => import("@/pages/user/Wishlist.vue");
 
 
 const routes = [
