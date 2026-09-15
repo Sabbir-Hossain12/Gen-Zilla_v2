@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import VerifyOtp from "@/components/VerifyOtp.vue";
 
 import {useAuth} from "../stores/auth.js";
+import {useSiteInfo} from "../stores/site.js";
 import {onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
@@ -17,22 +18,16 @@ const router = useRouter();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
 
+const site = useSiteInfo();
+
 //Header nav data
-const topCategories = ref([])
-const brands = ref([])
-const pages = ref([])
+const topCategories = site.topCategories;
+const brands = site.brands;
+const pages = site.pages;
 
 onMounted(async () => {
-    try {
-        const res = await axios.get('/api/v1/header')
-        if (res.data.success) {
-            topCategories.value = res.data.data.topCategories || []
-            brands.value = res.data.data.brands || []
-            pages.value = res.data.data.pages || []
-        }
-    } catch (err) {
-        console.error('Error fetching header data:', err)
-    }
+    await site.getSiteInfo();
+    await site.getHeaderData();
 })
 
 //Search
@@ -114,7 +109,7 @@ async function logout() {
                         <FontAwesomeIcon class="text-white text-xl" :icon="isOpen ? 'xmark' : 'bars'"></FontAwesomeIcon>
                     </button>
                     <router-link :to="{name: 'Home'}">
-                        <img :src="shwapno_logo" alt="">
+                        <img :src="site.info?.light_logo || shwapno_logo" :alt="site.info?.website_name || 'Home'" class="max-h-10">
                     </router-link>
                     <!--Delivery Location-->
                     <button

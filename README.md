@@ -1,66 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Overview
 
-## About Laravel
+**Gen-Zilla_v2** is an e-commerce application (grocery/general store, styled after "Shwapno") built as a **hybrid Laravel 11 + Vue 3 SPA**. A Blade-based admin panel coexists with a Vue 3 frontend that consumes a JSON API.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technology Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Layer | Tech |
+|---|---|
+| Backend | Laravel 11, PHP 8.2 (`C:\Users\hsabb\.config\herd\bin\php.bat`) |
+| Frontend | Vue 3 (`<script setup>`), Vue Router 4 (history), Pinia, Tailwind CSS v4, FontAwesome |
+| Build | Vite 8 + `laravel-vite-plugin` + `@vitejs/plugin-vue` |
+| DB | MySQL `genzilla_v2` (root, no password) + `database/genzilla_v2.sql` dump (~115 KB) |
+| Packages | Sanctum, spatie/laravel-permission, yajra DataTables, intervention/image 3.7, anayarojo/shoppingcart, laravel/socialite, laravel-toastr, custom `app/Library/SslCommerz` |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Architecture
 
-## Learning Laravel
+```
+Browser → Vue SPA (resources/js) → /api/v1/*  → Laravel JSON controllers
+                        └─ /admin/*           → Blade admin panel (resources/views/backend)
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **SPA shell**: `resources/views/app.blade.php` mounts Vue via `@vite(['resources/js/style.css','resources/js/main.js'])`; `routes/web.php:83` catch-all returns `view('app')` for every path.
+- **API**: `routes/api.php` under `api/v1` prefix. Guest endpoints (home, products, categories, search) + `auth:sanctum` group (cart, orders, profile, wishlist).
+- **Admin**: `routes/admin.php` under `/admin`, guarded by `admin` middleware (`Auth::guard('admin')`).
+- **Auth**: OTP login by Bangladeshi phone (`^01[0-9]{9}$`), OTP cached 5 min (`AuthController`), Sanctum token stored in `localStorage` and sent as Bearer.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Data Model Highlights
+`Product` has 1:1 `ProductDetail`, 1:n variant tables (`Color`, `Size`, `Weight`), belongsTo `Brand`/`Category`/`Subcategory`. `Order`→`OrderProduct`→(shelf items), `Customer` persisted per order, DB-backed `Cart` keyed by `user_id` (+ unused `session_token` for guests).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Notable Issues Found
 
-## Laravel Sponsors
+### Bugs
+1. **`resources/js/stores/user.js:22`** — `computed(() => !!token.valueerscript)` → `isAuthenticated` is **always false** (typo).
+2. **`OrderController::orderSubmit`** (`app/Http/Controllers/Frontend/Order/OrderController.php:76`) — `DeliveryCharge::where('id', ...)->first()->delivery_charge ?? 0` throws "property access on null" in PHP 8 when `delivery_id` is missing; the `??` doesn't protect a null object.
+3. **Checkout.vue:40-41** — `delivery_id` and `subtotal` are captured as **non-reactive constants** at mount: `delivery_id` is always `1` and `subtotal` is `0` (sent before cart loads). Only `total` is reactive. So orders get wrong subtotal/delivery charge.
+4. **cart.js:124** — `clearCart()` calls `axios.delete('/api/carts')` (wrong path + wrong verb; route is `POST /api/v1/carts/clear`) → 404.
+5. **cart.js addItem** — when not logged in it shows "Please Log in" toast but does **not** stop, then hits a 401 unauthenticated request.
+6. **api.php duplicates** — `/orders`, `/profile`, `/wishlists`, dashboard routes are registered twice; wishlists has both `DELETE /wishlists/{wishlist}` and `POST /wishlists/{wishlist}` for destroy.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Pricing / Integrity
+7. **Server trusts client pricing** — `OrderController::orderSubmit` records `subtotal`/`total` straight from the request instead of recomputing from cart rows → a tampered request can underpay.
+8. **Coupon flow is dead** — checkout "Apply" does nothing; server reads `Session::get('coupon')`, but the API uses bearer tokens (no session) and no API sets a coupon.
+9. **SSL Commerz unreachable** — server checks `payment_method == 'sslcommerzz'` (triple-z typo); UI only sends `cash`/`bkash`. `SSLCZ_STORE_ID/PASSWORD/TESTMODE` env vars are also unset in `.env`.
 
-### Premium Partners
+### Security
+10. **OTP leaked in API response** (`AuthController::sendOtp` returns `'otp' => $otp`) and logged to `Log::info` — fine for dev, unsafe for production.
+11. **No rate limiting** on `send-otp`/`verify-otp` (sanctum throttle not applied) → SMS/OTP brute-force surface.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Dead / Leftover Code
+12. `routes/web.php` — the entire old Blade frontend route file is commented out.
+13. `AppServiceProvider` — view composers reference deleted `frontend.*` views, and `View::composer('*', ...)` runs `BasicInfo`/`ThemeColor` DB queries on **every** render (including the SPA shell).
+14. `resources/js/app.js` + `resources/css/app.css` (Alpine bootstrap) still in `vite.config.js` input but unused by the SPA → wasted build chunks.
+15. `app/Providers/testProvider.php` — empty provider, registered in `bootstrap/providers.php`.
+16. `app.js` / `bootstrap.js` duplicate entries vs the real `main.js`; `VerifyCsrfToken` middleware file is obsolete (CSRF handled in `bootstrap/app.php`).
+17. `routes/admin.php` — `/sliders` and `/banners` resources registered twice; several backend controllers (`DashboardController`) are mostly empty stubs.
+18. Tests are stock Laravel scaffolds (Breeze `ProfileTest`, `Auth/*`) — zero coverage of the actual app.
+19. **No role/permission middleware applied** on admin resource routes despite spatie being set up.
 
-## Contributing
+### Performance
+20. Home/search endpoints load full variant sets with no pagination (`home`, `popularProducts`, `featuredProducts`, `hotProducts`, `search`); `header` loads all pages then slugs them in PHP.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Summary
 
-## Code of Conduct
+Solid scaffold for a Laravel+Vue e-commerce site with a working storefront (home, search, product variants, cart, checkout→order, OTP auth, wishlist, user dashboard) and a full Blade admin panel. The frontend migrated recently from Blade to Vue (see commits and `vue-laravel-setup-guide.md`), leaving dead code behind. **Highest-priority fixes**: the `user.js` getter typo, checkout stale subtotal/`delivery_id`, server-side price recomputation, and the api.php route duplicates.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Want me to turn any of these into an actionable fix plan (e.g., a prioritized bug-fix task list)?

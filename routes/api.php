@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/brands', [WebviewController::class, 'brands']);
     Route::get('/brands/{slug}/products', [WebviewController::class, 'brandProducts']);
     Route::get('/pages/{slug}', [WebviewController::class, 'showPage']);
+    Route::get('/basic-info', [WebviewController::class, 'basicInfo']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);

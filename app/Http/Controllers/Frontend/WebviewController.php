@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\BasicInfo;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Page;
@@ -489,6 +490,52 @@ class WebviewController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Brand Products Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function basicInfo()
+    {
+        try {
+            $info = BasicInfo::query()
+                ->select(
+                    'website_name',
+                    'black_logo',
+                    'light_logo',
+                    'email',
+                    'phone_1',
+                    'store_location',
+                    'short_desc',
+                    'fb_link',
+                    'x_link',
+                    'p_link',
+                    'youtube_link',
+                    'insta_link',
+                    'currency_symbol'
+                )
+                ->first();
+
+            if (! $info) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Basic Info Not Found',
+                ], 404);
+            }
+
+            $info->black_logo = $info->black_logo ? asset($info->black_logo) : null;
+            $info->light_logo = $info->light_logo ? asset($info->light_logo) : null;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Basic Info Fetched',
+                'data' => $info,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Basic Info Issue:' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
