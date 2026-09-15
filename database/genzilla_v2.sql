@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2026 at 08:47 PM
+-- Generation Time: Sep 12, 2026 at 07:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -249,6 +249,28 @@ CREATE TABLE `cache_locks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `carts`
+--
+
+CREATE TABLE `carts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `session_token` varchar(255) DEFAULT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `variant_type` varchar(255) DEFAULT NULL,
+  `variant_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `product_img` varchar(255) DEFAULT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `variant_label` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `qty` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `categories`
 --
 
@@ -356,8 +378,8 @@ CREATE TABLE `customers` (
   `area` varchar(255) DEFAULT NULL,
   `thana` varchar(255) DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
-  `state_district` varchar(255) NOT NULL,
-  `zip` varchar(255) NOT NULL,
+  `state_district` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
   `country` varchar(255) NOT NULL DEFAULT 'Bangladesh',
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -449,7 +471,21 @@ INSERT INTO `customers` (`id`, `first_name`, `last_name`, `company_name`, `addre
 (116, 'Stuff', NULL, NULL, 'asdas', NULL, NULL, NULL, 'male', 'Dhaka', '1240', 'Bangladesh', '01318503492', 'sh1389045@gmail.com', 1, '2025-01-30 18:23:48', '2025-01-30 18:23:48'),
 (117, 'Sabbir hossain', NULL, NULL, 'Dhaka North City corporation, Dhaka', NULL, NULL, NULL, 'male', 'Dhaka', '1230', 'Bangladesh', '01926241905', 'h.sabbir36@yahoo.com', 1, '2025-01-30 18:42:30', '2025-01-30 18:42:30'),
 (118, 'Hollee', 'Zenaida', 'Hermione', 'Duncan', 'Jada', 'Burton', 'Cyrus', 'female', 'Dhaka', 'Jamal', 'Bangladesh', 'Dale', 'wuziji@mailinator.com', 1, '2025-02-03 18:41:19', '2025-02-03 18:41:19'),
-(119, 'Sacha', 'Leroy', 'Brock', 'Ila', 'Baxter', 'Stacey', 'Gwendolyn', 'male', 'Dhaka', 'Tiger', 'Bangladesh', 'Emily', 'xuduton@mailinator.com', 1, '2025-02-05 16:24:02', '2025-02-05 16:24:02');
+(119, 'Sacha', 'Leroy', 'Brock', 'Ila', 'Baxter', 'Stacey', 'Gwendolyn', 'male', 'Dhaka', 'Tiger', 'Bangladesh', 'Emily', 'xuduton@mailinator.com', 1, '2025-02-05 16:24:02', '2025-02-05 16:24:02'),
+(128, 'Velit consequatur q', NULL, NULL, 'Eiusmod corrupti qu', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '+1 (518) 917-2064', 'kavaz@mailinator.com', 1, '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(129, 'xyz', NULL, NULL, 'Dhaka 1230', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01856', 'h.sabbir36@yahoo.com', 1, '2026-08-29 09:03:03', '2026-08-29 09:03:03'),
+(130, 'Sabbir Hossain', NULL, NULL, '549 Ashkona, Dakshin Khan, Dhaka North City corporation, Dhaka', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', 'asasdasd', 'h.sabbir36@yahoo.com', 1, '2026-09-01 10:17:45', '2026-09-01 10:17:45'),
+(131, 'Irure qui excepteur', NULL, NULL, 'At fugiat dignissim', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'jogef@mailinator.com', 1, '2026-09-01 11:19:59', '2026-09-01 11:19:59'),
+(132, 'Et sed pariatur Cum', NULL, NULL, 'Sed autem iusto exce', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'wate@mailinator.com', 1, '2026-09-01 11:22:06', '2026-09-01 11:22:06'),
+(133, 'Illum culpa archite', NULL, NULL, 'Rerum consequatur I', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'fijobufu@mailinator.com', 1, '2026-09-01 11:26:39', '2026-09-01 11:26:39'),
+(134, 'Magna tempor molliti', NULL, NULL, 'Neque anim ea qui ul', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'jiqyk@mailinator.com', 1, '2026-09-01 11:45:43', '2026-09-01 11:45:43'),
+(135, 'Recusandae Velit vo', NULL, NULL, 'Voluptatum quia aute', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'vuqi@mailinator.com', 1, '2026-09-01 11:48:16', '2026-09-01 11:48:16'),
+(136, 'sabbir', NULL, NULL, 'ashkona', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'h.sabbir36@yahoo.com', 1, '2026-09-02 11:31:14', '2026-09-02 11:31:14'),
+(137, 'Sabbir2', NULL, NULL, 'house 4, 2020', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241905', 'email@email.com', 1, '2026-09-04 11:12:08', '2026-09-04 11:12:08'),
+(138, 'scsacas', NULL, NULL, 'sadasdsdasd', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01559445600', 'asas@sad.com', 1, '2026-09-04 11:15:00', '2026-09-04 11:15:00'),
+(139, 'asdasdasd', NULL, NULL, 'asdasd', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'asdsad@email.com', 1, '2026-09-04 11:18:37', '2026-09-04 11:18:37'),
+(140, 'Laborum Repellendus', NULL, NULL, 'Officia tempor omnis', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'juzebifomy@mailinator.com', 1, '2026-09-11 12:55:16', '2026-09-11 12:55:16'),
+(141, 'Cum est amet neque', NULL, NULL, 'Quia neque quo offic', NULL, NULL, NULL, NULL, NULL, NULL, 'Bangladesh', '01926241906', 'surav@mailinator.com', 1, '2026-09-12 08:13:21', '2026-09-12 08:13:21');
 
 -- --------------------------------------------------------
 
@@ -573,7 +609,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (40, '2024_09_13_063359_create_theme_colors_table', 14),
 (41, '2024_09_13_142429_create_wishlists_table', 15),
 (42, '2025_01_30_112509_create_delivery_charges_table', 16),
-(43, '2026_06_17_195309_create_personal_access_tokens_table', 17);
+(43, '2026_06_17_195309_create_personal_access_tokens_table', 17),
+(44, '2026_08_14_181319_create_carts_table', 18);
 
 -- --------------------------------------------------------
 
@@ -618,6 +655,7 @@ CREATE TABLE `orders` (
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `coupon_id` int(11) DEFAULT NULL,
   `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `delivery_id` int(11) DEFAULT NULL,
   `invoiceID` varchar(255) NOT NULL,
   `tran_id` longtext DEFAULT NULL,
   `payment_method` varchar(255) DEFAULT NULL,
@@ -640,6 +678,26 @@ CREATE TABLE `orders` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `coupon_id`, `customer_id`, `delivery_id`, `invoiceID`, `tran_id`, `payment_method`, `payment_amount`, `payment_status`, `order_status`, `currency`, `shipping_charge`, `tax`, `order_note`, `subtotal`, `discount_amount`, `total`, `order_date`, `delivery_date`, `complete_date`, `admin_id`, `status`, `created_at`, `updated_at`) VALUES
+(117, 16, NULL, 128, NULL, 'BM620530', '6a91d0b29f925', 'cash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Itaque dolore lorem', 0, NULL, 11890, '2026-08-28', NULL, NULL, NULL, 'Pending', '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(118, 16, NULL, 129, NULL, 'BM935454', '6a92f4a768bf4', NULL, NULL, 'Pending', 'Pending', 'BDT', 0, NULL, NULL, 922, NULL, 982, '2026-08-29', NULL, NULL, NULL, 'Pending', '2026-08-29 09:03:03', '2026-08-29 09:03:03'),
+(119, 16, NULL, 130, NULL, 'BM992338', '6a96faa9bc006', NULL, NULL, 'Pending', 'Pending', 'BDT', 0, NULL, NULL, 922, NULL, 982, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 10:17:45', '2026-09-01 10:17:45'),
+(120, 16, NULL, 131, NULL, 'BM447808', '6a97093fa33f0', 'cash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Obcaecati laborum I', 0, NULL, 1042, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 11:19:59', '2026-09-01 11:19:59'),
+(121, 16, NULL, 132, NULL, 'BM201533', '6a9709be2c8cd', 'cash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Lorem ad consequatur', 1844, NULL, 1904, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 11:22:06', '2026-09-01 11:22:06'),
+(122, 16, NULL, 133, NULL, 'BM188721', '6a970acf26315', 'bkash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Aut pariatur Enim a', 922, NULL, 982, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 11:26:39', '2026-09-01 11:26:39'),
+(123, 16, NULL, 134, NULL, 'BM989847', '6a970f4792ce2', 'cash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Dolorum voluptatem', 922, NULL, 982, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 11:45:43', '2026-09-01 11:45:43'),
+(124, 16, NULL, 135, NULL, 'BM560016', '6a970fe0d5424', 'cash', NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'Praesentium quia sed', 4610, NULL, 4730, '2026-09-01', NULL, NULL, NULL, 'Pending', '2026-09-01 11:48:16', '2026-09-01 11:48:16'),
+(125, 16, NULL, 136, NULL, 'BM813685', '6a985d62ccd78', NULL, NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'special', 3688, NULL, 3748, '2026-09-02', NULL, NULL, NULL, 'Pending', '2026-09-02 11:31:14', '2026-09-02 11:31:14'),
+(126, 16, NULL, 137, NULL, 'BM427230', '6a9afbe8464dc', NULL, NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'note', 922, NULL, 982, '2026-09-04', NULL, NULL, NULL, 'Pending', '2026-09-04 11:12:08', '2026-09-04 11:12:08'),
+(127, 16, NULL, 138, NULL, 'BM471214', '6a9afc9424b7a', NULL, NULL, 'Pending', 'Pending', 'BDT', 0, NULL, 'asda', 922, NULL, 982, '2026-09-04', NULL, NULL, NULL, 'Pending', '2026-09-04 11:15:00', '2026-09-04 11:15:00'),
+(128, 16, NULL, 139, NULL, 'BM506912', '6a9afd6d22f6c', NULL, NULL, 'Pending', 'Pending', 'BDT', 60, NULL, 'sadasd', 922, NULL, 982, '2026-09-04', NULL, NULL, NULL, 'Pending', '2026-09-04 11:18:37', '2026-09-04 11:18:37'),
+(129, 16, NULL, 140, NULL, 'BM946697', '6aa44e944d081', 'cash', NULL, 'Pending', 'Pending', 'BDT', 60, NULL, 'Hic dolore saepe cul', 922, NULL, 1042, '2026-09-11', NULL, NULL, NULL, 'Pending', '2026-09-11 12:55:16', '2026-09-11 12:55:16'),
+(130, 16, NULL, 141, NULL, 'BM766137', '6aa55e01568a6', 'bkash', NULL, 'Pending', 'Pending', 'BDT', 60, NULL, 'Quas rerum quas pari', 1311, NULL, 1371, '2026-09-12', NULL, NULL, NULL, 'Pending', '2026-09-12 08:13:21', '2026-09-12 08:13:21');
+
 -- --------------------------------------------------------
 
 --
@@ -660,6 +718,7 @@ CREATE TABLE `order_products` (
   `color` varchar(255) DEFAULT NULL,
   `weight` varchar(255) DEFAULT NULL,
   `length` varchar(255) DEFAULT NULL,
+  `variant` varchar(255) DEFAULT NULL,
   `product_discount` int(11) DEFAULT NULL,
   `total` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -670,112 +729,131 @@ CREATE TABLE `order_products` (
 -- Dumping data for table `order_products`
 --
 
-INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `vendor_id`, `product_name`, `product_SKU`, `quantity`, `product_price`, `purchase_price`, `size`, `color`, `weight`, `length`, `product_discount`, `total`, `created_at`, `updated_at`) VALUES
-(56, 51, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 11:58:16', '2024-09-11 11:58:16'),
-(57, 52, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 11:58:30', '2024-09-11 11:58:30'),
-(58, 52, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 11:58:30', '2024-09-11 11:58:30'),
-(59, 53, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:35:29', '2024-09-11 12:35:29'),
-(60, 53, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:35:29', '2024-09-11 12:35:29'),
-(61, 54, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:39:53', '2024-09-11 12:39:53'),
-(62, 54, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:39:53', '2024-09-11 12:39:53'),
-(63, 55, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:40:53', '2024-09-11 12:40:53'),
-(64, 55, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:40:53', '2024-09-11 12:40:53'),
-(65, 56, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:41:57', '2024-09-11 12:41:57'),
-(66, 56, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:41:57', '2024-09-11 12:41:57'),
-(67, 57, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:06', '2024-09-11 12:45:06'),
-(68, 57, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:06', '2024-09-11 12:45:06'),
-(69, 58, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:17', '2024-09-11 12:45:17'),
-(70, 58, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:17', '2024-09-11 12:45:17'),
-(71, 59, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:46', '2024-09-11 12:45:46'),
-(72, 59, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:46', '2024-09-11 12:45:46'),
-(73, 60, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:56', '2024-09-11 12:45:56'),
-(74, 60, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:56', '2024-09-11 12:45:56'),
-(75, 61, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:46:21', '2024-09-11 12:46:21'),
-(76, 61, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:46:21', '2024-09-11 12:46:21'),
-(77, 62, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:46:27', '2024-09-11 12:46:27'),
-(78, 62, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:46:27', '2024-09-11 12:46:27'),
-(79, 63, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:48:53', '2024-09-11 12:48:53'),
-(80, 63, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:48:53', '2024-09-11 12:48:53'),
-(81, 64, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:49:00', '2024-09-11 12:49:00'),
-(82, 64, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:49:00', '2024-09-11 12:49:00'),
-(83, 65, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:50:03', '2024-09-11 12:50:03'),
-(84, 65, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:50:03', '2024-09-11 12:50:03'),
-(85, 66, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:50:45', '2024-09-11 12:50:45'),
-(86, 66, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:50:45', '2024-09-11 12:50:45'),
-(87, 67, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:04', '2024-09-11 12:51:04'),
-(88, 67, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:04', '2024-09-11 12:51:04'),
-(89, 68, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:17', '2024-09-11 12:51:17'),
-(90, 68, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:17', '2024-09-11 12:51:17'),
-(91, 69, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:36', '2024-09-11 12:51:36'),
-(92, 69, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:36', '2024-09-11 12:51:36'),
-(93, 70, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:52:06', '2024-09-11 12:52:06'),
-(94, 70, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:52:06', '2024-09-11 12:52:06'),
-(95, 71, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:52:37', '2024-09-11 12:52:37'),
-(96, 71, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:52:37', '2024-09-11 12:52:37'),
-(97, 72, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:53:32', '2024-09-11 12:53:32'),
-(98, 72, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:53:32', '2024-09-11 12:53:32'),
-(99, 73, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:02:12', '2024-09-11 13:02:12'),
-(100, 73, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:02:12', '2024-09-11 13:02:12'),
-(101, 74, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:02:39', '2024-09-11 13:02:39'),
-(102, 74, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:02:39', '2024-09-11 13:02:39'),
-(103, 75, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:03:35', '2024-09-11 13:03:35'),
-(104, 75, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:03:35', '2024-09-11 13:03:35'),
-(105, 76, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:13', '2024-09-11 13:06:13'),
-(106, 76, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:13', '2024-09-11 13:06:13'),
-(107, 77, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:28', '2024-09-11 13:06:28'),
-(108, 77, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:28', '2024-09-11 13:06:28'),
-(109, 78, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:59', '2024-09-11 13:06:59'),
-(110, 78, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:59', '2024-09-11 13:06:59'),
-(111, 79, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:08:11', '2024-09-11 13:08:11'),
-(112, 79, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:08:11', '2024-09-11 13:08:11'),
-(113, 80, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:09:38', '2024-09-11 13:09:38'),
-(114, 80, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:09:38', '2024-09-11 13:09:38'),
-(115, 81, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:09:59', '2024-09-11 13:09:59'),
-(116, 81, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:09:59', '2024-09-11 13:09:59'),
-(117, 82, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:10:34', '2024-09-11 13:10:34'),
-(118, 82, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:10:34', '2024-09-11 13:10:34'),
-(119, 83, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:10:40', '2024-09-11 13:10:40'),
-(120, 83, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:10:40', '2024-09-11 13:10:40'),
-(121, 84, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:11:33', '2024-09-11 13:11:33'),
-(122, 84, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:11:33', '2024-09-11 13:11:33'),
-(123, 85, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:11:50', '2024-09-11 13:11:50'),
-(124, 85, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:11:50', '2024-09-11 13:11:50'),
-(125, 86, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:12:14', '2024-09-11 13:12:14'),
-(126, 86, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:12:14', '2024-09-11 13:12:14'),
-(127, 87, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:12:48', '2024-09-11 13:12:48'),
-(128, 87, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:12:48', '2024-09-11 13:12:48'),
-(129, 88, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:13:16', '2024-09-11 13:13:16'),
-(130, 88, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:13:16', '2024-09-11 13:13:16'),
-(131, 89, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:13:33', '2024-09-11 13:13:33'),
-(132, 89, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:13:33', '2024-09-11 13:13:33'),
-(133, 90, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:14:04', '2024-09-11 13:14:04'),
-(134, 90, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:14:04', '2024-09-11 13:14:04'),
-(135, 91, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:14:17', '2024-09-11 13:14:17'),
-(136, 91, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:14:17', '2024-09-11 13:14:17'),
-(137, 92, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:15:04', '2024-09-11 13:15:04'),
-(138, 92, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:15:04', '2024-09-11 13:15:04'),
-(139, 93, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:15:26', '2024-09-11 13:15:26'),
-(140, 93, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:15:26', '2024-09-11 13:15:26'),
-(141, 94, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 3, 5600, 0, 'XL', 'Purple', '1 KG', NULL, NULL, 16800, '2024-09-13 08:07:02', '2024-09-13 08:07:02'),
-(142, 95, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 2, 5400, 0, 'M', NULL, NULL, NULL, NULL, 10800, '2024-10-24 04:43:32', '2024-10-24 04:43:32'),
-(143, 96, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, 1000, '2024-11-04 12:35:46', '2024-11-04 12:35:46'),
-(144, 97, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', 'Red', NULL, NULL, NULL, 1000, '2024-11-04 12:37:20', '2024-11-04 12:37:20'),
-(145, 98, 40, NULL, 'New Design Half Silk Skin Printer Saree', NULL, 1, 784, 0, 'L', NULL, NULL, NULL, NULL, 784, '2024-11-04 12:38:10', '2024-11-04 12:38:10'),
-(146, 99, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, 1000, '2024-11-04 12:48:29', '2024-11-04 12:48:29'),
-(147, 100, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'L', NULL, NULL, NULL, NULL, 1000, '2024-11-20 04:59:24', '2024-11-20 04:59:24'),
-(148, 100, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, 1000, '2024-11-20 04:59:24', '2024-11-20 04:59:24'),
-(149, 101, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, 1000, '2024-11-20 05:00:38', '2024-11-20 05:00:38'),
-(150, 102, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, '41', NULL, NULL, NULL, NULL, 1900, '2025-01-19 04:14:14', '2025-01-19 04:14:14'),
-(151, 103, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, NULL, 'Blue', NULL, NULL, NULL, 1900, '2025-01-19 04:15:34', '2025-01-19 04:15:34'),
-(152, 104, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 4750, 0, 'S', 'Purple', '1 KG', NULL, NULL, 4750, '2025-01-27 09:34:35', '2025-01-27 09:34:35'),
-(153, 104, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', 'Purple', '1 KG', NULL, NULL, 5525, '2025-01-27 09:34:35', '2025-01-27 09:34:35'),
-(154, 105, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 2, 5525, 0, 'L', NULL, NULL, NULL, NULL, 11050, '2025-01-27 09:38:09', '2025-01-27 09:38:09'),
-(155, 106, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, 1000, '2025-01-27 15:40:47', '2025-01-27 15:40:47'),
-(156, 107, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5400, 0, 'M', NULL, NULL, NULL, NULL, 5400, '2025-01-29 08:49:41', '2025-01-29 08:49:41'),
-(157, 108, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, 1000, '2025-01-30 18:23:48', '2025-01-30 18:23:48'),
-(158, 109, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, 1000, '2025-01-30 18:42:30', '2025-01-30 18:42:30'),
-(159, 110, 40, NULL, 'New Design Half Silk Skin Printer Saree', NULL, 2, 784, 0, 'L', NULL, NULL, NULL, NULL, 1568, '2025-02-03 18:41:19', '2025-02-03 18:41:19'),
-(160, 111, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, '42', NULL, NULL, NULL, NULL, 1900, '2025-02-05 16:24:02', '2025-02-05 16:24:02');
+INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `vendor_id`, `product_name`, `product_SKU`, `quantity`, `product_price`, `purchase_price`, `size`, `color`, `weight`, `length`, `variant`, `product_discount`, `total`, `created_at`, `updated_at`) VALUES
+(56, 51, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 11:58:16', '2024-09-11 11:58:16'),
+(57, 52, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 11:58:30', '2024-09-11 11:58:30'),
+(58, 52, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 11:58:30', '2024-09-11 11:58:30'),
+(59, 53, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:35:29', '2024-09-11 12:35:29'),
+(60, 53, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:35:29', '2024-09-11 12:35:29'),
+(61, 54, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:39:53', '2024-09-11 12:39:53'),
+(62, 54, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:39:53', '2024-09-11 12:39:53'),
+(63, 55, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:40:53', '2024-09-11 12:40:53'),
+(64, 55, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:40:53', '2024-09-11 12:40:53'),
+(65, 56, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:41:57', '2024-09-11 12:41:57'),
+(66, 56, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:41:57', '2024-09-11 12:41:57'),
+(67, 57, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:06', '2024-09-11 12:45:06'),
+(68, 57, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:06', '2024-09-11 12:45:06'),
+(69, 58, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:17', '2024-09-11 12:45:17'),
+(70, 58, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:17', '2024-09-11 12:45:17'),
+(71, 59, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:46', '2024-09-11 12:45:46'),
+(72, 59, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:46', '2024-09-11 12:45:46'),
+(73, 60, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:45:56', '2024-09-11 12:45:56'),
+(74, 60, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:45:56', '2024-09-11 12:45:56'),
+(75, 61, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:46:21', '2024-09-11 12:46:21'),
+(76, 61, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:46:21', '2024-09-11 12:46:21'),
+(77, 62, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:46:27', '2024-09-11 12:46:27'),
+(78, 62, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:46:27', '2024-09-11 12:46:27'),
+(79, 63, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:48:53', '2024-09-11 12:48:53'),
+(80, 63, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:48:53', '2024-09-11 12:48:53'),
+(81, 64, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:49:00', '2024-09-11 12:49:00'),
+(82, 64, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:49:00', '2024-09-11 12:49:00'),
+(83, 65, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:50:03', '2024-09-11 12:50:03'),
+(84, 65, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:50:03', '2024-09-11 12:50:03'),
+(85, 66, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:50:45', '2024-09-11 12:50:45'),
+(86, 66, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:50:45', '2024-09-11 12:50:45'),
+(87, 67, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:04', '2024-09-11 12:51:04'),
+(88, 67, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:04', '2024-09-11 12:51:04'),
+(89, 68, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:17', '2024-09-11 12:51:17'),
+(90, 68, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:17', '2024-09-11 12:51:17'),
+(91, 69, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:51:36', '2024-09-11 12:51:36'),
+(92, 69, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:51:36', '2024-09-11 12:51:36'),
+(93, 70, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:52:06', '2024-09-11 12:52:06'),
+(94, 70, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:52:06', '2024-09-11 12:52:06'),
+(95, 71, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:52:37', '2024-09-11 12:52:37'),
+(96, 71, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:52:37', '2024-09-11 12:52:37'),
+(97, 72, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 12:53:32', '2024-09-11 12:53:32'),
+(98, 72, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 12:53:32', '2024-09-11 12:53:32'),
+(99, 73, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:02:12', '2024-09-11 13:02:12'),
+(100, 73, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:02:12', '2024-09-11 13:02:12'),
+(101, 74, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:02:39', '2024-09-11 13:02:39'),
+(102, 74, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:02:39', '2024-09-11 13:02:39'),
+(103, 75, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:03:35', '2024-09-11 13:03:35'),
+(104, 75, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:03:35', '2024-09-11 13:03:35'),
+(105, 76, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:13', '2024-09-11 13:06:13'),
+(106, 76, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:13', '2024-09-11 13:06:13'),
+(107, 77, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:28', '2024-09-11 13:06:28'),
+(108, 77, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:28', '2024-09-11 13:06:28'),
+(109, 78, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:06:59', '2024-09-11 13:06:59'),
+(110, 78, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:06:59', '2024-09-11 13:06:59'),
+(111, 79, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:08:11', '2024-09-11 13:08:11'),
+(112, 79, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:08:11', '2024-09-11 13:08:11'),
+(113, 80, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:09:38', '2024-09-11 13:09:38'),
+(114, 80, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:09:38', '2024-09-11 13:09:38'),
+(115, 81, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:09:59', '2024-09-11 13:09:59'),
+(116, 81, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:09:59', '2024-09-11 13:09:59'),
+(117, 82, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:10:34', '2024-09-11 13:10:34'),
+(118, 82, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:10:34', '2024-09-11 13:10:34'),
+(119, 83, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:10:40', '2024-09-11 13:10:40'),
+(120, 83, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:10:40', '2024-09-11 13:10:40'),
+(121, 84, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:11:33', '2024-09-11 13:11:33'),
+(122, 84, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:11:33', '2024-09-11 13:11:33'),
+(123, 85, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:11:50', '2024-09-11 13:11:50'),
+(124, 85, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:11:50', '2024-09-11 13:11:50'),
+(125, 86, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:12:14', '2024-09-11 13:12:14'),
+(126, 86, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:12:14', '2024-09-11 13:12:14'),
+(127, 87, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:12:48', '2024-09-11 13:12:48'),
+(128, 87, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:12:48', '2024-09-11 13:12:48'),
+(129, 88, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:13:16', '2024-09-11 13:13:16'),
+(130, 88, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:13:16', '2024-09-11 13:13:16'),
+(131, 89, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:13:33', '2024-09-11 13:13:33'),
+(132, 89, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:13:33', '2024-09-11 13:13:33'),
+(133, 90, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:14:04', '2024-09-11 13:14:04'),
+(134, 90, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:14:04', '2024-09-11 13:14:04'),
+(135, 91, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:14:17', '2024-09-11 13:14:17'),
+(136, 91, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:14:17', '2024-09-11 13:14:17'),
+(137, 92, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:15:04', '2024-09-11 13:15:04'),
+(138, 92, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:15:04', '2024-09-11 13:15:04'),
+(139, 93, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5600, 0, 'XL', NULL, NULL, NULL, NULL, NULL, 5600, '2024-09-11 13:15:26', '2024-09-11 13:15:26'),
+(140, 93, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 5525, '2024-09-11 13:15:26', '2024-09-11 13:15:26'),
+(141, 94, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 3, 5600, 0, 'XL', 'Purple', '1 KG', NULL, NULL, NULL, 16800, '2024-09-13 08:07:02', '2024-09-13 08:07:02'),
+(142, 95, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 2, 5400, 0, 'M', NULL, NULL, NULL, NULL, NULL, 10800, '2024-10-24 04:43:32', '2024-10-24 04:43:32'),
+(143, 96, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, NULL, 1000, '2024-11-04 12:35:46', '2024-11-04 12:35:46'),
+(144, 97, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', 'Red', NULL, NULL, NULL, NULL, 1000, '2024-11-04 12:37:20', '2024-11-04 12:37:20'),
+(145, 98, 40, NULL, 'New Design Half Silk Skin Printer Saree', NULL, 1, 784, 0, 'L', NULL, NULL, NULL, NULL, NULL, 784, '2024-11-04 12:38:10', '2024-11-04 12:38:10'),
+(146, 99, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, NULL, 1000, '2024-11-04 12:48:29', '2024-11-04 12:48:29'),
+(147, 100, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'L', NULL, NULL, NULL, NULL, NULL, 1000, '2024-11-20 04:59:24', '2024-11-20 04:59:24'),
+(148, 100, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, NULL, 1000, '2024-11-20 04:59:24', '2024-11-20 04:59:24'),
+(149, 101, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, NULL, 1000, '2024-11-20 05:00:38', '2024-11-20 05:00:38'),
+(150, 102, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, '41', NULL, NULL, NULL, NULL, NULL, 1900, '2025-01-19 04:14:14', '2025-01-19 04:14:14'),
+(151, 103, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, NULL, 'Blue', NULL, NULL, NULL, NULL, 1900, '2025-01-19 04:15:34', '2025-01-19 04:15:34'),
+(152, 104, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 4750, 0, 'S', 'Purple', '1 KG', NULL, NULL, NULL, 4750, '2025-01-27 09:34:35', '2025-01-27 09:34:35'),
+(153, 104, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5525, 0, 'L', 'Purple', '1 KG', NULL, NULL, NULL, 5525, '2025-01-27 09:34:35', '2025-01-27 09:34:35'),
+(154, 105, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 2, 5525, 0, 'L', NULL, NULL, NULL, NULL, NULL, 11050, '2025-01-27 09:38:09', '2025-01-27 09:38:09'),
+(155, 106, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, NULL, 1000, '2025-01-27 15:40:47', '2025-01-27 15:40:47'),
+(156, 107, 32, NULL, 'Tangail Tat Multi Colour Trendy Moslin Jamdani Saree for Women', NULL, 1, 5400, 0, 'M', NULL, NULL, NULL, NULL, NULL, 5400, '2025-01-29 08:49:41', '2025-01-29 08:49:41'),
+(157, 108, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'S', NULL, NULL, NULL, NULL, NULL, 1000, '2025-01-30 18:23:48', '2025-01-30 18:23:48'),
+(158, 109, 35, NULL, 'Short Sleeve T Shirt For Women Jersey Fabric', NULL, 1, 1000, 0, 'M', NULL, NULL, NULL, NULL, NULL, 1000, '2025-01-30 18:42:30', '2025-01-30 18:42:30'),
+(159, 110, 40, NULL, 'New Design Half Silk Skin Printer Saree', NULL, 2, 784, 0, 'L', NULL, NULL, NULL, NULL, NULL, 1568, '2025-02-03 18:41:19', '2025-02-03 18:41:19'),
+(160, 111, 34, NULL, 'Men\'s casual shoes Vulcanized Work loafers Mesh Lightweight Man sports shoes Canvas Shoes for Men zapatos para hombres2024', NULL, 1, 1900, 0, '42', NULL, NULL, NULL, NULL, NULL, 1900, '2025-02-05 16:24:02', '2025-02-05 16:24:02'),
+(162, 117, 45, NULL, 'Radhuni Shadmishali Seasoning Mixed 96gm', NULL, 2, 124, 0, NULL, NULL, NULL, NULL, 'Universal', NULL, 248, '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(163, 117, 45, NULL, 'Radhuni Shadmishali Seasoning Mixed 96gm', NULL, 2, 105, 0, NULL, NULL, NULL, NULL, '100ml', NULL, 210, '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(164, 117, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 12, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 11064, '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(165, 117, 48, NULL, 'ACI Pure Atta 2kg', NULL, 2, 124, 0, NULL, NULL, NULL, NULL, '2KG', NULL, 248, '2026-08-28 12:17:22', '2026-08-28 12:17:22'),
+(166, 118, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-08-29 09:03:03', '2026-08-29 09:03:03'),
+(167, 119, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-01 10:17:45', '2026-09-01 10:17:45'),
+(168, 120, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-01 11:19:59', '2026-09-01 11:19:59'),
+(169, 121, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 2, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 1844, '2026-09-01 11:22:06', '2026-09-01 11:22:06'),
+(170, 122, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-01 11:26:39', '2026-09-01 11:26:39'),
+(171, 123, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-01 11:45:43', '2026-09-01 11:45:43'),
+(172, 124, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 5, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 4610, '2026-09-01 11:48:16', '2026-09-01 11:48:16'),
+(173, 125, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 4, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 3688, '2026-09-02 11:31:14', '2026-09-02 11:31:14'),
+(174, 126, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-04 11:12:08', '2026-09-04 11:12:08'),
+(175, 127, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-04 11:15:00', '2026-09-04 11:15:00'),
+(176, 128, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-04 11:18:37', '2026-09-04 11:18:37'),
+(177, 129, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-11 12:55:16', '2026-09-11 12:55:16'),
+(178, 130, 47, NULL, 'Mojo 2000ml (Pet Bottle)', NULL, 1, 922, 0, NULL, NULL, NULL, NULL, '200ml', NULL, 922, '2026-09-12 08:13:21', '2026-09-12 08:13:21'),
+(179, 130, 48, NULL, 'ACI Pure Atta 2kg', NULL, 1, 124, 0, NULL, NULL, NULL, NULL, '2KG', NULL, 124, '2026-09-12 08:13:21', '2026-09-12 08:13:21'),
+(180, 130, 49, NULL, 'KaziFarms Kitchen Plain Paratha 1300gm', NULL, 1, 266, 0, NULL, NULL, NULL, NULL, '1300gm', NULL, 266, '2026-09-12 08:13:21', '2026-09-12 08:13:21');
 
 -- --------------------------------------------------------
 
@@ -862,6 +940,26 @@ CREATE TABLE `personal_access_tokens` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
+(1, 'App\\Models\\User', 16, 'auth_token', '907449fdd66d57797c9451af86421e3807965a1661a7fe81ad63fd88409f7894', '[\"*\"]', NULL, NULL, '2026-07-31 12:14:06', '2026-07-31 12:14:06'),
+(2, 'App\\Models\\User', 16, 'auth_token', '1980d16dafe62a629b088aeba278c228be527f468b6a41ea213f049ee7b95feb', '[\"*\"]', NULL, NULL, '2026-08-03 13:03:55', '2026-08-03 13:03:55'),
+(3, 'App\\Models\\User', 16, 'auth_token', '17663b6acc4755cee73576bff1cc299c3d73523188f48c5a9f5c5fc6f7e7532b', '[\"*\"]', NULL, NULL, '2026-08-03 14:47:30', '2026-08-03 14:47:30'),
+(4, 'App\\Models\\User', 16, 'auth_token', '0f8805724d2f6220456bbf09c08c10f7e6f83c3bd2b8e15da0951d2b09755177', '[\"*\"]', NULL, NULL, '2026-08-06 12:08:38', '2026-08-06 12:08:38'),
+(5, 'App\\Models\\User', 16, 'auth_token', '1acf351ef6eda466a07a203897887d88e8100190ca440379550a51c7d686b15d', '[\"*\"]', NULL, NULL, '2026-08-06 12:17:49', '2026-08-06 12:17:49'),
+(6, 'App\\Models\\User', 16, 'auth_token', '9679ec6261291ea0380b5cdb6839ed5604a675752964b012b458226e84edd621', '[\"*\"]', NULL, NULL, '2026-08-06 12:19:29', '2026-08-06 12:19:29'),
+(7, 'App\\Models\\User', 16, 'auth_token', 'd3ba9c98dfb37be8f5560039f1b59d982cc43292e0e56315621faafaa4323cf2', '[\"*\"]', NULL, NULL, '2026-08-06 12:24:05', '2026-08-06 12:24:05'),
+(8, 'App\\Models\\User', 16, 'auth_token', '56ab2a65e05eabc4ece4a691c6eb642a9f7e2e2ffbf3a08009f6647b6b30366c', '[\"*\"]', NULL, NULL, '2026-08-06 12:30:25', '2026-08-06 12:30:25'),
+(9, 'App\\Models\\User', 16, 'auth_token', '5990efe282303879c5857d6ee18e1a7b127e3676a533ffb00889f1f9b5acf8ed', '[\"*\"]', NULL, NULL, '2026-08-06 13:00:50', '2026-08-06 13:00:50'),
+(13, 'App\\Models\\User', 16, 'auth_token', '4038c4dec8c0ebd942e1fc92dfa0477aa08bf27cfe6b0b4ae76da17dd085f6cb', '[\"*\"]', '2026-08-26 12:32:03', NULL, '2026-08-14 13:05:43', '2026-08-26 12:32:03'),
+(14, 'App\\Models\\User', 16, 'auth_token', '2ded48f837a2e782629f438dfdd71a7b4453a4eefb36ebd58f28d5f31de62f3a', '[\"*\"]', '2026-08-26 11:39:34', NULL, '2026-08-15 08:18:56', '2026-08-26 11:39:34'),
+(23, 'App\\Models\\User', 16, 'auth_token', '1c5ba6cf08cedff4e245514b6b9daf2e576cbadb4aed4c45a68e75ea38cfd74f', '[\"*\"]', '2026-09-11 10:58:59', NULL, '2026-09-02 11:25:41', '2026-09-11 10:58:59'),
+(24, 'App\\Models\\User', 16, 'auth_token', 'd0d5367ab8d85a741cce35198e25b9cea68975cfb476ba42b0add2e07c4e5eee', '[\"*\"]', '2026-09-04 11:06:16', NULL, '2026-09-04 10:06:27', '2026-09-04 11:06:16'),
+(25, 'App\\Models\\User', 16, 'auth_token', '4f17973a402fd44f59533f066426d7cdeca11272046cc8180354b59136d5619d', '[\"*\"]', '2026-09-12 11:16:15', NULL, '2026-09-11 12:53:56', '2026-09-12 11:16:15');
+
 -- --------------------------------------------------------
 
 --
@@ -893,12 +991,12 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `subcategory_id`, `brand_id`, `product_name`, `slug`, `color`, `size`, `weight`, `tag`, `short_desc`, `isPopular`, `isHot`, `isFeatured`, `status`, `created_at`, `updated_at`) VALUES
-(45, 3, NULL, 3, 'Radhuni Shadmishali Seasoning Mixed 96gm', 'radhuni-shadmishali-seasoning-mixed-96gm', NULL, NULL, NULL, '[\"Healthy\",\"Nutritents\"]', '#', 0, 0, 0, 1, '2026-07-27 10:41:26', '2026-07-27 10:41:26'),
-(46, 8, 7, 1, 'Nescafe Classic 200(±)20gm (Jar)', 'nescafe-classic-20020gm-jar', NULL, NULL, NULL, '[\"Nutritents\"]', '#', 0, 0, 0, 1, '2026-07-27 10:44:55', '2026-07-27 10:44:55'),
-(47, 8, 9, 3, 'Mojo 2000ml (Pet Bottle)', 'mojo-2000ml-pet-bottle', NULL, NULL, NULL, '[\"Nutritents\"]', '#', 0, 0, 0, 1, '2026-07-27 12:00:56', '2026-07-27 12:00:56'),
-(48, 3, NULL, 3, 'ACI Pure Atta 2kg', 'aci-pure-atta-2kg', NULL, NULL, NULL, NULL, '#', 0, 0, 0, 1, '2026-07-27 12:21:02', '2026-07-27 12:21:02'),
-(49, 3, NULL, 10, 'KaziFarms Kitchen Plain Paratha 1300gm', 'kazifarms-kitchen-plain-paratha-1300gm', NULL, NULL, NULL, NULL, '#', 0, 0, 0, 1, '2026-07-27 12:23:24', '2026-07-27 12:23:24'),
-(50, 5, NULL, 1, 'Ariel Detergent Powder 1kg', 'ariel-detergent-powder-1kg', NULL, NULL, NULL, NULL, '#', 0, 0, 0, 1, '2026-07-27 12:34:27', '2026-07-27 12:34:27');
+(45, 3, NULL, 3, 'Radhuni Shadmishali Seasoning Mixed 96gm', 'radhuni-shadmishali-seasoning-mixed-96gm', NULL, NULL, NULL, '[\"Vegetables\",\"Healthy\",\"Nutritents\"]', 'A flavorful blend of aromatic spices crafted to enhance everyday cooking, bringing rich taste and authentic seasoning to your favorite dishes', 1, 0, 1, 1, '2026-07-27 10:41:26', '2026-09-11 12:34:04'),
+(46, 8, 7, 1, 'Nescafe Classic 200(±)20gm (Jar)', 'nescafe-classic-20020gm-jar', NULL, NULL, NULL, '[\"Nutritents\"]', '#', 0, 1, 1, 1, '2026-07-27 10:44:55', '2026-09-11 12:34:11'),
+(47, 8, 9, 3, 'Mojo 2000ml (Pet Bottle)', 'mojo-2000ml-pet-bottle', NULL, NULL, NULL, '[\"Nutritents\"]', '#', 1, 0, 1, 1, '2026-07-27 12:00:56', '2026-09-11 12:34:09'),
+(48, 3, NULL, 3, 'ACI Pure Atta 2kg', 'aci-pure-atta-2kg', NULL, NULL, NULL, NULL, '#', 1, 1, 1, 1, '2026-07-27 12:21:02', '2026-09-11 12:34:07'),
+(49, 3, NULL, 10, 'KaziFarms Kitchen Plain Paratha 1300gm', 'kazifarms-kitchen-plain-paratha-1300gm', NULL, NULL, NULL, NULL, '#', 0, 0, 1, 1, '2026-07-27 12:23:24', '2026-09-11 12:34:06'),
+(50, 5, NULL, 1, 'Ariel Detergent Powder 1kg', 'ariel-detergent-powder-1kg', NULL, NULL, NULL, NULL, '#', 0, 0, 1, 1, '2026-07-27 12:34:27', '2026-09-11 12:34:01');
 
 -- --------------------------------------------------------
 
@@ -934,7 +1032,7 @@ CREATE TABLE `product_details` (
 --
 
 INSERT INTO `product_details` (`id`, `product_id`, `SKU`, `purchase_price`, `regular_price`, `sale_price`, `discount`, `long_desc`, `initial_stock`, `total_qty`, `available_qty`, `sold_qty`, `youtube_embed_link`, `productThumbnail_img`, `product_img`, `meta_title`, `meta_key`, `meta_desc`, `created_at`, `updated_at`) VALUES
-(30, 45, 'EB-82552506', 110, NULL, NULL, NULL, '<p>#</p>', 50, 50, 50, 0, NULL, 'backend/assets/images/uploads/products/Radhuni Shadmishali Seasoning Mixed 96gm1785170486.webp', '[\"6a678a3696979Radhuni Shadmishali Seasoning Mixed 96gm-1785170486.webp\"]', NULL, NULL, NULL, '2026-07-27 10:41:26', '2026-07-27 10:41:26'),
+(30, 45, 'EB-82552506', 110, NULL, NULL, NULL, '<p><strong>Radhuni Shadmishali Seasoning Mixed 96gm</strong> is a versatile spice blend crafted to elevate the taste of everyday meals. Made with a balanced mix of traditional spices, it delivers rich aroma and authentic flavor to curries, stir-fries, and home-style dishes. Whether cooking meat, fish, or vegetables, this seasoning mix adds depth and consistency to your recipes. Conveniently packed in a 96gm pouch, it ensures freshness and easy use, making it a reliable choice for busy kitchens. Perfect for those who value authentic taste with minimal effort, Radhuni Shadmishali Seasoning brings tradition and convenience together in one pack.</p>', 50, 50, 50, 0, NULL, 'backend/assets/images/uploads/products/Radhuni Shadmishali Seasoning Mixed 96gm1785170486.webp', '[\"6a7ee6ff4b091Radhuni Shadmishali Seasoning Mixed 96gm-1786701567.webp\",\"6a7ee6ff4ef3bRadhuni Shadmishali Seasoning Mixed 96gm-1786701567.webp\",\"6a7ee6ff52d49Radhuni Shadmishali Seasoning Mixed 96gm-1786701567.webp\"]', NULL, NULL, NULL, '2026-07-27 10:41:26', '2026-08-14 10:16:09'),
 (31, 46, 'EB-92436614', 940, NULL, NULL, NULL, '<p>#</p>', 50, 50, 50, 0, NULL, 'backend/assets/images/uploads/products/Nescafe Classic 200(±)20gm (Jar)1785170695.webp', '[\"6a678b0789659Nescafe Classic 200(\\u00b1)20gm (Jar)-1785170695.webp\"]', NULL, NULL, NULL, '2026-07-27 10:44:55', '2026-07-27 10:44:55'),
 (32, 47, 'EB-59689527', 90, NULL, NULL, NULL, '<p>#</p>', 50, 50, 50, 0, NULL, 'backend/assets/images/uploads/products/Mojo 2000ml (Pet Bottle)1785175256.webp', '[\"6a679cd842b70Mojo 2000ml (Pet Bottle)-1785175256.webp\"]', NULL, NULL, NULL, '2026-07-27 12:00:56', '2026-07-27 12:00:56'),
 (33, 48, 'EB-81755938', 90, NULL, NULL, NULL, '<p>#</p>', 50, 50, 50, 0, NULL, 'backend/assets/images/uploads/products/ACI Pure Atta 2kg1785176462.webp', '[\"6a67a18e5535bACI Pure Atta 2kg-1785176462.webp\"]', NULL, NULL, NULL, '2026-07-27 12:21:02', '2026-07-27 12:21:02'),
@@ -1057,7 +1155,12 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('SHO3392exJXSmiY2Zbsmg2cic8UATnQ75k9xprgl', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUmpxeE5YMmo2VTNwTjVaSXlYM3Q3VzdCM3RqbE1HUUQ5clpLVjdDMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvdjEvY2F0ZWdvcmllcyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX2FkbWluXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1785178020);
+('4A3ITFOkoGE56JBc43Vcjlr8HzYUE4v7FXdhA7VS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiM01BSk1LRXlrVmFGNEJvc1k0cXFWcUxBZ2RkVno4TWVlcnhIVFk3TCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTI6ImxvZ2luX2FkbWluXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1789152939),
+('h4QzwwcidGkxLLdF2JjuigmF6kCkrX9FzziUwjOG', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZDJTaFZUczdMdXdiR1lhTW1RUmk5YzJ1SlRwaXF3U2hBNllKSXNKMSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1789190734),
+('m1a6gMlLUtPv0H50B9uS6ikNQmiC8GjneDGXfglA', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiT3lISnhmY0llVTFjUlN5empyOTFROTdPREVkRldZU2pPYTc2V0lBTyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1789233504),
+('uziO0fXJYXbxZV3e1QXVlurVtNY8kEncYzZt5TIC', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNmNyZElQUWdJTFExcWMxTnd2ckJFUk5DZlNGd0JiRGxMRG9VWmdLZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1789145917),
+('w8HtQWrJy0wjUh1kvq5uQyYZDex4OoTbb42DvuR1', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoib0t6MGJPSU9UdzVIRDluVG5RMWx2U093SlRUTzF5NUFhQThaYVRWNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9zdWNjZXNzL0JNNTA2OTEyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1788542535),
+('x6BDaCaDJ5nCkWjRjIQ18S1GDlzE0fhh4HBWN73R', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVDJVdnlxUGQ3UnRuQUVLd1lSSGZHVTJxVlJQblBUaWN2bFpabWQ0TiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC8ud2VsbC1rbm93bi9hcHBzcGVjaWZpYy9jb20uY2hyb21lLmRldnRvb2xzLmpzb24iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1789233387);
 
 -- --------------------------------------------------------
 
@@ -1093,9 +1196,10 @@ INSERT INTO `sizes` (`id`, `attrvalue_id`, `product_id`, `size_title`, `productR
 (17, 15, 35, 'M', 2000.00, 1000.00, 50, '2024-11-01 11:25:21', '2024-11-02 11:56:01'),
 (18, 16, 35, 'L', 2000.00, 1000.00, 50, '2024-11-01 11:25:21', '2024-11-02 11:56:01'),
 (19, 16, 40, 'L', 800.00, 784.00, 2, '2024-11-02 12:12:51', '2024-11-02 12:12:51'),
-(22, 29, 45, 'Universal', 130.00, 123.50, 5, '2026-07-27 10:41:26', '2026-07-27 10:41:26'),
+(22, 29, 45, 'Universal', 130.00, 123.50, 5, '2026-07-27 10:41:26', '2026-08-14 10:16:09'),
 (23, 29, 46, 'Universal', 970.00, 921.50, 5, '2026-07-27 10:44:55', '2026-07-27 10:44:55'),
-(24, 31, 47, '200ml', 970.00, 921.50, 5, '2026-07-27 12:00:56', '2026-07-27 12:00:56');
+(24, 31, 47, '200ml', 970.00, 921.50, 5, '2026-07-27 12:00:56', '2026-07-27 12:00:56'),
+(25, 30, 45, '100ml', 110.00, 104.50, 5, '2026-08-13 12:35:57', '2026-08-14 10:16:09');
 
 -- --------------------------------------------------------
 
@@ -1204,8 +1308,8 @@ INSERT INTO `theme_colors` (`id`, `primary_color_key`, `primary_color_value`, `s
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `profile_pic` text DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `thana` varchar(255) DEFAULT NULL,
@@ -1214,6 +1318,7 @@ CREATE TABLE `users` (
   `company_name` varchar(255) DEFAULT NULL,
   `state_district` varchar(255) DEFAULT NULL,
   `zip_code` varchar(255) DEFAULT NULL,
+  `otp` int(11) NOT NULL DEFAULT 0,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=active,0=inactive',
@@ -1226,12 +1331,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `profile_pic`, `name`, `email`, `phone`, `address`, `thana`, `area`, `gender`, `company_name`, `state_district`, `zip_code`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(4, 'public/frontend/images/upload/profile/172655352366e91db39fa18.jpg', 'Sabbir hossain', 'h.sabbir36@yahoo.com', '01926241905', 'Dhaka North City corporation, Dhaka', 'Dakshinkhan', 'Ashkona', 'male', 'Gen-Zilla', 'Dhaka', '1230', NULL, '$2y$12$ElwNwruoltBWuQpvaoHoweh2aif/NXc79Yb.UjGpm49UVwImijmq.', 1, 'k41VqSlutHKixa0EKk2bIhdFLnpROoWc49flK0kW0FCqi9kzJ4Jx2voiZmX7', '2024-09-06 13:30:09', '2025-02-04 18:49:52'),
-(12, NULL, 'Rifat Khan', 'rifat@gmail.com', NULL, 'test address', 'Dakshinkhan', 'Ashkona', 'male', NULL, NULL, NULL, NULL, '$2y$12$a4BV5vIahFbXzqmr//xVUOqWHNIlhiM2JTOqpLsd.rAbJbexRYs0C', 1, NULL, '2025-01-30 17:49:27', '2025-01-30 17:49:27'),
-(13, NULL, 'Stuff', 'sh1389045@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, '$2y$12$CvGifb.u9ohR5V6Ax7dE3O6p9se6ezn5PSyFQHaKS/QvR9AQjblhe', 1, NULL, '2025-01-30 18:03:23', '2025-01-30 18:03:23'),
-(14, NULL, 'saif hossain', 'sf@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, '$2y$12$S.TSA1KrqrNEYnwfo/t3UePl4iGMWV3tOABqOUjRDyQNuqR5Ol9J2', 1, NULL, '2025-01-30 18:26:18', '2025-01-30 18:26:18'),
-(15, NULL, 'Sabbir hossain', 'sh139045@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, NULL, '$2y$12$Rqhm3ZHpKoqPAgPHRO4JqO.d4HVKnTO/3GNrX.45SAXf1fbExCdxq', 1, NULL, '2025-01-30 18:26:48', '2025-01-30 18:26:48');
+INSERT INTO `users` (`id`, `profile_pic`, `name`, `email`, `phone`, `address`, `thana`, `area`, `gender`, `company_name`, `state_district`, `zip_code`, `otp`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(4, 'public/frontend/images/upload/profile/172655352366e91db39fa18.jpg', 'Sabbir hossain', 'h.sabbir36@yahoo.com', '01926241905', 'Dhaka North City corporation, Dhaka', 'Dakshinkhan', 'Ashkona', 'male', 'Gen-Zilla', 'Dhaka', '1230', 0, NULL, '$2y$12$ElwNwruoltBWuQpvaoHoweh2aif/NXc79Yb.UjGpm49UVwImijmq.', 1, 'k41VqSlutHKixa0EKk2bIhdFLnpROoWc49flK0kW0FCqi9kzJ4Jx2voiZmX7', '2024-09-06 13:30:09', '2025-02-04 18:49:52'),
+(12, NULL, 'Rifat Khan', 'rifat@gmail.com', NULL, 'test address', 'Dakshinkhan', 'Ashkona', 'male', NULL, NULL, NULL, 0, NULL, '$2y$12$a4BV5vIahFbXzqmr//xVUOqWHNIlhiM2JTOqpLsd.rAbJbexRYs0C', 1, NULL, '2025-01-30 17:49:27', '2025-01-30 17:49:27'),
+(13, NULL, 'Stuff', 'sh1389045@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, 0, NULL, '$2y$12$CvGifb.u9ohR5V6Ax7dE3O6p9se6ezn5PSyFQHaKS/QvR9AQjblhe', 1, NULL, '2025-01-30 18:03:23', '2025-01-30 18:03:23'),
+(14, NULL, 'saif hossain', 'sf@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, 0, NULL, '$2y$12$S.TSA1KrqrNEYnwfo/t3UePl4iGMWV3tOABqOUjRDyQNuqR5Ol9J2', 1, NULL, '2025-01-30 18:26:18', '2025-01-30 18:26:18'),
+(15, NULL, 'Sabbir hossain', 'sh139045@gmail.com', NULL, NULL, NULL, NULL, 'male', NULL, NULL, NULL, 0, NULL, '$2y$12$Rqhm3ZHpKoqPAgPHRO4JqO.d4HVKnTO/3GNrX.45SAXf1fbExCdxq', 1, NULL, '2025-01-30 18:26:48', '2025-01-30 18:26:48'),
+(16, NULL, NULL, NULL, '01926241906', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '$2y$12$MVZWBWHlUdD1zVHFk8kIJOXvoMO1k/KsVTAl1QWFVLIZjFq5FVSQy', 1, NULL, '2026-07-31 12:10:32', '2026-07-31 12:10:32');
 
 -- --------------------------------------------------------
 
@@ -1335,6 +1441,15 @@ ALTER TABLE `cache`
 --
 ALTER TABLE `cache_locks`
   ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `carts_session_token_unique` (`session_token`),
+  ADD KEY `carts_user_id_foreign` (`user_id`),
+  ADD KEY `carts_product_id_foreign` (`product_id`);
 
 --
 -- Indexes for table `categories`
@@ -1609,6 +1724,12 @@ ALTER TABLE `brands`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -1630,7 +1751,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
 
 --
 -- AUTO_INCREMENT for table `delivery_charges`
@@ -1654,19 +1775,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 
 --
 -- AUTO_INCREMENT for table `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT for table `pages`
@@ -1684,7 +1805,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -1720,7 +1841,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `sliders`
@@ -1750,7 +1871,7 @@ ALTER TABLE `theme_colors`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `weights`
@@ -1773,6 +1894,13 @@ ALTER TABLE `wishlists`
 --
 ALTER TABLE `attrvalues`
   ADD CONSTRAINT `attrvalues_attribute_id_foreign` FOREIGN KEY (`attribute_id`) REFERENCES `attributes` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `carts`
+--
+ALTER TABLE `carts`
+  ADD CONSTRAINT `carts_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `colors`
