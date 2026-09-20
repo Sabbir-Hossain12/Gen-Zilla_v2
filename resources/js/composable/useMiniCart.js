@@ -1,4 +1,4 @@
-import {ref} from "vue";
+import { ref } from "vue";
 
 const isOpen = ref(false);
 const qty = ref(1);
@@ -23,6 +23,5 @@ export function useMiniCart() {
         }
     }
 
-    return { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty }
+    return { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty };
 }
-// defineExpose({ openMiniCard, closeMiniCard })  // ← add this

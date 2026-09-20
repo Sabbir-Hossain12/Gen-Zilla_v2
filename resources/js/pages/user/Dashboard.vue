@@ -1,14 +1,33 @@
 <script setup>
 import MainLayout from "@/layouts/MainLayout.vue";
 import DashboardSidebar from "@/components/DashboardSidebar.vue";
+import OrderSummaryModal from "@/components/OrderSummaryModal.vue";
 import {useUser} from "@/stores/user";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
+import {formatPrice} from "@/utils/price";
 
 const user = useUser();
 
-onMounted(() => {
-    user.fetchProfile().catch(() => {});
-    user.fetchStats().catch(() => {});
+const showOrderModal = ref(false);
+const selectedInvoiceId = ref(null);
+const selectedOrderData = ref(null);
+
+function viewOrder(order) {
+    selectedOrderData.value = order;
+    selectedInvoiceId.value = order.invoiceID || order.id;
+    showOrderModal.value = true;
+}
+
+onMounted(async () => {
+    try {
+        await Promise.all([
+            user.fetchProfile(),
+            user.fetchStats(),
+            user.fetchRecentOrders(),
+        ]);
+    } catch (err) {
+        console.error("Error loading dashboard data:", err);
+    }
 });
 </script>
 
@@ -23,7 +42,7 @@ onMounted(() => {
             <main class="flex-1 space-y-6">
 
                 <div class="bg-white rounded-lg border border-border1 shadow-sm p-6">
-                    <h1 class="text-2xl font-bold text-dark1">Welcome back, {{ user.profile?.name || 'Valued Customer' }}</h1>
+                    <h1 class="text-2xl font-bold text-dark1">Welcome back, {{ user.profile?.name || user.stats?.name || 'Valued Customer' }}</h1>
                     <p class="text-gray-500 mt-1">Here's a quick overview of your account.</p>
                 </div>
 
@@ -34,12 +53,12 @@ onMounted(() => {
                         <p class="text-3xl font-bold text-dark1 mt-1">{{ user.totalOrders }}</p>
                     </div>
                     <div class="bg-white rounded-lg border border-border1 shadow-sm p-5">
-                        <p class="text-sm text-gray-500">Wishlist Items</p>
-                        <p class="text-3xl font-bold text-dark1 mt-1">{{ user.wishlistCount }}</p>
+                        <p class="text-sm text-gray-500">Pending Orders</p>
+                        <p class="text-3xl font-bold text-amber-600 mt-1">{{ user.pendingOrders }}</p>
                     </div>
                     <div class="bg-white rounded-lg border border-border1 shadow-sm p-5">
-                        <p class="text-sm text-gray-500">Account Status</p>
-                        <p class="mt-1"><span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">Active</span></p>
+                        <p class="text-sm text-gray-500">Delivered Orders</p>
+                        <p class="text-3xl font-bold text-green-600 mt-1">{{ user.deliveredOrders }}</p>
                     </div>
                 </div>
 
@@ -62,19 +81,19 @@ onMounted(() => {
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-border1">
-                            <tr v-if="user.recentOrders.length === 0">
+                            <tr v-if="!user.recentOrders || user.recentOrders.length === 0">
                                 <td colspan="6" class="px-6 py-8 text-center text-gray-500">No recent orders yet.</td>
                             </tr>
                             <tr v-for="order in user.recentOrders" :key="order.id">
-                                <td class="px-6 py-4 font-medium">{{ order.invoiceID }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ order.order_date }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ order.payment_method }}</td>
+                                <td class="px-6 py-4 font-medium">{{ order.invoiceID || '#' + order.id }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ order.order_date || (order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A') }}</td>
+                                <td class="px-6 py-4 text-gray-500 capitalize">{{ order.payment_method || 'Cash' }}</td>
                                 <td class="px-6 py-4">
-                                    <span class="px-2 py-1 rounded-full bg-amber text-dark2 text-xs font-semibold">{{ order.order_status }}</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold capitalize">{{ order.order_status || 'Pending' }}</span>
                                 </td>
-                                <td class="px-6 py-4 text-right font-semibold">৳{{ Number(order.total).toLocaleString() }}</td>
+                                <td class="px-6 py-4 text-right font-semibold">৳{{ formatPrice(order.total) }}</td>
                                 <td class="px-6 py-4 text-right">
-                                    <RouterLink :to="`/order-details/${order.invoiceID}`" class="text-primary font-medium hover:underline">View</RouterLink>
+                                    <button @click="viewOrder(order)" class="text-primary font-semibold hover:underline cursor-pointer">View</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -84,6 +103,9 @@ onMounted(() => {
 
             </main>
         </div>
+
+        <!-- Order Summary & Tracking Modal -->
+        <OrderSummaryModal v-model="showOrderModal" :invoice-id="selectedInvoiceId" :order-data="selectedOrderData" />
     </MainLayout>
 </template>
 

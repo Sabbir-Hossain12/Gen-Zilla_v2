@@ -58,15 +58,13 @@ class DashboardController extends Controller
     public function orderDetails(string $id)
     {
         $order=Order::where('id',$id)->with('orderProducts','customer','products')->first();
-        
-//        dd($order);
+
         return view('frontend.pages.dashboard.order-details', compact('order'));
     }
 
 
     public function updateProfileImage(Request $request)
     {
-//      dd($request->all());
         $user = User::find(auth()->user()->id);
         if ($request->hasFile('profile_pic')) {
             if ($user->profile_pic && file_exists($user->profile_pic)) {
@@ -92,55 +90,58 @@ class DashboardController extends Controller
     public function getProfileDetails()
     {
         $user = User::find(auth()->user()->id);
-        return response()->json($user);
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile Details Fetched Successfully',
+            'data' => $user,
+        ], 200);
     }
+
     public function updateProfileDetails(Request $request)
     {
-//        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|string',
-            'phone' => 'string|max:11',
-            'address' => 'string',
-            'state_district' => 'string|max:255',
-            'zip_code' => 'string|max:255',
-            'thana' => 'string|max:255',
-            'area' => 'string|max:255',
-            'gender' => 'string|max:255',
+            'phone' => 'nullable|string|max:11',
+            'address' => 'nullable|string',
+            'state_district' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:255',
+            'thana' => 'nullable|string|max:255',
+            'area' => 'nullable|string|max:255',
+            'gender' => 'nullable|string|max:255',
         ]);
-        
+
         $user = User::find(auth()->user()->id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->company_name = $request->company_name;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->state_district = $request->state_district;
-        $user->zip_code = $request->zip_code;
-        $user->thana = $request->thana;
-        $user->area = $request->area;
-        $user->gender = $request->gender;
+        if ($request->has('company_name')) $user->company_name = $request->company_name;
+        if ($request->has('phone')) $user->phone = $request->phone;
+        if ($request->has('address')) $user->address = $request->address;
+        if ($request->has('state_district')) $user->state_district = $request->state_district;
+        if ($request->has('zip_code')) $user->zip_code = $request->zip_code;
+        if ($request->has('thana')) $user->thana = $request->thana;
+        if ($request->has('area')) $user->area = $request->area;
+        if ($request->has('gender')) $user->gender = $request->gender;
         $user->save();
-        
-        return response()->json(['message' => 'Profile Details Updated Successfully'],200);
+
+        return response()->json(['success' => true, 'message' => 'Profile Details Updated Successfully', 'data' => $user], 200);
     }
 
     public function updatePassword(Request $request)
     {
-//        dd($request->all());
         $request->validate([
-            'old_password' => 'required|string',
-            'password' => 'required|string|min:8',
-            
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8',
         ]);
-        
+
         $user = User::find(auth()->user()->id);
-        if (password_verify($request->old_password, $user->password)) {
-            $user->password = bcrypt($request->password);
+        $oldPassword = $request->current_password ?: $request->old_password;
+        if (password_verify($oldPassword, $user->password)) {
+            $user->password = bcrypt($request->new_password);
             $user->save();
-            return response()->json(['message' => 'Password Updated Successfully'],200);
+            return response()->json(['success' => true, 'message' => 'Password Updated Successfully'], 200);
         } else {
-            return response()->json(['message' => 'Old Password Does Not Match'], 400);
+            return response()->json(['success' => false, 'message' => 'Current Password Does Not Match'], 400);
         }
     }
 }

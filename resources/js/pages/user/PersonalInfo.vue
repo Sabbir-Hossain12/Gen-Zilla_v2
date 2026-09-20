@@ -3,17 +3,11 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import DashboardSidebar from "@/components/DashboardSidebar.vue";
 import {useUser} from "@/stores/user";
 import {onMounted, reactive, ref} from "vue";
-import ToasterUi from "toaster-ui";
+import { Toast } from "toaster-js";
 
 const user = useUser();
-const toaster = new ToasterUi();
-const saving = ref(false);
-
-const form = reactive({
-    name: "",
-    phone: "",
-    email: "",
-});
+const savingProfile = ref(false);
+const savingPassword = ref(false);
 
 const profileForm = reactive({
     name: "",
@@ -28,56 +22,44 @@ const passwordForm = reactive({
 });
 
 async function submitProfile() {
-    saving.value = true;
+    savingProfile.value = true;
     try {
-        await user.updateProfile(form);
-        toaster.addToast("Profile updated successfully", "success", {duration: 4000});
-        Object.assign(form, {
-            name: user.profile?.name || "",
-            phone: user.profile?.phone || "",
-            email: user.profile?.email || "",
-        });
+        await user.updateProfile(profileForm);
+        new Toast("Profile updated successfully", Toast.TYPE_SUCCESS);
     } catch (err) {
-        toaster.addToast(err?.response?.data?.message || "Failed to update profile", "danger", {duration: 4000});
+        new Toast(err?.response?.data?.message || "Failed to update profile", Toast.TYPE_WARNING);
     } finally {
-        saving.value = false;
+        savingProfile.value = false;
     }
 }
 
 async function submitPassword() {
     if (passwordForm.new_password !== passwordForm.new_password_confirmation) {
-        toaster.addToast("New password and confirmation do not match", "danger", {duration: 4000});
+        new Toast("New password and confirmation do not match", Toast.TYPE_WARNING);
         return;
     }
-    saving.value = true;
+    savingPassword.value = true;
     try {
         await user.updatePassword(passwordForm);
-        toaster.addToast("Password updated successfully", "success", {duration: 4000});
+        new Toast("Password updated successfully", Toast.TYPE_SUCCESS);
         passwordForm.current_password = "";
         passwordForm.new_password = "";
         passwordForm.new_password_confirmation = "";
     } catch (err) {
-        toaster.addToast(err?.response?.data?.message || "Failed to update password", "danger", {duration: 4000});
+        new Toast(err?.response?.data?.message || "Failed to update password", Toast.TYPE_WARNING);
     } finally {
-        saving.value = false;
+        savingPassword.value = false;
     }
 }
 
 onMounted(async () => {
     try {
         await user.fetchProfile();
-        Object.assign(profileForm, {
-            name: user.profile?.name || "",
-            phone: user.profile?.phone || "",
-            email: user.profile?.email || "",
-        });
-        Object.assign(form, {
-            current_password: "",
-            new_password: "",
-            new_password_confirmation: "",
-        });
+        profileForm.name = user.profile?.name || "";
+        profileForm.phone = user.profile?.phone || "";
+        profileForm.email = user.profile?.email || "";
     } catch (err) {
-        toaster.addToast("Failed to load profile", "danger", {duration: 4000});
+        console.error("Failed to load profile", err);
     }
 });
 </script>
@@ -103,7 +85,7 @@ onMounted(async () => {
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-sm font-medium text-dark1 mb-1.5">Full Name</label>
-                        <input type="text" v-model="profileForm.name" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+                        <input type="text" v-model="profileForm.name" required class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-dark1 mb-1.5">Phone</label>
@@ -111,17 +93,12 @@ onMounted(async () => {
                     </div>
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-dark1 mb-1.5">Email Address</label>
-                        <input type="email" v-model="profileForm.email" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
-                        <p class="text-xs text-gray-500 mt-1">Verified</p>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-dark1 mb-1.5">Account Status</label>
-                        <input type="text" value="Active" disabled class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm bg-gray-50 text-gray-500" />
+                        <input type="email" v-model="profileForm.email" required class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
                     </div>
                 </div>
                 <div class="pt-2">
-                    <button type="submit" :disabled="saving" class="bg-primary text-white font-semibold px-6 py-2.5 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        {{ saving ? "Saving..." : "Save Changes" }}
+                    <button type="submit" :disabled="savingProfile" class="bg-primary text-white font-semibold px-6 py-2.5 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer">
+                        {{ savingProfile ? "Saving..." : "Save Changes" }}
                     </button>
                 </div>
             </form>
@@ -132,20 +109,20 @@ onMounted(async () => {
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-dark1 mb-1.5">Current Password</label>
-                        <input type="password" v-model="passwordForm.current_password" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+                        <input type="password" v-model="passwordForm.current_password" required class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-dark1 mb-1.5">New Password</label>
-                        <input type="password" v-model="passwordForm.new_password" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+                        <input type="password" v-model="passwordForm.new_password" required minlength="8" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-dark1 mb-1.5">Confirm New Password</label>
-                        <input type="password" v-model="passwordForm.new_password_confirmation" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
+                        <input type="password" v-model="passwordForm.new_password_confirmation" required minlength="8" class="w-full border border-border1 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary" />
                     </div>
                 </div>
                 <div class="pt-2">
-                    <button type="submit" :disabled="saving" class="border border-primary text-primary font-semibold px-6 py-2.5 rounded-md hover:bg-amber focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        {{ saving ? "Updating..." : "Update Password" }}
+                    <button type="submit" :disabled="savingPassword" class="bg-primary text-white font-semibold px-6 py-2.5 rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer">
+                        {{ savingPassword ? "Updating..." : "Update Password" }}
                     </button>
                 </div>
             </form>

@@ -190,20 +190,20 @@ async function logout() {
                         </button>
 
                         <div v-show="showUserDropdown"
-                             class="absolute right-2 top-15 mt-2 w-64 bg-[#ffffff] rounded-lg shadow-lg border border-gray-100 text-xs">
+                             class="absolute right-2 top-15 mt-2 w-64 bg-[#ffffff] rounded-lg shadow-lg border border-gray-100 text-xs z-50">
                             <div class="flex flex-col space-y-2 p-1 ">
                                 <RouterLink to="/dashboard"
-                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
-
-                                        <span class="text-red-600 text-xl">
-                                            <font-awesome-icon icon="house" class="text-primary"/>
-                                        </span>
+                                            @click="showUserDropdown = false"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
+                                    <span class="text-red-600 text-xl">
+                                        <font-awesome-icon icon="house" class="text-primary"/>
+                                    </span>
                                     <span class="font-semibold text-gray-700">Dashboard</span>
-
                                 </RouterLink>
 
                                 <RouterLink to="/order-history"
-                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition  border-b border-gray-200">
+                                            @click="showUserDropdown = false"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
                                     <span class="text-red-600 text-xl">
                                       <font-awesome-icon icon="receipt" class="text-primary"/>
                                     </span>
@@ -211,23 +211,16 @@ async function logout() {
                                 </RouterLink>
 
                                 <RouterLink to="/personal-info"
-                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                            @click="showUserDropdown = false"
+                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="user" class="text-primary"/>
                                     </span>
                                     <span class="font-semibold text-gray-700">Personal Info</span>
                                 </RouterLink>
 
-                                <RouterLink to="/wishlist"
-                                            class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200">
-                                    <span class="text-red-600 text-xl">
-                                       <font-awesome-icon icon="heart" class="text-primary"/>
-                                    </span>
-                                    <span class="font-semibold text-gray-700">Wishlist</span>
-                                </RouterLink>
-
                                 <button @click="logout()"
-                                        class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b  border-gray-200">
+                                        class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-200 cursor-pointer transition border-b border-gray-200 text-left w-full">
                                     <span class="text-red-600 text-xl">
                                        <font-awesome-icon icon="fa-arrow-right-from-bracket" class="text-primary"/>
                                     </span>

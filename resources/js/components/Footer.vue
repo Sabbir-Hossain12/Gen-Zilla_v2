@@ -87,9 +87,9 @@ onMounted(async () => {
         <div class="ml-0 md:ml-10 space-y-3 text-center md:text-left">
           <h1 class="text-base font-semibold">My Account</h1>
           <ul class="space-y-1.5 text-sm text-gray-600">
-            <li><router-link to="/personal-info" class="hover:text-primary transition-colors">Personal Info</router-link></li>
+            <li><router-link to="/dashboard" class="hover:text-primary transition-colors">Dashboard</router-link></li>
             <li><router-link to="/order-history" class="hover:text-primary transition-colors">Order History</router-link></li>
-            <li><router-link to="/wishlist" class="hover:text-primary transition-colors">Wishlist</router-link></li>
+            <li><router-link to="/personal-info" class="hover:text-primary transition-colors">Personal Info</router-link></li>
           </ul>
         </div>
 
