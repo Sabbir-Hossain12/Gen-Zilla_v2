@@ -20,7 +20,7 @@ onMounted(async () => {
 
 })
 
-const baseUrl = import.meta.env.VITE_APP_URL;
+// const baseUrl = import.meta.env.VITE_APP_URL;
 
 const productImages = computed(() => {
     try {
@@ -143,7 +143,7 @@ async function addToCart() {
                 <div class="md:col-span-4 bg-white border border-gray-100 rounded-lg p-4">
                     <div class="relative flex items-center justify-center bg-white rounded-lg h-72 overflow-hidden">
                         <img id="mainImg" v-if="productStore.productDetails?.product_detail?.productThumbnail_img"
-                             :src="baseUrl + '/' + productStore.productDetails.product_detail.productThumbnail_img"
+                             :src="'/' + productStore.productDetails.product_detail.productThumbnail_img"
                              class="object-contain h-full w-full" :alt="productStore.productDetails.product_name"/>
                         <button
                             class="absolute bottom-3 right-3 bg-white border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-gray-500 hover:text-[#E8312A] shadow-sm">
@@ -154,7 +154,7 @@ async function addToCart() {
                         <div v-for="sliderImg in productImages" :key="sliderImg" @click=""
                              class="border-2 border-[#E8312A] rounded-md cursor-pointer overflow-hidden w-16 h-16 shrink-0">
                             <img
-                                :src="baseUrl + '/backend/assets/images/uploads/products/' + sliderImg"
+                                :src="'/backend/assets/images/uploads/products/' + sliderImg"
                                 class="w-full h-full object-contain" alt="thumb1"/>
                         </div>
                         <!--                        <div @click=""-->
