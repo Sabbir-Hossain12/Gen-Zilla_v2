@@ -18,6 +18,7 @@ Route::prefix('v1')->group(function () {
 
     //Home Page
     Route::get('/header', [WebviewController::class, 'header']);
+    Route::get('/footer', [WebviewController::class, 'footer']);
     Route::get('/home', [WebviewController::class, 'home']);
     Route::get('/sliders', [WebviewController::class, 'slider']);
     Route::get('/featured-subcategories', [WebviewController::class, 'featuredSubcategory']);

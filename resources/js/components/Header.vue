@@ -7,32 +7,30 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import VerifyOtp from "@/components/VerifyOtp.vue";
 
 import {useAuth} from "../stores/auth.js";
-import {onMounted, ref, watch} from "vue";
+import {useSettings} from "../stores/settings.js";
+import {computed, onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
 import {formatPrice} from "@/utils/price";
 
 const auth = useAuth();
+const settings = useSettings();
 const router = useRouter();
 const showUserDropdown = ref(false)
 const {isOpen} = useSidebar();
+const baseUrl = import.meta.env.VITE_APP_URL;
 
-//Header nav data
-const topCategories = ref([])
-const brands = ref([])
-const pages = ref([])
+const logoUrl = computed(() => {
+    if (settings.basicInfo?.black_logo) {
+        return settings.basicInfo.black_logo.startsWith('http')
+            ? settings.basicInfo.black_logo
+            : `${baseUrl}/${settings.basicInfo.black_logo}`;
+    }
+    return shwapno_logo;
+});
 
 onMounted(async () => {
-    try {
-        const res = await axios.get('/api/v1/header')
-        if (res.data.success) {
-            topCategories.value = res.data.data.topCategories || []
-            brands.value = res.data.data.brands || []
-            pages.value = res.data.data.pages || []
-        }
-    } catch (err) {
-        console.error('Error fetching header data:', err)
-    }
+    await settings.fetchHeaderData();
 })
 
 //Search
@@ -114,13 +112,13 @@ async function logout() {
                         <FontAwesomeIcon class="text-white text-xl" :icon="isOpen ? 'xmark' : 'bars'"></FontAwesomeIcon>
                     </button>
                     <router-link :to="{name: 'Home'}">
-                        <img :src="shwapno_logo" alt="">
+                        <img :src="logoUrl" alt="logo" class="max-h-12 object-contain">
                     </router-link>
                     <!--Delivery Location-->
                     <button
                         class="hidden md:flex items-center gap-2 border border-danger rounded px-2 py-2 cursor-pointer ml-2">
                         <i class="fa-regular fa-truck" style="color: #e5e7eb;"></i>
-                        <span class="text-secondary text-xs ">Select your delivery location</span>
+                        <span class="text-secondary text-xs ">{{ settings.basicInfo?.store_location || 'Select your delivery location' }}</span>
                     </button>
                     <!-- Search Sections-->
                     <div class="flex items-center bg-white rounded-md shadow-sm w-full max-w-lg relative">
@@ -166,8 +164,8 @@ async function logout() {
                         </div>
                     </div>
                     <!--App Download Section-->
-                    <a class="cursor-pointer hidden lg:block" href="#">
-                        <img :src="app_download" alt="" height="40" width="175">
+                    <a class="cursor-pointer hidden lg:block" :href="settings.basicInfo?.app_download_link || '#'">
+                        <img :src="settings.basicInfo?.app_download_img ? (baseUrl + '/' + settings.basicInfo.app_download_img) : app_download" alt="" height="40" width="175">
                     </a>
                     <!--Language and SendOtp/Signup-->
                     <div class="hidden lg:flex gap-2 items-center">
@@ -241,19 +239,18 @@ async function logout() {
 
                     <!--Mobile Right Menu-->
                     <div class="lg:hidden flex items-center gap-2 ml-2">
-                        <button>
+                        <button v-if="!auth.isAuthenticated" @click="auth.showSendOtpModal = true">
                             <i class="fa-solid fa-user text-white"></i>
                         </button>
-
-                        <button>
-                            <i class="fa-solid fa-ellipsis-vertical text-white"></i>
+                        <button v-else @click="toggleUserDropdown">
+                            <font-awesome-icon icon="user" class="text-white"/>
                         </button>
                     </div>
 
                 </div>
             </div>
         </nav>
-        <!--   Bottom Header&ndash-->
+        <!--   Bottom Header   -->
         <nav class="bg-white shadow-sm">
             <div class="max-w-387 mx-auto px-2 md:px-4 flex items-center justify-center md:justify-between py-1.5">
                 <div class="hidden lg:flex items-center gap-2">
@@ -261,7 +258,7 @@ async function logout() {
                     <span class="font-bold text-[13px]">SHOP BY CATEGORY</span>
                 </div>
                 <ul class="flex items-center gap-2 md:gap-5 text-[11px] md:text-[14px] md:font-medium font-semibold text-nowrap overflow-hidden">
-                    <li class="mobile-header-button" v-for="(category,index) in topCategories" :key="index">
+                    <li class="mobile-header-button" v-for="(category,index) in settings.topCategories" :key="index">
                         <router-link :to="{name: 'CategoryProducts', params: {category_slug: category.slug}}">
                             {{ category.category_name }}
                         </router-link>
@@ -271,7 +268,7 @@ async function logout() {
                     </li>
                 </ul>
                 <ul class="hidden md:flex items-center gap-2">
-                    <li v-for="page in pages" :key="page.id">
+                    <li v-for="page in settings.pages" :key="page.id">
                         <router-link :to="{name: 'PageView', params: {slug: page.slug}}" class="flex items-center gap-1">
                             <i class="fa-regular fa-circle-question text-danger"></i>
                             <span class="text-[12px] font-light">{{ page.title }}</span>

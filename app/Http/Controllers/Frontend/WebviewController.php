@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\BasicInfo;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Page;
@@ -425,6 +426,8 @@ class WebviewController extends Controller
                     return $page;
                 });
 
+            $basicInfo = BasicInfo::first();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Header Data Fetched',
@@ -432,10 +435,42 @@ class WebviewController extends Controller
                     'topCategories' => $topCategories,
                     'brands' => $brands,
                     'pages' => $pages,
+                    'basicInfo' => $basicInfo,
                 ]
             ]);
         } catch (\Exception $e) {
             Log::error('Header Data Issue:' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something Went Wrong',
+            ]);
+        }
+    }
+
+    public function footer()
+    {
+        try {
+            $pages = Page::where('status', 1)
+                ->get()
+                ->map(function ($page) {
+                    $page->slug = $page->slug ?: Str::slug($page->title);
+
+                    return $page;
+                });
+
+            $basicInfo = BasicInfo::first();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Footer Data Fetched',
+                'data' => [
+                    'pages' => $pages,
+                    'basicInfo' => $basicInfo,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Footer Data Issue:' . $e->getMessage());
 
             return response()->json([
                 'success' => false,

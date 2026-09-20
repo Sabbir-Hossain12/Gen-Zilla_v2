@@ -4,7 +4,7 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import {useCart} from "@/stores/cart.js";
 import {useAuth} from "@/stores/auth.js";
 import {useMiniCart} from "@/composable/useMiniCart";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {storeToRefs} from "pinia";
 import axios from "axios";
 import {formatPrice} from "@/utils/price";
@@ -22,8 +22,22 @@ onMounted(async () => {
     closeMiniCard();
     // fetch Cart
     await cart.fetchCart();
+
+    if (!cart.items || cart.items.length === 0) {
+        new Toast("Your Cart is Empty, Add some Products First !", Toast.TYPE_WARNING);
+        router.push({ name: 'Home' });
+        return;
+    }
+
     await cart.fetchDeliveryList();
-})
+});
+
+watch(() => cart.items.length, (newLength) => {
+    if (newLength === 0) {
+        new Toast("Your Cart is Empty!", Toast.TYPE_WARNING);
+        router.push({ name: 'Home' });
+    }
+});
 const selectedDeliveryId = ref(1);
 const selectedDelivery = computed(() =>
     cart.deliveryList.find(d => d.id === selectedDeliveryId.value)
@@ -49,9 +63,9 @@ const token = computed(() => auth.token || localStorage.getItem('token') || null
 
 async function submitOrder() {
     try {
-        if (cart.items.length === 0) {
+        if (!cart.items || cart.items.length === 0) {
             new Toast("Your Cart is Empty, Add some Products First !", Toast.TYPE_WARNING)
-
+            router.push({ name: 'Home' });
             return;
         }
 

@@ -4,23 +4,36 @@ import { onMounted, watch } from "vue";
 import { useCart } from "@/stores/cart.js";
 import { storeToRefs } from "pinia";
 import { formatPrice } from "@/utils/price";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { Toast } from "toaster-js";
 
 const { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty } = useMiniCart();
 
 const route = useRoute();
+const router = useRouter();
+
 watch(() => route.fullPath, () => {
     closeMiniCard();
 });
 
 const cart = useCart()
 const baseUrl = import.meta.env.VITE_APP_URL;
+
 onMounted(async () => {
     // fetch Cart
     await cart.fetchCart();
 
 })
-const {items,totalQty,subtotal,token} = storeToRefs(cart)
+const {items,totalQty,subtotal,token} = storeToRefs(cart);
+
+function goToCheckout() {
+    if (!items.value || items.value.length === 0) {
+        new Toast("Your Cart is Empty, Add some Products First!", Toast.TYPE_WARNING);
+        return;
+    }
+    closeMiniCard();
+    router.push({ name: 'Checkout' });
+}
 </script>
 
 <template>
@@ -98,7 +111,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
       <div class="flex h-11 w-1/2 items-center justify-center bg-yellow text-sm font-medium leading-none text-black">
         <h4
              class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳{{ formatPrice(subtotal) }}</h4></div>
-      <router-link :to="{name: 'Checkout'}" @click="closeMiniCard" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white">Place order</router-link>
+      <button @click="goToCheckout" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white cursor-pointer">Place order</button>
     </div>
   </div>
 
