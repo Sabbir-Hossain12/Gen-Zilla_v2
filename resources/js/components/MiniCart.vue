@@ -1,10 +1,17 @@
 <script setup>
 import { useMiniCart } from "@/composable/useMiniCart";
-import {onMounted} from "vue";
-import {useCart} from "@/stores/cart.js";
-import {storeToRefs} from "pinia";
-import {formatPrice} from "@/utils/price";
+import { onMounted, watch } from "vue";
+import { useCart } from "@/stores/cart.js";
+import { storeToRefs } from "pinia";
+import { formatPrice } from "@/utils/price";
+import { useRoute } from "vue-router";
+
 const { isOpen, qty, openMiniCard, closeMiniCard, plusQty, minusQty } = useMiniCart();
+
+const route = useRoute();
+watch(() => route.fullPath, () => {
+    closeMiniCard();
+});
 
 const cart = useCart()
 const baseUrl = import.meta.env.VITE_APP_URL;
@@ -91,7 +98,7 @@ const {items,totalQty,subtotal,token} = storeToRefs(cart)
       <div class="flex h-11 w-1/2 items-center justify-center bg-yellow text-sm font-medium leading-none text-black">
         <h4
              class="mr-1 inline-block text-sm font-medium leading-none">Total: ৳{{ formatPrice(subtotal) }}</h4></div>
-      <router-link :to="{name: 'Checkout'}" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white">Place order</router-link>
+      <router-link :to="{name: 'Checkout'}" @click="closeMiniCard" class="h-11 w-1/2 bg-primary text-center text-sm font-medium leading-9 text-white">Place order</router-link>
     </div>
   </div>
 

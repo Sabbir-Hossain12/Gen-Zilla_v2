@@ -1,9 +1,10 @@
 import {defineStore} from "pinia";
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, ref} from "vue";
 import axios from "axios";
 import {Toast} from "toaster-js";
 import "toaster-js/default.css";
 import ToasterUi from 'toaster-ui';
+import {useAuth} from "@/stores/auth.js";
 
 const toaster = new ToasterUi();
 export const useCart = defineStore('cart', () => {
@@ -13,7 +14,9 @@ export const useCart = defineStore('cart', () => {
     const deliveryList = ref([])
     const loading = ref(false)
     const error = ref(null)
-    const token = ref(localStorage.getItem('token') || null);
+
+    const auth = useAuth()
+    const token = computed(() => auth.token || localStorage.getItem('token') || null)
 
     // getters
     const totalQty = computed(() => items.value.reduce((s, i) => s + (i.qty || 0), 0))
@@ -21,15 +24,18 @@ export const useCart = defineStore('cart', () => {
 
     // actions
     async function fetchCart() {
+        if (!token.value) {
+            items.value = []
+            return []
+        }
         loading.value = true
         error.value = null
         try {
             const res = await axios.get('/api/v1/carts', {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
-            items.value = [];
             items.value = res.data.data || []
             return items.value
         } catch (err) {
@@ -43,16 +49,16 @@ export const useCart = defineStore('cart', () => {
     async function addItem(payload) {
         if (!token.value) {
             toaster.addToast(`Please Log in to Continue`, 'error', {duration: 5000})
-
+            auth.showSendOtpModal = true
+            return
         }
 
-        // payload should match API: product_id, variant_type, variant_id, product_img, product_name, variant_label, price, qty, session_token, user_id
         loading.value = true
         error.value = null
         try {
             const res = await axios.post('/api/v1/carts', payload, {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
 
@@ -67,14 +73,14 @@ export const useCart = defineStore('cart', () => {
         }
     }
 
-
     async function updateQuantity(id, qty) {
+        if (!token.value) return
         loading.value = true
         error.value = null
         try {
             const res = await axios.put(`/api/v1/carts/${id}`, {qty}, {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
             const updated = res.data.data
@@ -82,7 +88,6 @@ export const useCart = defineStore('cart', () => {
             if (idx !== -1) {
                 items.value[idx] = updated
             }
-            console.log('here22')
             return updated
         } catch (err) {
             error.value = err
@@ -93,13 +98,14 @@ export const useCart = defineStore('cart', () => {
     }
 
     async function removeItem(id) {
+        if (!token.value) return
         loading.value = true
         error.value = null
 
         try {
             await axios.post(`/api/v1/carts/${id}`, {}, {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
             new Toast("Product Deleted from Cart!", Toast.TYPE_DONE);
@@ -133,13 +139,14 @@ export const useCart = defineStore('cart', () => {
     }
 
     async function fetchDeliveryList() {
+        if (!token.value) return []
+        loading.value = true
         try {
             const res = await axios.get('/api/v1/delivery-list', {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
-            deliveryList.value = [];
             deliveryList.value = res.data.data || []
             return deliveryList.value
         } catch (err) {
@@ -150,11 +157,11 @@ export const useCart = defineStore('cart', () => {
         }
     }
 
-
     return {
         items,
         loading,
         error,
+        token,
         totalQty,
         subtotal,
         fetchCart,
@@ -164,11 +171,5 @@ export const useCart = defineStore('cart', () => {
         clearCart,
         fetchDeliveryList,
         deliveryList
-
-
     }
 })
-
-
-
-

@@ -2,13 +2,15 @@ import {defineStore} from "pinia";
 import {computed, ref} from "vue";
 import axios from "axios";
 import ToasterUi from "toaster-ui";
+import {useAuth} from "@/stores/auth.js";
 
 const toaster = new ToasterUi();
 
 export const useUser = defineStore('user', () => {
 
     // state
-    const token = ref(localStorage.getItem('token') || null);
+    const auth = useAuth();
+    const token = computed(() => auth.token || localStorage.getItem('token') || null);
     const profile = ref({});
     const stats = ref(null);
     const recentOrders = ref([]);
@@ -19,7 +21,7 @@ export const useUser = defineStore('user', () => {
     const error = ref(null);
 
     // getters
-    const isAuthenticated = computed(() => !!token.valueerscript);
+    const isAuthenticated = computed(() => !!token.value);
     const totalOrders = computed(() => stats.value?.total_orders ?? 0);
     const pendingOrders = computed(() => stats.value?.pending_orders ?? 0);
     const deliveredOrders = computed(() => stats.value?.delivered_orders ?? 0);

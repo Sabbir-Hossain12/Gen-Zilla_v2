@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import axios from "axios";
 import ToasterUi from 'toaster-ui';
+import {useCart} from "@/stores/cart.js";
 
 const toaster = new ToasterUi();
 
@@ -10,8 +11,6 @@ export const useAuth = defineStore('auth', () => {
     let isAuthenticated = computed(() => !!token.value);
 
     const phone = ref('');
-    // const otp = ref('');
-    // const expires = ref('');
 
     const showSendOtpModal = ref(false)
     const showVerifyOtpModal = ref(false)
@@ -21,8 +20,6 @@ export const useAuth = defineStore('auth', () => {
             const res = await axios.post('/api/v1/auth/send-otp', {phone: phone.value})
             if (res.data.success) {
                 toaster.addToast(`6 Digit OTP send to your phone number!`, 'info',{ duration:5000})
-                // otp.value = res.data.otp;
-                // expires.value = res.data.expires_in;
                 showSendOtpModal.value = false;
                 showVerifyOtpModal.value = true;
             }
@@ -41,13 +38,16 @@ export const useAuth = defineStore('auth', () => {
                 showVerifyOtpModal.value = false;
                 localStorage.setItem('token', res.data.token);
                 token.value = res.data.token;
+
+                // Fetch user cart immediately after login
+                const cart = useCart();
+                await cart.fetchCart();
             }
             else {
                 toaster.addToast(`Incorrect OTP, Try Again`, 'error', {duration: 5000})
 
             }
         } catch (err) {
-            // console.log(err)
             toaster.addToast(`Incorrect OTP`, 'error', {duration: 5000})
 
         }
@@ -57,13 +57,16 @@ export const useAuth = defineStore('auth', () => {
         try {
             await axios.post('/api/v1/logout', {}, {
                 headers: {
-                    Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                    Authorization: `Bearer ${token.value}`
                 }
             })
 
             // Clear local state + storage
             token.value = null
             localStorage.removeItem('token')
+
+            const cart = useCart()
+            cart.items = []
 
             toaster.addToast(`You have been Logged Out`, 'info',{ duration:5000})
         } catch (error) {
@@ -75,7 +78,3 @@ export const useAuth = defineStore('auth', () => {
     return {isAuthenticated, token, sendOtp, verifyOtp, showSendOtpModal, showVerifyOtpModal, phone, handleLogout}
 
 })
-
-
-
-

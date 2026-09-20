@@ -2,6 +2,8 @@
 
 import MainLayout from "@/layouts/MainLayout.vue";
 import {useCart} from "@/stores/cart.js";
+import {useAuth} from "@/stores/auth.js";
+import {useMiniCart} from "@/composable/useMiniCart";
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import axios from "axios";
@@ -11,10 +13,13 @@ import Router from "@/router/index.js";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-
-const cart = useCart()
+const auth = useAuth();
+const cart = useCart();
+const { closeMiniCard } = useMiniCart();
 const baseUrl = import.meta.env.VITE_APP_URL;
+
 onMounted(async () => {
+    closeMiniCard();
     // fetch Cart
     await cart.fetchCart();
     await cart.fetchDeliveryList();
@@ -40,7 +45,7 @@ const paymentMethod = ref('');
 const delivery_id = selectedDeliveryId.value;
 const subtotal = cart.subtotal;
 
-const token = ref(localStorage.getItem('token') || null);
+const token = computed(() => auth.token || localStorage.getItem('token') || null);
 
 async function submitOrder() {
     try {
@@ -91,7 +96,7 @@ async function submitOrder() {
             "total": total.value
         }, {
             headers: {
-                Authorization: `Bearer ${token.value}` // or localStorage.getItem('token')
+                Authorization: `Bearer ${token.value}`
             }
         })
 
@@ -349,10 +354,6 @@ async function submitOrder() {
                                 <span>Delivery Charge</span>
                                 <span class="font-medium">৳{{ selectedDelivery?.delivery_charge || 0 }}</span>
                             </div>
-                            <!--            <div class="flex justify-between text-sm text-green-600">-->
-                            <!--              <span>Discount</span>-->
-                            <!--              <span class="font-medium">- ৳76</span>-->
-                            <!--            </div>-->
                             <div class="flex justify-between text-sm text-gray-600">
                                 <span>Promo Code</span>
                                 <span class="text-gray-400 italic">Not applied</span>
@@ -366,14 +367,7 @@ async function submitOrder() {
                             <span class="text-xl font-bold text-[#E8312A]">৳{{ formatPrice(total) }}</span>
                         </div>
 
-                        <!-- Savings badge -->
-                        <!--          <div class="mt-2 flex items-center justify-center gap-1.5 bg-green-50 border border-green-100 rounded-md px-3 py-2">-->
-                        <!--            <i class="fa-solid fa-tag text-green-600 text-xs"></i>-->
-                        <!--            <span class="text-xs text-green-700 font-semibold">You are saving ৳76 on this order!</span>-->
-                        <!--          </div>-->
-
                         <!-- Place Order Button -->
-                        <!--            router-link :to="{ name: 'Success' }"-->
                         <button @click="submitOrder()"
                                 class="cursor-pointer mt-5 w-full bg-[#E8312A] hover:bg-[#C4251F] text-white font-bold rounded-full py-3.5 text-base flex items-center justify-center gap-2 transition-colors shadow-sm">
                             <i class="fa-solid fa-lock text-sm"></i>
