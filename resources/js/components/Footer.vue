@@ -87,9 +87,9 @@ onMounted(async () => {
         <div class="ml-0 md:ml-10 space-y-3 text-center md:text-left">
           <h1 class="text-base font-semibold">My Account</h1>
           <ul class="space-y-1.5 text-sm text-gray-600">
-            <li><router-link to="/dashboard" class="hover:text-primary transition-colors">Dashboard</router-link></li>
-            <li><router-link to="/order-history" class="hover:text-primary transition-colors">Order History</router-link></li>
             <li><router-link to="/personal-info" class="hover:text-primary transition-colors">Personal Info</router-link></li>
+            <li><router-link to="/order-history" class="hover:text-primary transition-colors">Order History</router-link></li>
+            <li><router-link to="/wishlist" class="hover:text-primary transition-colors">Wishlist</router-link></li>
           </ul>
         </div>
 
@@ -98,26 +98,36 @@ onMounted(async () => {
           <h1 class="text-base font-semibold mb-2">Pay With</h1>
           <div>
             <img
-                :src="settings.basicInfo?.payment_methods_img ? (baseUrl + '/' + settings.basicInfo.payment_methods_img) : 'https://www.shwapno.com/_next/image?url=https%3A%2F%2Fd2t8nl1y0ie1km.cloudfront.net%2Fpublic%2Fpayment-methods.png&w=1080&q=75'"
+                :src="settings.basicInfo?.payment_methods_img ? (baseUrl + '/' + settings.basicInfo.payment_methods_img) : 'https://cdn.prod.website-files.com/64db80a5e88c6b1723ff7649/68b008416230fc211fb5610e_What%20are%20alternative%20payment%20methods%20(APMs)%20thumbnail.png'"
                 alt="Payment Methods" class="max-w-full h-auto">
           </div>
 
           <h1 class="text-base font-semibold mt-4">Follow Us</h1>
           <div class="flex gap-x-3 justify-center md:justify-start items-center text-xl">
             <a v-if="settings.basicInfo?.fb_link" :href="settings.basicInfo.fb_link.startsWith('http') ? settings.basicInfo.fb_link : 'https://' + settings.basicInfo.fb_link" target="_blank" class="text-blue-600 hover:opacity-80">
-              <i class="fa-brands fa-facebook"></i>
+
+                <font-awesome-icon :icon="['fab', 'facebook-square']" style="color: rgb(216, 7, 65);" />
             </a>
             <a v-if="settings.basicInfo?.youtube_link" :href="settings.basicInfo.youtube_link.startsWith('http') ? settings.basicInfo.youtube_link : 'https://' + settings.basicInfo.youtube_link" target="_blank" class="text-red-600 hover:opacity-80">
-              <i class="fa-brands fa-youtube"></i>
+
+                <font-awesome-icon :icon="['fab', 'youtube-square']" style="color: rgb(216, 7, 65);" />
+
             </a>
             <a v-if="settings.basicInfo?.insta_link" :href="settings.basicInfo.insta_link.startsWith('http') ? settings.basicInfo.insta_link : 'https://' + settings.basicInfo.insta_link" target="_blank" class="text-pink-600 hover:opacity-80">
-              <i class="fa-brands fa-instagram"></i>
+
+                <font-awesome-icon :icon="['fab', 'instagram-square']" style="color: rgb(216, 7, 65);" />
+
             </a>
             <a v-if="settings.basicInfo?.x_link" :href="settings.basicInfo.x_link.startsWith('http') ? settings.basicInfo.x_link : 'https://' + settings.basicInfo.x_link" target="_blank" class="text-gray-800 hover:opacity-80">
               <i class="fa-brands fa-x-twitter"></i>
+                <font-awesome-icon :icon="['fab', 'twitter-square']" style="color: rgb(216, 7, 65);" />
+
+
             </a>
             <a v-if="settings.basicInfo?.p_link" :href="settings.basicInfo.p_link.startsWith('http') ? settings.basicInfo.p_link : 'https://' + settings.basicInfo.p_link" target="_blank" class="text-red-700 hover:opacity-80">
-              <i class="fa-brands fa-pinterest"></i>
+
+                <font-awesome-icon :icon="['fab', 'pinterest-square']" style="color: rgb(216, 7, 65);" />
+
             </a>
           </div>
         </div>

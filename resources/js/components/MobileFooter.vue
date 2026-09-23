@@ -33,14 +33,16 @@ function handleAccountClick() {
       <router-link :to="{ name: 'Home' }"
                    class="flex flex-col items-center justify-center text-gray-600 hover:text-primary transition-colors py-1"
                    active-class="text-primary font-bold">
-        <i class="fa-solid fa-house text-base"></i>
+<!--        <i class="fa-solid fa-house text-base"></i>-->
+          <font-awesome-icon :icon="['fas', 'home']" class="text-base" />
         <span class="text-[10px] mt-1 leading-none">Home</span>
       </router-link>
 
       <!-- Categories -->
       <button @click="toggleSidebar"
               class="flex flex-col items-center justify-center text-gray-600 hover:text-primary transition-colors py-1 cursor-pointer">
-        <i class="fa-solid fa-layer-group text-base"></i>
+<!--        <i class="fa-solid fa-layer-group text-base"></i>-->
+          <font-awesome-icon :icon="['fas', 'layer-group']" class="text-primary" />
         <span class="text-[10px] mt-1 leading-none">Categories</span>
       </button>
 
@@ -48,7 +50,8 @@ function handleAccountClick() {
       <button @click="openMiniCard"
               class="flex flex-col items-center justify-center text-gray-600 hover:text-primary transition-colors py-1 relative cursor-pointer">
         <div class="relative">
-          <i class="fa-solid fa-basket-shopping text-base text-primary"></i>
+<!--          <i class="fa-solid fa-basket-shopping text-base text-primary"></i>-->
+            <font-awesome-icon :icon="['fas', 'basket-shopping']" class="text-primary" />
           <span v-if="cart.totalQty > 0"
                 class="absolute -top-2 -right-3 bg-primary text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow">
             {{ cart.totalQty > 99 ? '99+' : cart.totalQty }}
@@ -60,7 +63,8 @@ function handleAccountClick() {
       <!-- Account / Sign In -->
       <button @click="handleAccountClick"
               class="flex flex-col items-center justify-center text-gray-600 hover:text-primary transition-colors py-1 cursor-pointer">
-        <i class="fa-solid fa-user text-base"></i>
+<!--        <i class="fa-solid fa-user text-base"></i>-->
+          <font-awesome-icon :icon="['fas', 'user']" class="text-primary" />
         <span class="text-[10px] mt-1 leading-none">{{ auth.isAuthenticated ? 'Account' : 'Sign In' }}</span>
       </button>
 

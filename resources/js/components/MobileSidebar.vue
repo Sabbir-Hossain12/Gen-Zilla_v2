@@ -16,6 +16,10 @@ onMounted(async function () {
     try {
         const response = await fetch('/api/v1/categories')
         if (!response.ok) throw new Error('Network error')
+
+        const json = await response.json()
+        if (json?.success === false) throw new Error(json?.message || 'Failed to load categories')
+
         categories.value = Array.isArray(json) ? json : (json?.data || [])
     } catch (e) {
         error.value = 'Failed to load categories. Please refresh.'

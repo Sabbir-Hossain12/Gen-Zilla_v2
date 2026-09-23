@@ -7,10 +7,12 @@ import { createPinia } from 'pinia'
 // library.add(faMagnifyingGlass,fas)
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons' // 1. Import brand icons
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Add all icon packs
-library.add(fas)
+library.add(fas,fab)
+
 
 const pinia = createPinia()
 
